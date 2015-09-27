@@ -1,0 +1,366 @@
+# This file defines the contenttypes on the website. See the documentation for
+# details: http://docs.bolt.cm/content#defining-contenttypes
+#
+# Each 'content-type' roughly corresponds to a single table in the database.
+# If you update this file, be sure to log into the Bolt backend and click the
+# button to update the database.
+
+# Pages are used for the more 'static' pages on the side -- things like
+# 'about us', 'contact', or 'disclaimer'.
+#
+# This content-type also will let you customize the exact template you use
+# so that you can specify how exactly the page should look.
+pages:
+    name: Pages
+    singular_name: Page
+    fields:
+        title:
+            type: text
+            class: large
+            group: content
+        slug:
+            type: slug
+            uses: title
+        body:
+            type: html
+            height: 300px
+        template:
+            type: templateselect
+            filter: '*.twig'
+        video:
+            label: 'Showcase video (optional; note post can contain a max of only one showcase element)'
+            type: video
+            group: media
+        image:
+            label: 'Showcase image (optional; note post can contain a max of only one showcase element)'
+            type: image
+            attrib: title
+            extensions: [ gif, jpg, png ]
+    recordsperpage: 100
+    default_status: publish
+
+# Used for any small free-form content and "snippits" used in misc. places
+# throughout the codebase.
+#
+# Snippits are intended to be used by the template files, and will not be
+# directly displayed.
+sidebar:
+    name: Sidebar Items
+    singular_name: Sidebar Item
+    fields:
+        title:
+            type: text
+            class: large
+            group: content
+        slug:
+            type: slug
+            uses: title
+        body:
+            type: html
+            height: 300px
+        video:
+            type: video
+            group: media
+        image:
+            type: image
+            attrib: title
+            extensions: [ gif, jpg, png ]
+    default_status: publish
+    viewless: true
+    sort: id
+
+# Corresponds to any blog-like updates
+#
+# The 'sort' is set to '-datepublish', which means that newer entries will be
+# shown above older entries.
+news:
+    name: News 
+    singular_name: News 
+    fields:
+        title:
+            type: text
+            class: large
+            group: content
+        slug:
+            type: slug
+            uses: title
+        body:
+            type: html
+            height: 300px
+    record_template: entry.twig
+    listing_template: listing.twig
+    listing_records: 10
+    default_status: publish
+    sort: -datepublish
+    recordsperpage: 10
+
+# Corresponds to distinct teams
+#
+# This content-type is used mainly to contain information, and is used by templates
+# for the different 'about us' pages.
+teams:
+    name: Teams
+    singular_name: Team
+    fields:
+        title:
+            type: text
+            label: Name
+            class: large
+            required: true
+            group: content
+        slug:
+            type: slug
+            uses: title
+        description:
+            type: html
+            height: 300px
+        team_type:
+            type: select
+            label: Team type
+            values: [ "Administrative Team", "Technical Team", "Directors" ]
+    relations:
+        teammembers:
+            multiple: true 
+            label: Select team members (put lead first)
+    default_status: publish
+
+# Corresponds to distinct team members
+#
+# Since the 'viewless' option is set to 'true', info about team members will not be
+# automatically published as a page.
+teammembers:
+    name: Team Members
+    singular_name: Team Member
+    fields:
+        title:
+            label: Name
+            class: large
+            type: text
+            required: true
+            group: content
+        major:
+            type: text
+            required: true
+        position:
+            label: "Position title (optional; use only for special titles like 'Operations Director')"
+            type: text
+        headshot:
+            type: image
+            upload: headshots
+            extensions: [ gif, jpg, png ]
+    relations:
+        teams:
+            multiple: true
+            label: Select teams this member is a part of
+    viewless: true
+    default_status: published
+
+# Corresponds to sponsors.
+#
+# The 'sponsor levels' available are currently hard-coded in.
+sponsors:
+    name: Sponsors
+    singular_name: Sponsor
+    fields:
+        title:
+            label: Name
+            class: large
+            type: text
+            required: true
+            group: content
+        sponsor_level:
+            type: select
+            label: Sponsor level
+            values:
+                - Purple
+                - Gold
+                - Silver
+                - Bronze
+        is_individual:
+            type: checkbox
+            label: "Is individual sponsor?"
+            default: 0
+        logo:
+            type: image
+            upload: sponsors
+            extensions: [ gif, jpg, png ]
+    default_status: published
+
+
+# The 'Showcases' is not particularly useful in most cases, but it does a good
+# job of showcasing most of the available fieldtypes. Feel free to delete it, or
+# copy some fields to your own contenttypes.
+#
+# Since no templates are defined for this contenttype, the default record_template,
+# listing_template, and related settings are used from config.yml
+showcases:
+    name: Showcases
+    slug: showcases
+    singular_name: Showcase
+    singular_slug: showcase
+    fields:
+        title:
+            type: text
+            class: large
+            required: true
+            pattern: ".{2,255}" # see: http://html5pattern.com/
+            error: "The Title field is required, and must contain at least 2 characters"
+            group: Text
+        slug:
+            type: slug
+            uses: [ title ]
+        html:
+            type: html
+            height: 150px
+        textarea:
+            type: textarea
+            postfix: "<p><em>This is a plain text area. the contents will not be processed.</em></p>"
+        markdown:
+            type: markdown
+            postfix: "<p><em>This field gets parsed as <a href='https://help.github.com/articles/markdown-basics'>Markdown</a>, when rendered on the site.</em></p>"
+        geolocation:
+            type: geolocation
+            group: Media
+        video:
+            type: video
+        image:
+            type: image
+            attrib: title # Note: retrieve this in your template with {{ record.values.image.title }}
+            extensions: [ gif, jpg, png ]
+        imagelist:
+            type: imagelist
+        file:
+            type: file
+            group: files
+        filelist:
+            type: filelist
+        checkbox:
+            type: checkbox
+            label: "This is a checkbox"
+            group: other
+        datetime:
+            type: datetime
+            default: "2000-01-01"
+            variant: inline
+        date:
+            type: date
+            default: "first day of last month"
+            variant: inline
+        integerfield:
+            type: integer
+            index: true
+        floatfield:
+            type: float
+        selectfield:
+            type: select
+            values: [ none, foo, bar ]
+        multiselect:
+            type: select
+            values: [ A-tuin, Donatello, Rafael, Leonardo, Michelangelo, Koopa, Squirtle ]
+            multiple: true
+            postfix: "Select your favourite turtle(s)."
+        selectentry:
+            type: select
+            values: entries/id,title
+            postfix: "Select an entry"
+            autocomplete: true
+            sort: title
+        template:
+            type: templateselect
+            filter: '*.twig'
+            group: meta
+    relations:
+        entries:
+            multiple: false
+            label: "Choose an entry"
+            order: -id
+            format: "{{ item.title|escape }} <span>(№ {{ item.id }})</span>"
+            postfix: "By selecting an Entry, you're creating a bi-directional relationship to that Entry."
+        pages:
+            multiple: true
+            order: title
+            label: Select zero or more pages
+    taxonomy: [ categories, tags ]
+    show_on_dashboard: true
+    default_status: publish
+    searchable: false
+    icon_many: "fa:cubes"
+    icon_one: "fa:cube"
+
+# Using YAML repeated nodes
+#
+# YAML allows the defining of "repeated nodes". These allow you to define a 'node'
+# with a 'key: &name' and referenced later with '<<: *name'
+#
+# Bolt allows you to define this with the special entry of '__nodes:' that itself 
+# won't create a Contenttype, but will allow you to use it in actual contenttypes
+# to prevent repeating yourself.
+#
+# To achieve this, first create a key '__nodes:' 
+#__nodes:
+#    field_defaults: &field_defaults
+#        title:
+#            type: text
+#            class: large
+#            group: main
+#        slug:
+#            type: slug
+#            uses: title
+#    template_defaults: &template_defaults
+#        template:
+#            type: templateselect
+#            filter: '*.twig'
+#            group: meta
+#
+# Then, as an example, you could create a Contenttype with default fields, with 
+# an additional 'image' field.
+#
+#contenttype_abc:
+#    name: Contenttype Abc
+#    fields:
+#        <<: *field_defaults
+#        image:
+#            type: image
+#            attrib: title
+#            extensions: [ gif, jpg, png ]
+#        <<: *template_defaults
+#    taxonomy: [ chapters ]
+#    recordsperpage: 10
+#
+# Alternatively, or additionally, you then can thencreate a Contenttype with 
+# default fields, and a 'select' field, and a different 'templateselect' option.
+#
+#contenttype_xyz:
+#    name: Contenttype Xyz
+#    fields:
+#        <<: *field_defaults
+#        selectfield:
+#            type: select
+#            values: [ none, foo, bar ]
+#        template:
+#            type: templateselect
+#            filter: '*_xyz.twig'
+#    taxonomy: [ tags ]
+#    recordsperpage: 20
+
+# Possible field types:
+#
+# text - varchar(256) - input type text.
+# integer - integer - Input field for integer numbers.
+# float - double - Input field for floating numbers, stored as 'Double'.
+# geolocation - text (65kb) - Input field for geolocation. Enter an address, and the location is geocoded to latitude/longitude coordinates
+# imagelist - text (65kb) - Input type for imagelists. Add multiple images with a description. Useful for image sliders, galleries, etcetera.
+# image - varchar(256) - image select/upload widget, stored as filename.
+# file - varchar(256) - file select/upload widget, stored as filename.
+# filelist - text (65kb) - Input type for a list of files. Including a description.
+# video - varchar(256) - Video embed widget, stored as filename.
+# html - text (65kb) - wysiwyg element.
+# textarea - varchar(32768) - Simple, plain < textarea > field.
+# markdown - varchar(32768) - Simple, plain < textarea > field, which is parsed as Markdown text.
+# datetime - datetime - date and time selector widget.
+# date - datetime - date selector widget.
+# select - varchar(256) - select with predefined values
+# templateselect - varchar(256) - select with template filenames
+# checkbox - integer - checkbox-field which is 1 (checked) or 0 (unchecked)
+
+# number (deprecated) - input type decimal(18,9), useful for storing number that need to be sortable
