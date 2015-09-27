@@ -6,21 +6,21 @@
 /** GENERAL TYPOGRAPHY **/
 
 h1 {
-	font-family: Impact,Haettenschweiler,Franklin Gothic Bold,Charcoal,Helvetica Inserat,Bitstream Vera Sans Bold,Arial Black,sans serif;
-	font-size: 4.3em;
-	font-style: normal;
-	font-variant: normal;
-	font-weight: 500;
-	line-height: 1.2em;
+    font-family: Impact,Haettenschweiler,Franklin Gothic Bold,Charcoal,Helvetica Inserat,Bitstream Vera Sans Bold,Arial Black,sans serif;
+    font-size: 4.3em;
+    font-style: normal;
+    font-variant: normal;
+    font-weight: 500;
+    line-height: 1.2em;
 }
 
 h2 {
-	font-family: Impact,Haettenschweiler,Franklin Gothic Bold,Charcoal,Helvetica Inserat,Bitstream Vera Sans Bold,Arial Black,sans serif;
-	font-size: 3em;
-	font-style: normal;
-	font-variant: normal;
-	font-weight: 500;
-	line-height: 1.2em;
+    font-family: Impact,Haettenschweiler,Franklin Gothic Bold,Charcoal,Helvetica Inserat,Bitstream Vera Sans Bold,Arial Black,sans serif;
+    font-size: 3em;
+    font-style: normal;
+    font-variant: normal;
+    font-weight: 500;
+    line-height: 1.2em;
 }
 
 
@@ -169,7 +169,6 @@ h2 {
     border-radius: .5em;
 
     background-color: #000;
-    opacity: 0.9;
     color: white;
 }
 
