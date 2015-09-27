@@ -1,0 +1,24 @@
+{% extends "_skeleton.twig" %}
+
+{% block centerpiece %}
+    {% if record.image != "" %}
+        <div class="primary-image">
+            <div class="container">
+                <div class="showcase">
+                    <h1>{{ record.title }}</h1>
+                </div>
+            </div>
+            <img src="{{ image(record.image) }}" />
+        </div>
+    {% else %}
+        <div class="record-head container">
+            <h1>{{ record.title }}</h1>
+        </div>
+    {% endif %}
+{% endblock %}
+
+{% block content %}
+    <div class="record-content">
+        {{ record.body }}
+    </div>
+{% endblock %}

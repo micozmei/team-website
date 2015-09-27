@@ -1,0 +1,8 @@
+
+{% setcontent items = 'sidebar-items' %}
+{% for item in items %}
+    <div class="aside-module">
+        <h3>{{ item.title }}</h3>
+        {{ item.body }}
+    </div>
+{% endfor %}

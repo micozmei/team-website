@@ -1,0 +1,36 @@
+{% macro display_menu_item(item, loop) %}
+    {% from _self import display_menu_item %}
+
+    <li class="index-{{ loop.index }}
+               {% if item.submenu is defined%} has-children{% endif %}
+               {% if item|current %} active{% endif %}">
+        <a href="{{ item.link }}"
+           {% if item.title is defined %}title='{{ item.title|escape }}'{% endif %}
+           class="{% if item.class is defined %}{{ item.class }}{% endif %}">
+            {{ item.label }}
+        </a>
+        {% if item.submenu is defined %}
+            <ul class="dropdown">
+                {% for child in item.submenu %}
+                    {{ display_menu_item(child, loop) }}
+                {% endfor %}
+            </ul>
+        {% endif %}
+    </li>
+{% endmacro %}
+
+{% from _self import display_menu_item %}
+
+<div class="container">
+    <div class="logo pull-left">
+        <a href="/">
+            <img src="{{ paths.theme }}/assets/logo.png" />
+        </a>
+    </div>
+
+    <ul class="nav nav-custom pull-right">
+        {% for item in menu %}
+            {{ display_menu_item(item, loop) }}
+        {% endfor %}
+    </ul>
+</div>
