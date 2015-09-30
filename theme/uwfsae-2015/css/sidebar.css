@@ -1,0 +1,13 @@
+/** SIDE BAR **/
+
+#sidebar {
+    padding-left: 2em;
+}
+
+.sidebar-item {
+    margin-bottom: 2em;
+    padding: 1em;
+
+    background-color: #222;
+    color: white;
+}

@@ -1,0 +1,405 @@
+/** HEADER AND NAVIGATION **/
+
+/* Entire header, including the logo, navbar, and such */
+#header {
+    z-index: 5;
+    padding: .5em 0;
+    margin-bottom: 2em;
+
+    /* Prevent submenus and such from screwing up layout */
+    overflow: visible;
+
+    /* Add a subtle, striped background for flavor */
+    background-color: #222;
+    background: repeating-linear-gradient(
+        45deg,
+        #222,
+        #222 10px,
+        #262626 10px,
+        #262626 12px
+    );
+
+    /* Slight shadow for depth */
+    -webkit-box-shadow: 0px 5px 15px 0px rgba(0,0,0,0.75);
+       -moz-box-shadow: 0px 5px 15px 0px rgba(0,0,0,0.75);
+            box-shadow: 0px 5px 15px 0px rgba(0,0,0,0.75);
+}
+
+/* Team logo: hide on small screens */
+#header .logo img {
+    display: none;
+}
+
+/* Adjust for small-ish devices */
+@media (min-width: 480px) {
+    #header .logo img {
+        /* We have room, so show the logo */
+        display: block;
+        width: 8em;
+        height: auto;
+    }
+}
+
+/* Contains the "show nav menu" button on mobile/smaller screens */
+.nav-mobile-header {
+    display: block;
+    position: relative;
+}
+
+/* Adjust for medium devices (half-desktop; landscape tablet) */
+@media (min-width: 992px) {
+    /* Hide mobile nav stuff for larger screens */
+    .nav-mobile-header {
+        display: none;
+    }
+}
+
+/* The page name to the left of the mobile nav */
+.nav-mobile-header .nav-active-page {
+    display: block;
+    color: #fff;
+    padding: 1em;
+
+    /* Add a little bit of distance from the logo */
+    margin-right: 3em;
+} 
+
+/* The text inside the page name to the left */
+.nav-mobile-header .nav-active-page span {
+    font-size: 1.5em;
+}
+
+/* The "show menu" button */
+.nav-mobile-header .nav-expander {
+    display: block;
+    position: relative;
+    padding: 1em;
+
+    /* Make the div look clickable */
+    cursor: pointer;
+}
+
+/* The three white bars in the "show menu" button. I'm using 
+ * custom-styled divs instead of an icon or image so I can
+ * apply custon transforms to it.
+ */
+.nav-mobile-header .icon-bar {
+    display: block;
+    position: relative;
+
+    /* Smooth out the bars a little */
+    border-radius: 1px;
+
+    /* General properties */
+    height: 3px;
+    width: 2.5em;
+    margin-bottom: .5em;
+    background-color: white;
+
+    /* Each icon bar will have an independent transform. */
+    transition: margin-left 0.2s ease-in-out, 
+                margin-right 0.2s ease-in-out, 
+                top 0.2s ease-in-out, 
+                bottom 0.2s ease-in-out, 
+                background-color 0.2s ease-in-out,
+                transform 0.2s ease-in-out;
+
+    /* Prevents the bars from looking jagged after the
+     * transforms finish.
+     */
+    -webkit-backface-visibility: hidden;
+    outline: 1px solid transparent;
+}
+
+/* No margin on the bottom bar (will help center the button) */
+.nav-mobile-header .bottom {
+    margin-bottom: 0;
+}
+
+.nav-mobile-header .nav-expander:hover .icon-bar {
+    /* Transition: white -> husky gold */
+    background-color: #b7a57a;
+}
+
+/* Top bar -> top triangle line */
+.nav-mobile-header .nav-expander:hover .top {
+    transform: rotate(-30deg);
+    top: .13em;
+    margin-left: -.2em;
+}
+
+/* Middle bar -> right triangle line */
+.nav-mobile-header .nav-expander:hover .middle {
+    transform: scale(0.1, 12);
+    margin-left: .95em;
+    margin-right: -.95em;
+}
+
+/* Bottom bar -> bottom triangle line */
+.nav-mobile-header .nav-expander:hover .bottom {
+    transform: rotate(30deg);
+    bottom: .13em;
+    margin-left: -.2em;
+}
+
+
+
+/* Pullout nav for mobile */
+.nav-custom {
+    z-index: 5;
+
+    /* Note: these properties will be overridden for the regular,
+     * large nav.
+     */
+    background-color: #222;
+    min-width: 40%;
+    -webkit-backface-visibility: hidden;
+            backface-visibility: hidden;
+}
+
+/* Remove dashed outline from links that have focus */
+.nav-custom a {
+    outline: 0;
+}
+
+/* Clickable element inside nav items */
+.nav-custom li a {
+    display: block;
+    font-size: 1.1em;
+    text-decoration: none;
+    padding: 10px 15px;
+
+    /* Transition: white -> husky gold; dark background -> gray. */
+    color: #fff;
+    transition: color 0.2s ease-in-out,
+                background-color: 0.2s ease-in-out;
+}
+
+/* Applies to top-level and sub-level links */
+.nav-custom li > a:hover,
+.nav-custom li > a:active,
+.nav-custom li > a:focus {
+    background-color: #444;
+}
+
+/* Applies only to top-level links */
+.nav-custom > li:hover > a,
+.nav-custom > li:active > a,
+.nav-custom > li:focus > a {
+    /* Note: we're using li:hover instead of a:hover so that hovering
+     * over submenus will keep this state active. */
+    color: #b7a57a;
+}
+
+/* Mobile submenu expander */
+.nav-custom .submenu-toggle {
+    display: block;
+    position: absolute;
+    right: 0em;
+    top: 0em;
+    z-index: 20;
+    padding: 1em 1em 1em 2em;
+}
+
+.nav-custom .submenu-toggle > span {
+    display: block;
+    width: 0;
+    height: 0;
+    border-top: .5em solid transparent;
+    border-bottom: .5em solid transparent;
+    border-right: .866em solid #fff;
+    border-left: 0 solid transparent;
+
+    transition: transform 0.2s ease-in-out,
+                border-color 0.2s ease-in-out;
+}
+
+.nav-custom .submenu-toggle:hover,
+.nav-custom .submenu-toggle:active,
+.nav-custom .submenu-toggle:focus,
+.nav-custom .submenu-active .submenu-toggle {
+    background-color: inherit;
+}
+
+.nav-custom .submenu-toggle:hover > span,
+.nav-custom .submenu-toggle:active > span,
+.nav-custom .submenu-active .submenu-toggle > span {
+    transform: rotate(-90deg);
+    border-right-color: #b7a57a;
+}
+
+/* Sub-menu container */
+.nav-custom .submenu {
+    /* Override bootstrap's dropdown-menu styles */
+    border-radius: 0;
+    border: none;
+
+    /* Fixed properties */
+    list-style-type: none;
+    padding-left: 0;
+
+    /* Dropdown should be initially hidden. Set overflow to hidden
+     * so that the text isn't visible when the height is zero. */
+    overflow: hidden;
+    max-height: 0em;
+
+    transition: max-height 0.2s ease-in-out;
+}
+
+.nav-custom .submenu-active .submenu {
+    max-height: 10em;
+}
+
+/* Sub-menu links */
+.nav-custom .submenu a {
+    padding-left: 3em;
+}
+
+.nav-custom .submenu a:hover {
+    color: #b7a57a;
+}
+
+
+
+
+/* Adjust nav for medium and up devices (half-desktop; landscape tablet) */
+@media (min-width: 992px) {
+    /* On large screens, use a regular-looking nav.*/
+    .nav-custom {
+        position: relative;
+        display: block;
+        max-width: 100%;
+        max-height: inherit;
+        height: auto;
+        overflow: inherit;
+    }
+
+    /* Dropdown toggler: hide, since we're using hover */
+    .nav-custom .submenu-toggle {
+        display: none;
+    }
+
+    /* Nav items */
+    .nav-custom > li {
+        position: relative;
+        float: left;
+    }
+
+    .nav-custom > li:hover a,
+    .nav-custom > li:active a,
+    .nav-custom > li:focus a {
+        /* Override mobile nav's preferences */
+        background-color: inherit;
+    }
+
+    /* Expanding bottom border
+     * (Note: this isn't actually a border; more of a div pretending
+     * to be a border so we can use transitions) */
+    .nav-custom > li > a:after {
+       display: block;
+        position: absolute;
+
+        /* Fixed properties */
+        bottom: 5px;
+        height: 3px;
+        margin: 0 auto;
+        content: "";
+
+        /* Position border in center, but give it zero width to make it
+         * invisible. The border color will go from white to husky gold
+         * to match the link text color. */
+        left: 50%;
+        width: 0;
+        background-color: #fff;
+
+        transition: left 0.2s ease-in-out, 
+                    width 0.2s ease-in-out, 
+                    background-color 0.2s ease-in-out;
+    }
+
+    .nav-custom > li:hover > a:after,
+    .nav-custom > li:active > a:after,
+    .nav-custom > li:focus > a:after {
+        /* Move element to the left while expanding its width, giving the
+         * appearance that it's expanding from the center. */
+        left: 0;
+        width: 100%;
+        background-color: #b7a57a;
+    }
+
+    /* Dropdown menu container */
+    .nav-custom .submenu {
+        /* Dropdown should not be part of the normal flow */
+        display: block;
+        z-index: 10;
+        position: absolute;
+
+        /* Position submenu in center of parent */
+        left: 50%;
+        width: 12em;
+        margin-left: -6em;  /* Must always be `-width / 2` */
+        text-align: center;
+
+        /* Fixed properties */
+        padding: 0;
+        background-color: white;
+
+        /* Background of.submenu is entirely white, so give it
+         * a slight shadow to stand out. */
+        -webkit-box-shadow: 0px 3px 3px 0px rgba(0.5, 0.5, 0.5, 0.75);
+           -moz-box-shadow: 0px 3px 3px 0px rgba(0.5, 0.5, 0.5, 0.75);
+                box-shadow: 0px 3px 3px 0px rgba(0.5, 0.5, 0.5, 0.75);
+
+        /* Dropdown should be initially hidden. Set overflow to hidden
+         * so that the text isn't visible when the height is zero. */
+        overflow: hidden;
+        max-height: 0em;
+
+        transition: max-height 0.2s ease-in-out;
+    }
+
+    .nav-custom > li:hover .submenu,
+    .nav-custom > li .submenu:hover {
+        /* Note: since the max-height is 10em, we can't support huge
+         *.submenu lists. We _could_ increase the max-height, but doing
+         * so will make the transition go quicker and quicker/appear
+         * unnatural. If you need to change the max-height, also be sure
+         * to tinker with the transition time. 
+         */
+        max-height: 10em;
+    }
+
+    /* Link in submenu */
+    .nav-custom .submenu a {
+        display: block;
+        padding: 0.5em;
+        color: #000;
+
+        /* Transition: white -> husky gold.
+         * The standard 0.2s transition time felt obnoxiously laggy, but
+         * having no transition made the menu feel too harsh. 0.07s
+         * shouldn't be consciously noticable, but seemed to take the
+         * edge off, imo.
+         */
+        transition: background-color 0.08s ease-in-out;
+    }
+    
+    .nav-custom .submenu a:hover {
+        /* Override mobile nav's preferences */
+        color: #000;
+        background-color: #b7a57a;
+    }
+}
+
+/* Adjust nav for large devices (desktops) */
+@media (min-width: 1200px) {
+    #header .logo img {
+        width: 12em;
+    }
+
+    .nav-custom {
+        margin-top: 1.5em;
+    }
+}
+
+

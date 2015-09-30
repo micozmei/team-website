@@ -1,16 +1,5 @@
 {% extends "_skeleton.twig" %}
 
-{% block centerpiece %}
-    <div class="primary-image">
-        <div class="container">
-            <div class="showcase">
-                <h1>{{ app.config.get('general/sitename') }}</h1>
-            </div>
-        </div>
-        <img src="{{ image(record.image) }}" />
-    </div>
-{% endblock %}
-
 {% block content %}
     {% setcontent records = "news/latest/4" allowpaging %}
     {% for record in records %}

@@ -1,0 +1,50 @@
+{% extends "_skeleton.twig" %}
+
+{% setcontent director_teams = 'teams' where { team_type: 'Directors' } %}
+{% setcontent tech_teams = 'teams' where { team_type: 'Technical Team' } %}
+
+{% block content %}
+    <div class="record-content">
+        {{ record.body }}
+
+        <div class="roster">
+
+            {% for director_team in director_teams %}
+                <h2>{{ director_team.title }}</h2>
+                <div class="team row">
+                    {% for director in director_team.related('teammembers')|reverse %}
+                        <div class="col-xs-6 col-sm-3">
+                            <div class="team-member">
+                                <img src="{{ image(director.headshot) }}" />
+                                <div class="caption">
+                                    <p class="position">{{ director.position }}</p>
+                                    <p class="name">{{ director.title }}</p>
+                                    <p class="major">{{ director.major }}</p>
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            {% endfor %}
+
+            <p>--------</p>
+
+            {% for tech_team in tech_teams %}
+                <h2>{{ tech_team.title }}</h2>
+                <div class="team row">
+                    {% for member in tech_team.related('teammembers')|reverse %}
+                        <div class="col-xs-6 col-sm-3">
+                            <div class="team-member">
+                                <img src="{{ image(member.headshot) }}" />
+                                <div class="caption">
+                                    <p class="name">{{ member.title }}</p>
+                                    <p class="major">{{ member.major }}</p>
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+{% endblock %}

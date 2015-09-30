@@ -1,0 +1,35 @@
+/** NEWS POSTS **/
+
+.article .article-head {
+    margin-bottom: 1em;
+    border-bottom: 1px solid #d9d9d9;
+    background-color: #4b2e83;
+    padding: 1em;
+
+    background: repeating-linear-gradient(
+        45deg,
+        #4b2e83,
+        #4b2e83 10px,
+        #503387 10px,
+        #503387 12px
+    );
+}
+
+.article h2 {
+    margin: 0;
+    padding: 0;
+}
+
+.article h2 a {
+    color: #fff;
+}
+
+.article .timestamp {
+    font-size: 1.2em;
+    color: #fff;
+}
+
+.article-content,
+.record-content {
+    margin-bottom: 5em;
+}

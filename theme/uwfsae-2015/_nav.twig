@@ -2,7 +2,7 @@
     {% from _self import display_menu_item %}
 
     <li class="index-{{ loop.index }}
-               {% if item.submenu is defined%} has-children{% endif %}
+               {% if item.submenu is defined %} has-submenu{% endif %}
                {% if item|current %} active{% endif %}">
         <a href="{{ item.link }}"
            {% if item.title is defined %}title='{{ item.title|escape }}'{% endif %}
@@ -10,7 +10,10 @@
             {{ item.label }}
         </a>
         {% if item.submenu is defined %}
-            <ul class="dropdown">
+            <a class="submenu-toggle" 
+               href="#"
+               role="button"><span></span></a>
+            <ul class="submenu">
                 {% for child in item.submenu %}
                     {{ display_menu_item(child, loop) }}
                 {% endfor %}
@@ -21,16 +24,33 @@
 
 {% from _self import display_menu_item %}
 
-<div class="container">
+<div class="container nav-container">
     <div class="logo pull-left">
         <a href="/">
             <img src="{{ paths.theme }}/assets/logo.png" />
         </a>
     </div>
 
-    <ul class="nav nav-custom pull-right">
+    <ul id="main-nav" class="nav nav-custom pull-right navmenu-fixed-right offcanvas-md">
         {% for item in menu %}
             {{ display_menu_item(item, loop) }}
         {% endfor %}
     </ul>
+
+    <div class="nav-mobile-header">
+        <a class="nav-active-page pull-left" href="{{ record.link }}">
+            <span>{{ record.title|escape }}</span>
+        </a>
+        <div class="nav-button pull-right">
+            <a id="nav-expander" 
+               class="nav-expander" 
+               data-toggle="offcanvas" 
+               data-target=".nav-custom"
+               data-canvas="body">
+                <span class="icon-bar top"></span>
+                <span class="icon-bar middle"></span>
+                <span class="icon-bar bottom"></span>
+            </a>
+        </div>
+    </div>
 </div>

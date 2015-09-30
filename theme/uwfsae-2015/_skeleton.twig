@@ -17,8 +17,23 @@
 
         <link rel="stylesheet" 
               href="{{ paths.theme }}css/bootstrap.min.css" />
+        <link rel="stylesheet" 
+              href="{{ paths.theme }}css/jasny-bootstrap.min.css" />
+
         <link rel="stylesheet"
               href="{{ paths.theme }}css/custom.css" />
+        <link rel="stylesheet"
+              href="{{ paths.theme }}css/header.css" />
+        <link rel="stylesheet"
+              href="{{ paths.theme }}css/news.css" />
+        <link rel="stylesheet"
+              href="{{ paths.theme }}css/primary-image.css" />
+        <link rel="stylesheet"
+              href="{{ paths.theme }}css/roster.css" />
+        <link rel="stylesheet"
+              href="{{ paths.theme }}css/sidebar.css" />
+        <link rel="stylesheet"
+              href="{{ paths.theme }}css/typography.css" />
 
     {% endblock %}
 </head>
@@ -30,7 +45,9 @@
             {% endblock %}
         </div>
 
-        {% block centerpiece %}{%endblock %}
+        {% block centerpiece %}
+            {% include '_centerpiece.twig' %}
+        {%endblock %}
 
         <div id="content" class="container">
             <div class="row">
@@ -38,8 +55,8 @@
                     {% block content %}{% endblock %}
                 </div>
 
-                <div id="aside" class="col-md-4 col-lg-3">
-                    {% block aside %}
+                <div id="sidebar" class="col-md-4 col-lg-3">
+                    {% block sidebar %}
                         {% include '_aside.twig' %}
                     {% endblock %}
                 </div>
@@ -56,5 +73,7 @@
 {% block scripts %}
     <script src="{{ paths.theme }}js/jquery.min.js"></script>
     <script src="{{ paths.theme }}js/bootstrap.min.js"></script>
+    <script src="{{ paths.theme }}js/jasny-bootstrap.min.js"></script>
+    <script src="{{ paths.theme }}js/custom.js"></script>
 {% endblock %}
 </html>
