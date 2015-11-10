@@ -1,5 +1,6 @@
 # Bolt specific stuff. Don't put config files, databases or 'vendor' in Git.
 app/cache/*
+!app/cache/git-keep
 app/database/bolt.db
 #vendor/
 
