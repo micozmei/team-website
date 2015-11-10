@@ -143,6 +143,7 @@ teams:
     relations:
         teammembers:
             multiple: true 
+            sortable: true
             label: Select team members (put lead first)
     default_status: publish
 
@@ -176,6 +177,56 @@ teammembers:
             label: Select teams this member is a part of
     viewless: true
     default_status: published
+    
+# Corresponds to car info
+carinfo:
+    name: Car Info
+    singular_name: Car Info
+    fields:
+        title:
+            label: "Car Name"
+            class: large
+            type: text
+            required: true
+            group: content
+        team_number:
+            label: "Team Number"
+            type: integer
+            required: true
+        car_type:
+            label: "Car Type"
+            type: select
+            values: [ "cCar", "eCar" ]
+            required: true
+        specs:
+            label: "Car Specs"
+            type: html
+            height: 300px
+        results:
+            label: "Competition Results"
+            type: html
+            height: 300px
+        wide_image:
+            label: 'Wide screen showcase image'
+            prefix: |
+                <p>This showcase image will be shown on wide screens (desktops, tablets in 
+                landscape mode, etc).</p>
+                <p>This image should have an aspect ratio of approximately 5:2.</p>
+            type: image
+            extensions: [ gif, jpg, png ]
+            group: media
+        square_image:
+            label: 'Small screen showcase image'
+            prefix: |
+                <p>This showcase image will be shown on smaller screens (phones, tablets in 
+                portrait mode, etc).</p>
+                <p>This image should have an aspect ratio of approximately 4:3.</p>
+            type: image
+            extensions: [ gif, jpg, png ]
+    viewless: true
+    default_status: published
+    listing_sort: -team_number
+    sort: -team_number
 
 # Corresponds to sponsors.
 #
