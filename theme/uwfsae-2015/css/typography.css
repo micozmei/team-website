@@ -18,3 +18,18 @@ h2 {
     line-height: 1.2em;
 }
 
+@font-face {
+    font-family: 'gandhi-sans-regular';
+    src: url('../assets/gandhi-sans/regular/GandhiSans-Regular-webfont.eot');
+    src: url('../assets/gandhi-sans/regular/GandhiSans-Regular-webfont.eot?#iefix') format('embedded-opentype'),
+         url('../assets/gandhi-sans/regular/GandhiSans-Regular-webfont.woff') format('woff'),
+         url('../assets/gandhi-sans/regular/GandhiSans-Regular-webfont.ttf') format('truetype'),
+         url('../assets/gandhi-sans/regular/GandhiSans-Regular-webfont.svg#gandhi_sansregular') format('svg');
+    font-weight: normal;
+    font-style: normal;
+
+}
+
+body {
+    font-family: 'gandhi-sans-regular', Helvetica, Arial, sans-serif;
+}

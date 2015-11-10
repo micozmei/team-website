@@ -1,11 +1,10 @@
 {% extends "_skeleton.twig" %}
 
-{% setcontent director_teams = 'teams' where { team_type: 'Directors' } %}
-{% setcontent tech_teams = 'teams' where { team_type: 'Technical Team' } %}
+{% setcontent current_car = 'carinfo' where { car_type: 'cCar' } %}
 
 {% block content %}
-    <div class="record-content">
-        {{ record.body }}
+    <div class="car-info current-car ccar">
+        {{ dump(current_car[0]) }}
 
         <div class="roster">
 
