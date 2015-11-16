@@ -1,7 +1,7 @@
 {% extends "_skeleton.twig" %}
 
 {% setcontent director_teams = 'teams' where { team_type: 'Directors' } %}
-{% setcontent tech_teams = 'teams' where { team_type: 'Technical Team' } %}
+{% setcontent tech_teams = 'teams' where { team_type: 'Technical Team' } orderby 'title' %}
 
 {% block content %}
     <div class="record-content">
