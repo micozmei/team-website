@@ -1,6 +1,7 @@
 {% extends "_skeleton.twig" %}
 
 {% setcontent director_teams = 'teams' where { team_type: 'Directors' } %}
+{% setcontent admin_teams = 'teams' where { team_type: 'Administrative Team' } %}
 {% setcontent tech_teams = 'teams' where { team_type: 'Technical Team' } orderby 'title' %}
 
 {% block content %}
@@ -26,6 +27,24 @@
                     {% endfor %}
                 </div>
             {% endfor %}
+
+            <h2>Admin Leads</h2>
+            <div class="team row">
+                {% for admin_team in admin_teams %}
+                    {% for admin in admin_team.related('teammembers')|reverse %}
+                        <div class="col-xs-6 col-sm-3">
+                            <div class="team-member">
+                                <img src="{{ image(admin.headshot) }}" />
+                                <div class="caption">
+                                    <p class="position">{{ admin.position }}</p>
+                                    <p class="name">{{ admin.title }}</p>
+                                    <p class="major">{{ admin.major }}</p>
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+                {% endfor %}
+            </div>
 
             {% for tech_team in tech_teams %}
                 <h2>{{ tech_team.title }}</h2>

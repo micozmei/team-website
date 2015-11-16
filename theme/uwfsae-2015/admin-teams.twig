@@ -1,0 +1,15 @@
+{% extends "_skeleton.twig" %}
+
+{% setcontent admin_teams = 'teams' where { team_type: 'Administrative Team' } orderby 'title' %}
+
+{% block content %}
+    <div class="record-content">
+        {{ record.body }}
+
+        {% for admin_team in admin_teams %}
+            <h2>{{ admin_team.title }}</h2>
+
+            {{ admin_team.description }}
+        {% endfor %}
+    </div>
+{% endblock %}
