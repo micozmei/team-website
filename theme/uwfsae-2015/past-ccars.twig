@@ -1,6 +1,6 @@
 {% extends "_skeleton.twig" %}
 
-{% setcontent cars = 'car_info' where { car_type: 'cCar' } orderby 'team_number' | reverse %}
+{% setcontent cars = 'car_info' where { car_type: 'cCar' } orderby 'team_number' %}
 
 {% block content %}
     <div class="car-summaries">
