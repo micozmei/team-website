@@ -1,0 +1,34 @@
+.car-summaries {
+    position: relative;
+}
+
+.car-summaries h2 {
+    font-size: 2em;
+    margin-bottom: .2em;
+    margin-top: .2em;
+}
+
+.car-summaries h2.car-title {
+    font-size: 2.5em;
+}
+
+.car-summaries h3 {
+    font-size: 1.3em;
+    margin-bottom: .1em;
+    margin-top: .2em;
+    padding-top: 0;
+}
+
+.car-info {
+    position: relative;
+    margin-bottom: 1em;
+    width: 100%;
+}
+
+.car-info > div {
+    position: relative;
+}
+
+.car-info img {
+    width: 100%;
+}

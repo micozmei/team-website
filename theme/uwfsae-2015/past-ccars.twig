@@ -1,0 +1,46 @@
+{% extends "_skeleton.twig" %}
+
+{% setcontent cars = 'car_info' where { car_type: 'cCar' } orderby 'team_number' | reverse %}
+
+{% block content %}
+    <div class="car-summaries">
+        {% for car in cars %}
+            <div class="car-info current-car ccar row">
+                <div class="col-xs-12">
+                    <h2 class="car-title">Team {{ car.team_number }}: {{ car.title }}</h2>
+                    {% if car.square_image != "" %}
+                        <div class="visible-xs-block">
+                            <img src="{{ image(car.square_image ) }}" />
+                        </div>
+                    {% endif %}
+                </div>
+
+                <div class="col-sm-6 col-md-5">
+                    <h2>Specs:</h2>
+                    {{ car.specs }}
+
+                    {% if car.square_image != "" or car.wide_image != "" %}
+                        <h2>Results:</h2>
+                        {{ car.results }}
+                    {% endif %}
+                </div>
+                {% if car.results != "" %}
+                    <div class="col-sm-6 col-md-7">
+                        {% if car.square_image != "" %}
+                            <div class="visible-sm-block visible-md-block visible-lg-block">
+                                <img src="{{ image(car.square_image ) }}" />
+                            </div>
+                        {% elseif car.wide_image != "" %}
+                            <div class="visible-sm-block visible-md-block visible-lg-block">
+                                <img src="{{ image(car.square_image ) }}" />
+                            </div>
+                        {% else %}
+                            <h2>Results:</h2>
+                            {{ car.results }}
+                        {% endif %}
+                    </div>
+                {% endif %}
+            </div>
+        {% endfor %}
+    </div>
+{% endblock %}
