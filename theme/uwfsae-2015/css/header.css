@@ -4,7 +4,7 @@
 #header {
     z-index: 5;
     padding: .5em 0;
-    margin-bottom: 2em;
+    margin-bottom: 1em;
 
     /* Prevent submenus and such from screwing up layout */
     overflow: visible;
@@ -30,8 +30,12 @@
     display: none;
 }
 
-/* Adjust for small-ish devices */
+/* Adjust for small-ish devices and up*/
 @media (min-width: 480px) {
+    #header {
+        margin-bottom: 2em;
+    }
+
     #header .logo img {
         /* We have room, so show the logo */
         display: block;

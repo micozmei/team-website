@@ -2,20 +2,32 @@
 
 h1 {
     font-family: Impact,Haettenschweiler,Franklin Gothic Bold,Charcoal,Helvetica Inserat,Bitstream Vera Sans Bold,Arial Black,sans serif;
-    font-size: 4.3em;
+    font-size: 3em;
+    font-style: normal;
+    font-variant: normal;
+    font-weight: 500;
+    line-height: 1.2em;
+    margin-top: 0.2em;
+}
+
+h2 {
+    font-family: Impact,Haettenschweiler,Franklin Gothic Bold,Charcoal,Helvetica Inserat,Bitstream Vera Sans Bold,Arial Black,sans serif;
+    font-size: 2em;
     font-style: normal;
     font-variant: normal;
     font-weight: 500;
     line-height: 1.2em;
 }
 
-h2 {
-    font-family: Impact,Haettenschweiler,Franklin Gothic Bold,Charcoal,Helvetica Inserat,Bitstream Vera Sans Bold,Arial Black,sans serif;
-    font-size: 3em;
-    font-style: normal;
-    font-variant: normal;
-    font-weight: 500;
-    line-height: 1.2em;
+/* On large screens, expand the header font size */
+@media (min-width: 480px) {
+    h1 {
+        font-size: 4.3em;
+    }
+
+    h2 {
+        font-size: 3em;
+    }
 }
 
 @font-face {
