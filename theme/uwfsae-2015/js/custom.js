@@ -3,5 +3,5 @@ $(document).ready(function() {
         $(this).parent().toggleClass('submenu-active');
     }
 
-    $('.submenu-toggle').on('click touchstart', toggleSubmenu);
+    $('.submenu-toggle').on('click', toggleSubmenu);
 });
