@@ -1,7 +1,12 @@
 /** SIDE BAR **/
 
-#sidebar {
-    padding-left: 2em;
+@media (min-width: 992px) {
+    /* On smaller screens, the sidebar flows into the footer + shouldn't have
+     * that extra padding
+     */
+    #sidebar {
+        padding-left: 2em;
+    }
 }
 
 .sidebar-item {
