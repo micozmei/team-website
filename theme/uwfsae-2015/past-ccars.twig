@@ -5,7 +5,7 @@
 {% block content %}
     <div class="car-summaries">
         {% for car in cars %}
-            <div class="car-info current-car ccar row">
+            <div class="car-info ccar row">
                 <div class="col-xs-12">
                     <h2 class="car-title">Team {{ car.team_number }}: {{ car.title }}</h2>
                     {% if car.square_image != "" %}
@@ -24,22 +24,20 @@
                         {{ car.results }}
                     {% endif %}
                 </div>
-                {% if car.results != "" %}
-                    <div class="col-sm-6 col-md-7">
-                        {% if car.square_image != "" %}
-                            <div class="visible-sm-block visible-md-block visible-lg-block">
-                                <img src="{{ image(car.square_image ) }}" />
-                            </div>
-                        {% elseif car.wide_image != "" %}
-                            <div class="visible-sm-block visible-md-block visible-lg-block">
-                                <img src="{{ image(car.square_image ) }}" />
-                            </div>
-                        {% elseif car.results != "" %}
-                            <h2>Results:</h2>
-                            {{ car.results }}
-                        {% endif %}
-                    </div>
-                {% endif %}
+                <div class="col-sm-6 col-md-7">
+                    {% if car.square_image != "" %}
+                        <div class="visible-sm-block visible-md-block visible-lg-block">
+                            <img src="{{ image(car.square_image ) }}" />
+                        </div>
+                    {% elseif car.wide_image != "" %}
+                        <div class="visible-sm-block visible-md-block visible-lg-block">
+                            <img src="{{ image(car.square_image ) }}" />
+                        </div>
+                    {% elseif car.results != "" %}
+                        <h2>Results:</h2>
+                        {{ car.results }}
+                    {% endif %}
+                </div>
             </div>
         {% endfor %}
     </div>
