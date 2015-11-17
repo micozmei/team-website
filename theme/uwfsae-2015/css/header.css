@@ -101,17 +101,14 @@
     background-color: white;
 
     /* Each icon bar will have an independent transform. */
-    transition: margin-left 0.2s ease-in-out, 
-                margin-right 0.2s ease-in-out, 
-                top 0.2s ease-in-out, 
-                bottom 0.2s ease-in-out, 
-                background-color 0.2s ease-in-out,
+    transition: background-color 0.2s ease-in-out,
                 transform 0.2s ease-in-out;
 
     /* Prevents the bars from looking jagged after the
      * transforms finish.
      */
     -webkit-backface-visibility: hidden;
+            backface-visibility: hidden;
     outline: 1px solid transparent;
 }
 
@@ -127,23 +124,15 @@
 
 /* Top bar -> top triangle line */
 .nav-mobile-header .nav-expander:hover .top {
-    transform: rotate(-30deg);
-    top: .13em;
-    margin-left: -.2em;
+    transform: translate(-.8em, .4em) rotate(-30deg) scaleX(0.5);
 }
 
-/* Middle bar -> right triangle line */
-.nav-mobile-header .nav-expander:hover .middle {
-    transform: scale(0.1, 12);
-    margin-left: .95em;
-    margin-right: -.95em;
-}
+/* Middle bar -> right triangle line (do nothing) */
+/* .nav-mobile-header .nav-expander:hover .middle { } */
 
 /* Bottom bar -> bottom triangle line */
 .nav-mobile-header .nav-expander:hover .bottom {
-    transform: rotate(30deg);
-    bottom: .13em;
-    margin-left: -.2em;
+    transform: translate(-.8em, -.4em) rotate(30deg) scaleX(0.5);
 }
 
 
