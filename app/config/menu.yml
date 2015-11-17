@@ -32,12 +32,10 @@ main:
           - label: Current sponsors
             path: sponsorship/current-sponsors
     - label: Donate
-      path: donate
+      link: http://donate.uwformula.com
+      class: external donate
     - label: Apply
       path: apply
-    - label: Photos
-      link: https://www.flickr.com/photos/uwfsae
-      class: external flickr
     - label: Videos
       link: https://www.youtube.com/user/UWashingtonFSAE
       class: external youtube last
