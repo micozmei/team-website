@@ -31,11 +31,13 @@
 {% endblock %}
 
 {% block content %}
-    <div class="car-info current-car ccar">
+    <div class="car-info current-car ecar">
         <h2>Specs:</h2>
         {{ current_car.specs }}
 
-        <h2>Results:</h2>
-        {{ current_car.results }}
+        {% if current_car.results != "" %}
+            <h2>Results:</h2>
+            {{ current_car.results }}
+        {% endif %}
     </div>
 {% endblock %}
