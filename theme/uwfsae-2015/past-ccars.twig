@@ -19,7 +19,7 @@
                     <h2>Specs:</h2>
                     {{ car.specs }}
 
-                    {% if car.square_image != "" or car.wide_image != "" %}
+                    {% if car.square_image == "" and car.wide_image == "" and car.results != "" %}
                         <h2>Results:</h2>
                         {{ car.results }}
                     {% endif %}
@@ -34,7 +34,7 @@
                             <div class="visible-sm-block visible-md-block visible-lg-block">
                                 <img src="{{ image(car.square_image ) }}" />
                             </div>
-                        {% else %}
+                        {% elseif car.results != "" %}
                             <h2>Results:</h2>
                             {{ car.results }}
                         {% endif %}

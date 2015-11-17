@@ -1,7 +1,7 @@
 {% extends "_skeleton.twig" %}
 
 {% setcontent cars = 'car_info' where { car_type: 'eCar' } orderby 'team_number' %}
-{% set current_car = cars[1] %}
+{% set current_car = cars | first %}
 {% set title = 'Team ' ~ current_car.team_number ~ ': ' ~ current_car.title %}
 
 {% block centerpiece %}

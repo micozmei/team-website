@@ -5,7 +5,7 @@
 {% block content %}
     <div class="car-summaries">
         {% for car in cars %}
-            <div class="car-info current-car ccar row">
+            <div class="car-info current-car ecar row">
                 <div class="col-xs-12">
                     <h2 class="car-title">Team {{ car.team_number }}: {{ car.title }}</h2>
                     {% if car.square_image != "" %}
@@ -19,7 +19,7 @@
                     <h2>Specs:</h2>
                     {{ car.specs }}
 
-                    {% if car.square_image != "" or car.wide_image != "" %}
+                    {% if car.square_image == "" and car.wide_image == "" and car.results != "" %}
                         <h2>Results:</h2>
                         {{ car.results }}
                     {% endif %}
@@ -34,7 +34,7 @@
                             <div class="visible-sm-block visible-md-block visible-lg-block">
                                 <img src="{{ image(car.square_image ) }}" />
                             </div>
-                        {% else %}
+                        {% elseif car.results != "" %}
                             <h2>Results:</h2>
                             {{ car.results }}
                         {% endif %}
