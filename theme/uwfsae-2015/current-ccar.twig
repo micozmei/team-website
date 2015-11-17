@@ -1,0 +1,41 @@
+{% extends "_skeleton.twig" %}
+
+{% setcontent cars = 'car_info' where { car_type: 'cCar' } orderby 'team_number' %}
+{% set current_car = cars[1] %}
+{% set title = 'Team ' ~ current_car.team_number ~ ': ' ~ current_car.title %}
+
+{% block centerpiece %}
+    {% if current_car.wide_image != "" %}
+        <div class="primary-image wide visible-md-block visible-lg-block">
+            <div class="container">
+                <div class="showcase">
+                    <h1>{{ title }}</h1>
+                </div>
+            </div>
+            <img src="{{ image(current_car.wide_image ) }}" />
+        </div>
+    {% endif %}
+
+    {% if current_car.square_image != "" %}
+    <div class="primary-image square container visible-xs-block visible-sm-block">
+        <h1>{{ title }}</h1>
+        <img src="{{ image(current_car.square_image ) }}" />
+    </div>
+    {% endif %}
+
+    {% if current_car.wide_image == "" and current_car.square_image == "" %}
+        <div class="current_car-head container">
+            <h1>{{ title }}</h1>
+        </div>
+    {% endif %}
+{% endblock %}
+
+{% block content %}
+    <div class="car-info current-car ccar">
+        <h2>Specs:</h2>
+        {{ current_car.specs }}
+
+        <h2>Results:</h2>
+        {{ current_car.results }}
+    </div>
+{% endblock %}
