@@ -8,6 +8,24 @@
     margin-bottom: 2em;
     padding: 1em;
 
-    background-color: #222;
     color: white;
+
+    /* Add a subtle, striped background for flavor */
+    background-color: #222;
+    background: repeating-linear-gradient(
+        45deg,
+        #222,
+        #222 10px,
+        #262626 10px,
+        #262626 12px
+    );
+
+    /* Slight shadow for depth */
+    -webkit-box-shadow: 0px 5px 15px 0px rgba(0,0,0,0.75);
+       -moz-box-shadow: 0px 5px 15px 0px rgba(0,0,0,0.75);
+            box-shadow: 0px 5px 15px 0px rgba(0,0,0,0.75);
+}
+
+.sidebar-item h3 {
+    margin-top: 0;
 }
