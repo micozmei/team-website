@@ -12,7 +12,7 @@
     /* Add a subtle, striped background for flavor */
     background-color: #222;
     background: repeating-linear-gradient(
-        45deg,
+        -45deg,
         #222,
         #222 10px,
         #262626 10px,

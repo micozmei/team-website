@@ -17,8 +17,8 @@
     position: absolute;
     top: -1em;
     margin-left: -2.3em;
-    -webkit-transform: skew(45deg);
-            transform: skew(45deg);
+    -webkit-transform: skew(-45deg);
+            transform: skew(-45deg);
 
     padding:1em 3em;
     border-radius: .5em;
@@ -33,8 +33,8 @@
 }
 
 .primary-image .showcase > * {
-    -webkit-transform: skew(-45deg);
-            transform: skew(-45deg);
+    -webkit-transform: skew(45deg);
+            transform: skew(45deg);
 }
 
 .primary-image.wide img {
