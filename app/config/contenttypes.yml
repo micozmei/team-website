@@ -239,6 +239,10 @@ sponsors:
             type: text
             required: true
             group: content
+        website:
+            label: Website
+            class: large
+            type: text
         sponsor_level:
             type: select
             label: Sponsor level
@@ -252,6 +256,7 @@ sponsors:
             label: "Is individual sponsor?"
             default: 0
         logo:
+            label: Logo
             type: image
             upload: sponsors
             extensions: [ gif, jpg, png ]
