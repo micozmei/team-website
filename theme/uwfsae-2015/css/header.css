@@ -164,8 +164,7 @@
 
     /* Transition: white -> husky gold; dark background -> gray. */
     color: #fff;
-    transition: color 0.2s ease-in-out,
-                background-color: 0.2s ease-in-out;
+    transition: color 0.2s ease-in-out, background-color: 0.2s ease-in-out;
 }
 
 /* Applies to top-level and sub-level links */
@@ -339,9 +338,9 @@
 
         /* Background of.submenu is entirely white, so give it
          * a slight shadow to stand out. */
-        -webkit-box-shadow: 0px 3px 3px 0px rgba(0.5, 0.5, 0.5, 0.75);
-           -moz-box-shadow: 0px 3px 3px 0px rgba(0.5, 0.5, 0.5, 0.75);
-                box-shadow: 0px 3px 3px 0px rgba(0.5, 0.5, 0.5, 0.75);
+        -webkit-box-shadow: 0px 3px 3px 0px rgba(128, 128, 128, 0.75);
+           -moz-box-shadow: 0px 3px 3px 0px rgba(128, 128, 128, 0.75);
+                box-shadow: 0px 3px 3px 0px rgba(128, 128, 128, 0.75);
 
         /* Dropdown should be initially hidden. Set overflow to hidden
          * so that the text isn't visible when the height is zero. */
