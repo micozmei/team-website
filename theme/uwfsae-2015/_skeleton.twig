@@ -17,8 +17,10 @@
 
         <link rel="stylesheet" 
               href="{{ paths.theme }}css/bootstrap.min.css" />
+        <!--[if lte IE 8]>
         <link rel="stylesheet" 
               href="{{ paths.theme }}css/jasny-bootstrap.min.css" />
+        <![endif]-->
         <link rel="stylesheet" 
               href="{{ paths.theme }}assets/socicon/styles.css" />
 
@@ -44,6 +46,10 @@
               href="{{ paths.theme }}css/typography.css" />
         <link rel="stylesheet"
               href="{{ paths.theme }}css/index.css" />
+
+        <!--[if lte IE 8]>
+            <script src="{{ paths.theme }}js/respond.min.js"></script>
+        <![endif]-->
     {% endblock %}
 </head>
 <body>
