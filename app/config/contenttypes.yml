@@ -76,47 +76,6 @@ sidebar:
     viewless: true
     sort: id
 
-# Corresponds to any blog-like updates
-#
-# The 'sort' is set to '-datepublish', which means that newer entries will be
-# shown above older entries.
-news:
-    name: News 
-    singular_name: News 
-    fields:
-        title:
-            type: text
-            class: large
-            group: content
-        slug:
-            type: slug
-            uses: title
-        body:
-            type: html
-            height: 300px
-        wide_image:
-            label: 'Wide screen showcase image'
-            prefix: |
-                <p>Including a showcase image is optional. If you specify one, this showcase 
-                image will be shown on wide screens (desktops, tablets in landscape mode, etc).</p>
-                <p>This image should have an aspect ratio of approximately 5:2.</p>
-            type: image
-            group: media
-        square_image:
-            label: 'Small screen showcase image'
-            prefix: |
-                <p>Including a showcase image is optional. If you specify one, this showcase
-                image will be shown on smaller screens (phones, tablets in portrait mode, etc).</p>
-                <p>This image should have an approximate ratio of about 4:3.</p>
-            type: image
-            extensions: [ gif, jpg, png ]
-    record_template: entry.twig
-    listing_template: listing.twig
-    listing_records: 10
-    default_status: publish
-    sort: -datepublish
-    recordsperpage: 10
-
 # Corresponds to distinct teams
 #
 # This content-type is used mainly to contain information, and is used by templates
