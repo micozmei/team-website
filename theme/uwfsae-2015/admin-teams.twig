@@ -9,7 +9,20 @@
         {% for admin_team in admin_teams %}
             <h2>{{ admin_team.title }}</h2>
 
-            {{ admin_team.description }}
+            {% if admin_team.image == "" %}
+                {{ admin_team.description }}
+            {% else %}
+                <div class="row team-with-image">
+                    <div class="col-sm-6 col-md-5">
+                        <img class="team-image"
+                             src="{{ image(admin_team.image) }}"
+                             alt="Decorative Picture of {{ admin_team.title }}" />
+                    </div>
+                    <div class="col-sm-6 col-md-7">
+                        {{ admin_team.description }}
+                    </div>
+                </div>
+            {% endif %}
         {% endfor %}
     </div>
 {% endblock %}
