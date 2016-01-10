@@ -45,3 +45,12 @@ h2 {
 body {
     font-family: 'gandhi-sans-regular', Helvetica, Arial, sans-serif;
 }
+
+#primary p,
+#primary li,
+#primary ol,
+#sidebar p,
+#sidebar li,
+#sidebar ol {
+    font-size: 16px;
+}
