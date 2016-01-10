@@ -6,9 +6,7 @@
     border-radius: 8em;
     margin: 2em auto;
     text-align: center;
-    -webkit-transition: background-color 0.2s ease-in-out;
-       -moz-transition: background-color 0.2s ease-in-out;
-            transition: background-color 0.2s ease-in-out;
+    transition: background-color 0.2s ease-in-out;
 }
 
 .sponsors .empty span {
@@ -23,9 +21,7 @@
     position: relative;
     top: 0;
     opacity: 1;
-    -webkit-transition: opacity 0.2s ease-in-out;
-       -moz-transition: opacity 0.2s ease-in-out;
-            transition: opacity 0.2s ease-in-out;
+    transition: opacity 0.2s ease-in-out;
 }
 
 .sponsors:hover img {
