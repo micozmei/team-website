@@ -257,6 +257,15 @@ sponsors:
             default: 0
         logo:
             label: Logo
+            prefix: |
+                <p>If possible, you should try and include a logo for all corporate 
+                sponsors. (If you omit one, a placeholder should be used).</p>
+
+                <p>Prefer using square logos/try and keep the aspect ratio as close to
+                square or 4:3 as possible.</p>
+
+                <p>The logo field will always be ignored if a sponsor is marked as an
+                "individual" sponsor.</p>
             type: image
             upload: sponsors
             extensions: [ gif, jpg, png ]
