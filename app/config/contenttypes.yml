@@ -140,6 +140,12 @@ teams:
             type: select
             label: Team type
             values: [ "Administrative Team", "Technical Team", "Directors" ]
+        image:
+            prefix: |
+                <p>Including an image image is optional. Image should be roughly square,
+                and have an approximate aspect ratio of about 4:3.</p>
+            type: image
+            extensions: [ gif, jpg, png ]
     relations:
         teammembers:
             multiple: true 
