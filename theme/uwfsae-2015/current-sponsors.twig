@@ -11,16 +11,16 @@
         <div class="sponsors-group row">
             {% for sponsor in sponsors %}
             {% if sponsor.is_individual == false %}
-                <div class="col-xs-6 col-sm-4">
+                <div class="col-xs-6 col-sm-4 col-md-3">
                     <div class="sponsor">
                         {% if sponsor.website == "" %}
                             <p class="sponsor-name">
-                                {{ sponsor.title }} {{ sponsor.id }}
+                                {{ sponsor.title }} 
                             </p>
                         {% else %}
                             <p class="sponsor-name">
                                 <a href="{{ sponsor.website }}">
-                                    {{ sponsor.title }} {{ sponsor.id }}
+                                    {{ sponsor.title }}
                                 </a>
                             </p>
                         {% endif %}
