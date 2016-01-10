@@ -51,8 +51,27 @@
     </div>
 {% endmacro %}
 
+{% macro display_individuals(title, sponsors) %}
+    <div class="col-xs-6 col-md-3">
+        <h2>{{ title }}</h2>
+        <ul class="individual-sponsors">
+            {% for sponsor in sponsors %}
+                {% if sponsor.is_individual %}
+                    {% if sponsor.website == "" %}
+                        <li>{{ sponsor.title }}</li>
+                    {% else %}
+                        <li><a href="{{ sponsor.website }}">{{ sponsor.title }}</a></li>
+                    {% endif %}
+                {% endif %}
+            {% endfor %}
+
+        </ul>
+    </div>
+{% endmacro %}
+
 {% block content %}
     {% from _self import display_logos %}
+    {% from _self import display_individuals%}
     <div class="record-content">
         {{ record.body }}
 
@@ -60,5 +79,12 @@
         {{ display_logos('Gold Sponsors', gold) }}
         {{ display_logos('Silver Sponsors', silver) }}
         {{ display_logos('Bronze Sponsors', bronze) }}
+
+        <div class="row">
+            {{ display_individuals('Purple', purple) }}
+            {{ display_individuals('Gold', gold) }}
+            {{ display_individuals('Silver', silver) }}
+            {{ display_individuals('Bronze', bronze) }}
+        </div>
     </div>
 {% endblock %}
