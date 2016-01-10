@@ -1,0 +1,64 @@
+{% extends "_skeleton.twig" %}
+
+{% setcontent purple = 'sponsors' where { sponsor_level : 'Purple' } orderby 'title' %}
+{% setcontent gold = 'sponsors' where { sponsor_level : 'Gold' } orderby 'title' %}
+{% setcontent silver = 'sponsors' where { sponsor_level : 'Silver' } orderby 'title' %}
+{% setcontent bronze = 'sponsors' where { sponsor_level : 'Bronze' } orderby 'title' %}
+
+{% macro display_logos(title, sponsors) %}
+    <div class="sponsors">
+        <h2>{{ title }}</h2>
+        <div class="sponsors-group row">
+            {% for sponsor in sponsors %}
+            {% if sponsor.is_individual == false %}
+                <div class="col-xs-6 col-sm-4">
+                    <div class="sponsor">
+                        {% if sponsor.website == "" %}
+                            <p class="sponsor-name">
+                                {{ sponsor.title }} {{ sponsor.id }}
+                            </p>
+                        {% else %}
+                            <p class="sponsor-name">
+                                <a href="{{ sponsor.website }}">
+                                    {{ sponsor.title }} {{ sponsor.id }}
+                                </a>
+                            </p>
+                        {% endif %}
+                        {% if sponsor.logo == "" %}
+                            <div class="square">
+                                <div class="empty">
+                                    <span>?</span>
+                                </div>
+                            </div>
+                        {% else %}
+                            {% if sponsor.website == "" %}
+                                <div class="square">
+                                    <img src="{{ image(sponsor.logo) }}" />
+                                </div>
+                            {% else %}
+                                <a href="{{ sponsor.website }}">
+                                    <div class="square">
+                                        <img src="{{ image(sponsor.logo) }}" />
+                                    </div>
+                                </a>
+                            {% endif %}
+                        {% endif %}
+                    </div>
+                </div>
+            {% endif %}
+            {% endfor %}
+        </div>
+    </div>
+{% endmacro %}
+
+{% block content %}
+    {% from _self import display_logos %}
+    <div class="record-content">
+        {{ record.body }}
+
+        {{ display_logos('Purple Sponsors', purple) }}
+        {{ display_logos('Gold Sponsors', gold) }}
+        {{ display_logos('Silver Sponsors', silver) }}
+        {{ display_logos('Bronze Sponsors', bronze) }}
+    </div>
+{% endblock %}

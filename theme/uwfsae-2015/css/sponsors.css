@@ -1,0 +1,65 @@
+.sponsors .empty {
+    position: relative;
+    background-color: #ccc;
+    height: 8em;
+    width: 8em;
+    border-radius: 8em;
+    margin: 2em auto;
+    text-align: center;
+    -webkit-transition: background-color 0.2s ease-in-out;
+       -moz-transition: background-color 0.2s ease-in-out;
+            transition: background-color 0.2s ease-in-out;
+}
+
+.sponsors .empty span {
+    font-size: 80px;
+    color: white;
+    cursor: default;
+}
+
+.sponsors img {
+    width: 100%;
+    height: auto;
+    position: relative;
+    top: 0;
+    opacity: 1;
+    -webkit-transition: opacity 0.2s ease-in-out;
+       -moz-transition: opacity 0.2s ease-in-out;
+            transition: opacity 0.2s ease-in-out;
+}
+
+.sponsors:hover img {
+    opacity: 0.5;
+}
+
+.sponsors:hover .empty {
+    background-color: #ddd;
+}
+
+.sponsors .sponsor:hover img {
+    opacity: 1;
+}
+
+.sponsors .sponsor:hover a {
+    text-decoration: underline;
+}
+
+.sponsors .sponsor:hover .empty {
+    background-color: #ccc;
+}
+
+
+.sponsors .square {
+    position: relative;
+    width: 100%;
+    height: 0;
+    padding-bottom: 100%;
+    display: block;
+    overflow: hidden;
+}
+
+#primary .sponsors p.sponsor-name {
+    text-align: center;
+    font-size: 12px;
+}
+
