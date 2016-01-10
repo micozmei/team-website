@@ -17,11 +17,15 @@ main:
     - label: cCar
       path: ccar
       submenu: 
+          - label: Current cCar
+            path: ccar
           - label: Past cCars
             path: ccar/past-ccars
     - label: eCar
       path: ecar
       submenu:
+          - label: Current eCar
+            path: ecar
           - label: Past eCars
             path: ecar/past-ecars
     - label: Competition
@@ -31,6 +35,8 @@ main:
       submenu:
           - label: Current sponsors
             path: sponsorship/current-sponsors
+          - label: Become a Sponsor
+            path: sponsorship
     - label: Donate
       link: http://donate.uwformula.com
       class: external donate
