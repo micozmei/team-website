@@ -10,7 +10,7 @@
 }
 
 .sidebar-item {
-    margin-bottom: 2em;
+    margin-bottom: 1em;
     padding: 1em;
 
     color: white;
@@ -33,4 +33,56 @@
 
 .sidebar-item h3 {
     margin-top: 0;
+}
+
+.social-media {
+    margin-bottom: 2em;
+    padding: 1em;
+}
+
+.social-media div {
+    position: relative;
+    padding: .5em;
+    height: auto;
+}
+
+.social-media a {
+    position: relative;
+    display: block;
+    text-align: center;
+}
+
+.social-media span {
+    display: block;
+    font-size: 3em;
+    color: white;
+    padding: .4em 0 .1em;
+
+    background-color: #222;
+    transition: background-color 0.2s ease-in-out,
+                box-shadow 0.2s ease-in-out;
+}
+
+.social-media a:hover{
+    text-decoration: none;
+    color: white;
+}
+
+.social-media a:hover span {
+    /* Slight shadow for depth */
+    -webkit-box-shadow: 0px 5px 15px 0px rgba(0,0,0,0.75);
+       -moz-box-shadow: 0px 5px 15px 0px rgba(0,0,0,0.75);
+            box-shadow: 0px 5px 15px 0px rgba(0,0,0,0.75);
+}
+
+.social-media a:hover .facebook {
+    background-color: #3e5b98;
+}
+
+.social-media a:hover .twitter {
+    background-color: #4da7d3;
+}
+
+.social-media a:hover .youtube {
+    background-color: #e02a20;
 }
