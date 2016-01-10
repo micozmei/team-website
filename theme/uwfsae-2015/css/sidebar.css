@@ -63,26 +63,36 @@
                 box-shadow 0.2s ease-in-out;
 }
 
-.social-media a:hover{
+.social-media a:hover,
+.social-media a:active,
+.social-media a:focus {
     text-decoration: none;
     color: white;
 }
 
-.social-media a:hover span {
+.social-media a:hover span,
+.social-media a:active span,
+.social-media a:focus span {
     /* Slight shadow for depth */
     -webkit-box-shadow: 0px 5px 15px 0px rgba(0,0,0,0.75);
        -moz-box-shadow: 0px 5px 15px 0px rgba(0,0,0,0.75);
             box-shadow: 0px 5px 15px 0px rgba(0,0,0,0.75);
 }
 
-.social-media a:hover .facebook {
+.social-media a:hover .facebook,
+.social-media a:active .facebook,
+.social-media a:focus .facebook {
     background-color: #3e5b98;
 }
 
-.social-media a:hover .twitter {
+.social-media a:hover .twitter,
+.social-media a:active .twitter,
+.social-media a:focus .twitter {
     background-color: #4da7d3;
 }
 
-.social-media a:hover .youtube {
+.social-media a:hover .youtube,
+.social-media a:active .youtube,
+.social-media a:focus .youtube {
     background-color: #e02a20;
 }
