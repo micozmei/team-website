@@ -206,27 +206,19 @@ carinfo:
             label: "Competition Results"
             type: html
             height: 300px
-        wide_image:
-            label: 'Wide screen showcase image'
+        image:
+            label: 'Car image'
             prefix: |
-                <p>This showcase image will be shown on wide screens (desktops, tablets in 
-                landscape mode, etc).</p>
-                <p>This image should have an aspect ratio of approximately 5:2.</p>
+                <p>This showcase image should have an aspect ratio of approximately 4:3.</p>
+                
+                <p>This image will be shown on all screens.</p>
             type: image
             extensions: [ gif, jpg, png ]
             group: media
-        square_image:
-            label: 'Small screen showcase image'
-            prefix: |
-                <p>This showcase image will be shown on smaller screens (phones, tablets in 
-                portrait mode, etc).</p>
-                <p>This image should have an aspect ratio of approximately 4:3.</p>
-            type: image
-            extensions: [ gif, jpg, png ]
     viewless: true
     default_status: published
-    listing_sort: -team_number
-    sort: -team_number
+    listing_sort: team_number
+    sort: team_number
 
 # Corresponds to sponsors.
 #
