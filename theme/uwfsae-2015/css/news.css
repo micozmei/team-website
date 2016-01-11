@@ -33,3 +33,9 @@
 .record-content {
     margin-bottom: 5em;
 }
+
+.article .socicon-facebook {
+    margin: 0;
+    padding: 0;
+    vertical-align: middle;
+}
