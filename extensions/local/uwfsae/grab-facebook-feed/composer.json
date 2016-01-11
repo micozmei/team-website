@@ -1,0 +1,31 @@
+{
+    "name": "uwfsae/grab-facebook-feed",
+    "description": "Grabs posts from a public facebook feed",
+    "type": "bolt-extension",
+    "keywords" : [ "bolt", "widget", "facebook" ],
+    "require": {
+        "bolt/bolt": ">=2.0.0,<3.0.0"
+    },
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Michael Lee", 
+            "email": "michael.lee.0x2a@gmail.com"
+        }
+    ],
+	"minimum-stability" : "dev",
+	"prefer-stable" : true,
+    "autoload": {
+        "files": [
+            "init.php"
+        ],
+        "psr-4": {
+            "Bolt\\Extension\\Uwfsae\\GrabFacebookFeed\\": "",
+            "Bolt\\Extension\\UWfsae\\GrabFacebookFeed\\Tests\\": "tests"
+        }
+    },
+    
+    "extra": {
+        "bolt-assets": "assets"
+    }
+}

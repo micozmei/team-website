@@ -6,4 +6,6 @@ $vendorDir = dirname(dirname(__FILE__));
 $baseDir = dirname($vendorDir);
 
 return array(
+    'Bolt\\Composer\\ExtensionInstaller' => $baseDir . '/ExtensionInstaller.php',
+    'Bolt\\Extension\\Uwfsae\\GrabFacebookFeed\\Extension' => $baseDir . '/local/uwfsae/grab-facebook-feed/Extension.php',
 );
