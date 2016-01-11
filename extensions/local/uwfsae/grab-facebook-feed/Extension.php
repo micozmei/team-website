@@ -58,7 +58,7 @@ class Extension extends BaseExtension
             $out .= '<div class="article">';
             $out .= '  <div class="article-head">';
             $out .= '    <h2><a href="' . $link . '">';
-            $out .= '      Posted on ' . $post_date;
+            $out .= '      ' . $post_date;
             $out .= '    </a></h2>';
             $out .= '  </div>';
             $out .= '  <div class="article-content">';
