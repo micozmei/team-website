@@ -1,4 +1,3 @@
-
 {% setcontent items = 'sidebar-items' %}
 {% for item in items %}
     <div class="sidebar-item">
@@ -6,6 +5,16 @@
         {{ item.body }}
     </div>
 {% endfor %}
+<div class="sidebar-item countdown">
+    <h3>Countdown</h3>
+
+    <h4>Lincoln:</h4>
+    <p id="lincoln-countdown" class="clock">June 15, 2016</p>
+    
+    <h4>Germany:</h4>
+    <p id="germany-countdown" class="clock">August 9, 2016</p>
+
+</div>
 
 <div class="social-media row">
     <div class="col-xs-4">

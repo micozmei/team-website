@@ -18,10 +18,44 @@ $(document).ready(function() {
 
     }
 
+    function updateCountdown(span, originalTime) {
+        var currentTime = new Date();
+        var difference = originalTime.getTime() - currentTime.getTime();
+
+        var numSeconds = Math.floor(difference / 1000);
+        var numMinutes = Math.floor(numSeconds / 60);
+        var numHours = Math.floor(numMinutes / 60);
+        var numDays = Math.floor(numHours / 24);
+        var numWeeks = Math.floor(numDays / 7);
+
+        var text = "";
+        if (difference >= 0) {
+            text = numWeeks + "w " +
+                    (numDays % 7) + "d " + 
+                    (numHours % 24) + "h " + 
+                    (numMinutes % 60) + "m left";
+        } else {
+            text = "Finished!";
+        }
+
+        span.html(text);
+    }
+
+    // Constants
+    var lincolnDate = new Date($('#lincoln-countdown').html());
+    var germanyDate = new Date($('#germany-countdown').html());
+
     // Global
     window.currentWidth = $(window).width();
 
     // Setup event listeners 
     $('.submenu-toggle').on('click', toggleSubmenu);
     $(window).on('resize', disableSubmenus);
+
+    window.setInterval(function() { 
+        updateCountdown($('#lincoln-countdown'), lincolnDate); 
+    }, 1000);
+    window.setInterval(function() { 
+        updateCountdown($('#germany-countdown'), germanyDate); 
+    }, 1000);
 });
