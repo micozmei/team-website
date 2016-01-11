@@ -18,7 +18,8 @@ class Extension extends BaseExtension
     }
 
     public function twigAddFacebookPosts($pageId, $appToken) {
+        $result = 'https://graph.facebook.com/v2.5/' . $pageId . '/feed?access_token=' . $appToken;
 
-        return "This is a test";
+        return "This is a test" . $result;
     }
 }
