@@ -1,5 +1,9 @@
 /** NEWS POSTS **/
 
+.facebook-posts {
+    margin-top: 2em;
+}
+
 .article .article-head {
     margin-bottom: 1em;
     border-bottom: 1px solid #d9d9d9;

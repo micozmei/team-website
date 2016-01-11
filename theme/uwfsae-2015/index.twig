@@ -2,4 +2,8 @@
 
 {% block content %}
     {{ record.body }}
+
+    <div class="facebook-posts">
+        {{ addFacebookPosts('215551825139322', config.get('general/facebook_access_token'), 5) }}
+    </div>
 {% endblock %}
