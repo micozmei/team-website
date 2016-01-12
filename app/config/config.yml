@@ -20,6 +20,12 @@ payoff: Tagline goes here
 # in next releases
 theme: uwfsae-2015
 
+# The ID for our Facebook group (used to auto-generate the news feed)
+# See config_local.yml for access token
+facebook:
+    page_id: '215551825139322'
+    num_posts: 5    # How many posts to display on the front page
+
 # The locale that'll be used by the application. If no locale is set the
 # fallback locale is 'en_GB'. For available options, see:
 # http://docs.bolt.cm/locales
