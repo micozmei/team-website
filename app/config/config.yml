@@ -13,6 +13,19 @@ database:
 sitename: UWashington Formula Motorsports 
 payoff: Tagline goes here 
 
+# The description to use in the head of each HTML page
+description: |
+    Washington Formula Motorsports designs, builds, and races two small 
+    formula-style cars; one combustion and one electric. The team produces 
+    world-class engineers through a commitment to learning and hands-on 
+    experience.
+
+# The keywords to use in the head of each HTML page
+keywords: |
+    University of Washington, Mechanical Engineering, Electrical Engineering, 
+    Aerospace Engineering, Formula 1, Formula SAE, FSAE, FSG, Formula Student, 
+    Formula Student Germany, F1, SAE, ASME, UW, Racing, Race, Car, Cars, Race Cars
+
 # The theme to use. Be sure to copy the {theme_path}/base-2014 folder, and
 # change the name here accordingly.
 #
