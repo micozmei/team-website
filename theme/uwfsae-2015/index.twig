@@ -4,7 +4,13 @@
     {{ record.body }}
 
     <div class="facebook-posts">
-        {{ addFacebookPosts('215551825139322', config.get('general/facebook_access_token'), 5) }}
+        {# See app/config/config.yml for Facebook page ID. The access token should
+           only ever be contained within config_local.yml + should not be 
+           version-controlled. #}
+        {{ addFacebookPosts(
+            config.get('general/facebook/page_id'), 
+            config.get('general/facebook/access_token'), 
+            config.get('general/facebook/num_posts')) }}
     </div>
 
     <p class="facebook-rest"><a href="https://www.facebook.com/pages/UWashington-Formula-SAE/215551825139322">See all posts</a></p>
