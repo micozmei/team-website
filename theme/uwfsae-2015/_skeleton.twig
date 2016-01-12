@@ -12,8 +12,8 @@
             {% if record.title is not defined and app.config.get('general/payoff') %} | {{ app.config.get('general/payoff') }}{% endif %}
         </title>
         <meta name="author" content="name" />
-        <meta name="description" content="description here" />
-        <meta name="keywords" content="keywords,here" />
+        <meta name="description" content="{{ app.config.get('general/description') }}" />
+        <meta name="keywords" content="{{ app.config.get('general/keywords') }}" />
 
         <link rel="stylesheet" 
               href="{{ paths.theme }}css/bootstrap.min.css" />
