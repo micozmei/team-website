@@ -4,6 +4,16 @@ app/cache/*
 app/database/bolt.db
 #vendor/
 
+# Deliberate exclusions
+
+# Deliberately excluding files, since users can freely upload them + it's
+# too hard to keep them in sync.
+files/*
+
+# Deliberately excluding config_local.yml, since we use it to contain 
+# passwords/app tokens, and such. See config_local.yml.dist for more details.
+app/config/config_local.yml
+
 # Composer
 composer.phar
 

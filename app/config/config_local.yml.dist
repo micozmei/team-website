@@ -1,0 +1,17 @@
+# This is an example of what a local config file should look like. You should
+# never check this file into version control, since it contains secrets/passwords
+# that should not be made public.
+# 
+# To make your own config_local.yml file, copy the contents of this file
+# into a new file named `config_local.yml`, and fill in the values below as
+# appropriate.
+database:
+    driver: postgres
+    username: database-username-here
+    password: database-password-here
+    port: database-connection-number-here
+    host: hostname-or-ip-address-here
+    databasename: database-name-here 
+
+facebook:
+    access_token: 'facebook-access-token-id-here'
