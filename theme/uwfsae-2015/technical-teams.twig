@@ -9,7 +9,20 @@
         {% for tech_team in tech_teams %}
             <h2>{{ tech_team.title }}</h2>
 
-            {{ tech_team.description }}
+            {% if tech_team.image == "" %}
+                {{ tech_team.description }}
+            {% else %}
+                <div class="row team-with-image">
+                    <div class="col-sm-6 col-md-5">
+                        <img class="team-image"
+                             src="{{ image(tech_team.image) }}"
+                             alt="Decorative Picture of {{ tech_team.title }}" />
+                    </div>
+                    <div class="col-sm-6 col-md-7">
+                        {{ tech_team.description }}
+                    </div>
+                </div>
+            {% endif %}
         {% endfor %}
     </div>
 {% endblock %}
