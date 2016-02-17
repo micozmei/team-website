@@ -65,6 +65,7 @@ sidebar:
         body:
             type: html
             height: 300px
+            allowtwig: true
         video:
             type: video
             group: media
@@ -75,7 +76,6 @@ sidebar:
     default_status: publish
     viewless: true
     sort: id
-    allowtwig: true
 
 # Corresponds to distinct teams
 #
