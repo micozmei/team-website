@@ -41,21 +41,33 @@ $(document).ready(function() {
         span.html(text);
     }
 
-    // Constants
-    var lincolnDate = new Date($('#lincoln-countdown').html());
-    var germanyDate = new Date($('#germany-countdown').html());
+    function setupCountdown(uniqueId) {
+        var initialDate = new Date($(uniqueId).html());
+        updateCountdown($(uniqueId), initialDate); 
+        window.setInterval(function() { 
+            updateCountdown($(uniqueId), initialDate); 
+        }, 15000);
+    }
 
-    // Global
+    function attachCountdownListeners() {
+        $('.test-clock').each(function (index) {
+            var initialDate = new Date($(this).html());
+            updateCountdown($(this), initialDate);
+            window.setInterval(function() {
+                updateCountdown($(this), initialDate);
+            }, 15000);
+        });
+    }
+
+    // Globals
     window.currentWidth = $(window).width();
+    window.setupCountdown = setupCountdown;
 
     // Setup event listeners 
     $('.submenu-toggle').on('click', toggleSubmenu);
     $(window).on('resize', disableSubmenus);
 
-    window.setInterval(function() { 
-        updateCountdown($('#lincoln-countdown'), lincolnDate); 
-    }, 1000);
-    window.setInterval(function() { 
-        updateCountdown($('#germany-countdown'), germanyDate); 
-    }, 1000);
+    setupCountdown('#lincoln-countdown');
+    setupCountdown('#germany-countdown');
+    attachCountdownListeners();
 });

@@ -1,0 +1,31 @@
+{
+    "name": "uwfsae/countdown",
+    "description": "Displays a live-updating countdown to some arbitrary time",
+    "type": "bolt-extension",
+    "keywords" : [ "bolt", "widget", "timer", "countdown" ],
+    "require": {
+        "bolt/bolt": ">=2.0.0,<3.0.0"
+    },
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Michael Lee", 
+            "email": "michael.lee.0x2a@gmail.com"
+        }
+    ],
+	"minimum-stability" : "dev",
+	"prefer-stable" : true,
+    "autoload": {
+        "files": [
+            "init.php"
+        ],
+        "psr-4": {
+            "Bolt\\Extension\\Uwfsae\\Countdown\\": "",
+            "Bolt\\Extension\\UWfsae\\Countdown\\Tests\\": "tests"
+        }
+    },
+    
+    "extra": {
+        "bolt-assets": "assets"
+    }
+}
