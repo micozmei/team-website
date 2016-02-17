@@ -39,6 +39,10 @@ facebook:
     page_id: '215551825139322'
     num_posts: 5    # How many posts to display on the front page
 
+# The Tracking ID for Google analytics
+google_analytics:
+    tracking_id: 'UA-36136064-3'
+
 # The locale that'll be used by the application. If no locale is set the
 # fallback locale is 'en_GB'. For available options, see:
 # http://docs.bolt.cm/locales
