@@ -53,7 +53,6 @@ $(document).ready(function() {
 
     // Globals
     window.currentWidth = $(window).width();
-    window.setupCountdown = setupCountdown;
 
     // Setup event listeners 
     $('.submenu-toggle').on('click', toggleSubmenu);
