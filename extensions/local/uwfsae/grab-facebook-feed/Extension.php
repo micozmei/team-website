@@ -63,7 +63,7 @@ class Extension extends BaseExtension
     }
 
     public function twigAddFacebookPosts($pageId, $appToken, $limit) {
-        $request_url = 'https://graph.facebook.com/v2.5/' . $pageId . '/feed?access_token=' . $appToken . '&fields=message,full_picture,object_id,attachments,source,picture,link,description,caption,created_time';
+        $request_url = 'https://graph.facebook.com/v2.5/' . $pageId . '/posts?access_token=' . $appToken . '&fields=message,full_picture,object_id,attachments,source,picture,link,description,caption,created_time';
         $raw_data = file_get_contents($request_url);
         $json_data = json_decode($raw_data);
 
@@ -87,9 +87,11 @@ class Extension extends BaseExtension
             $out .= '        Original post';
             $out .= '      </a>';
             $out .= '    </p>';
-            $out .= '    <div class="media-attachment">';
-            $out .= $this->handleMediaAttachment($post);
-            $out .= '    </div>';
+            if (property_exists($post, 'source') || property_exists($post, 'full_picture')) {
+                $out .= '    <div class="media-attachment">';
+                $out .= $this->handleMediaAttachment($post);
+                $out .= '    </div>';
+            }
             $out .= '  </div>';
             $out .= '</div>';
 
