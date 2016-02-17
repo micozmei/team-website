@@ -75,6 +75,7 @@ sidebar:
     default_status: publish
     viewless: true
     sort: id
+    allowtwig: true
 
 # Corresponds to distinct teams
 #

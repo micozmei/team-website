@@ -18,6 +18,10 @@ class Extension extends BaseExtension
     }
 
     public function twigCountdown($targetTime) {
-        echo '<p class="test-clock clock">' . $targetTime . '</p>';
+        echo '<p class="clock">' . $targetTime . '</p>';
+    }
+
+    public function isSafe() {
+        return true;
     }
 }

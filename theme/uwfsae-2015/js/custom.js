@@ -41,16 +41,8 @@ $(document).ready(function() {
         span.html(text);
     }
 
-    function setupCountdown(uniqueId) {
-        var initialDate = new Date($(uniqueId).html());
-        updateCountdown($(uniqueId), initialDate); 
-        window.setInterval(function() { 
-            updateCountdown($(uniqueId), initialDate); 
-        }, 15000);
-    }
-
     function attachCountdownListeners() {
-        $('.test-clock').each(function (index) {
+        $('.clock').each(function (index) {
             var initialDate = new Date($(this).html());
             updateCountdown($(this), initialDate);
             window.setInterval(function() {
@@ -67,7 +59,5 @@ $(document).ready(function() {
     $('.submenu-toggle').on('click', toggleSubmenu);
     $(window).on('resize', disableSubmenus);
 
-    setupCountdown('#lincoln-countdown');
-    setupCountdown('#germany-countdown');
     attachCountdownListeners();
 });
