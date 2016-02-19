@@ -32,7 +32,10 @@ SQLite database. This may change in the future.
         git push prod master
 
     (Pushing to origin updates the Github repo; pushing to prod automatically updates 
-    the website)
+    the website).
+
+    You will need to provide a password when pushing to prod -- it's the same password
+    you use when manually remoting into production (see below section).
 
 3.  To update `config_local.yml`, either do it from Bolt's admin panel or ssh into 
     the server and do it yourself.
@@ -47,6 +50,12 @@ default port.
 (So, if you wanted to SSH in on linux, you'd run `ssh root@uwformula.com`)
 
 Alternatively, you can directly use the IP address as the host: `192.241.205.218`.
+
+If you're trying to modify something about the website, you should generally prefer using the git-push
+method, as detailed above, so that we can keep everything version-controlled. The main exception to
+this rule is if you want to add something you explicitly _don't_ want to be version controlled (such
+as the `config_local.yml` file), want to work with something we don't track in the repo (database
+info, uploaded photographs, etc), or want to do something unrelated to the main website.
 
 
 ## Production instructions
@@ -141,20 +150,9 @@ this is for a new DigitalOcean instance).
 
 ## Todo
 
--   Get the website working well on mobile and tablets
-    -   Make centerpiece images responsive
-    -   Use facebook-style pullout nav on smaller screens instead of the
-        usual navbar  
--   Finish writing templates for all custom pages
-    -   Team/team rosters
-    -   Sponsors
-    -   News/blog
--   Transfer all content and images over
--   Figure out specific and concrete instructions for deploying
 -   Figure out how to integrate website with other webpages
 -   Figure out how to simplify admin panel UI/iron out some of bolt's 
     rough edges/write instructions
 -   Verify that website looks ok on older versions of IE/corporate-style
     computers
 -   Write instructions for setting up and using Composer
--   Write instructions on deploying to production
