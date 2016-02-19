@@ -38,6 +38,17 @@ SQLite database. This may change in the future.
     the server and do it yourself.
 
 
+## Remoting into production
+
+If you want to SSH into production, or transfer a file via SFTP, the host is `uwformula.com`, and the 
+username is `root`. The password is either the team password, or an older variation of it. Use the 
+default port.
+
+(So, if you wanted to SSH in on linux, you'd run `ssh root@uwformula.com`)
+
+Alternatively, you can directly use the IP address as the host: `192.241.205.218`.
+
+
 ## Production instructions
 
 To setup a new server completely from scratch, run the following commands (assumption:
