@@ -6,7 +6,6 @@
 
 .article .article-head {
     margin-bottom: 1em;
-    border-bottom: 1px solid #d9d9d9;
     background-color: #4b2e83;
     padding: 1em;
 
@@ -38,6 +37,11 @@
     margin-bottom: 5em;
 }
 
+.article .original-post {
+    padding-top: 0.5em;
+    border-top: 1px solid #d9d9d9;
+}
+
 .article .socicon-facebook {
     margin: 0;
     padding: 0;
@@ -45,7 +49,6 @@
 }
 
 .article .media-attachment {
-    border-top: 1px solid #ccc;
     margin-top: 1em;
     padding-top: 1em;
     margin-bottom: 1em;
