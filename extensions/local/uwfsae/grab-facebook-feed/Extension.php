@@ -44,17 +44,30 @@ class Extension extends BaseExtension
         return $mapping[$month] . ' ' . $day . ', ' . $year;
     }
 
-    public function handleVideo($url, $width, $height) {
-        $url = str_replace('autoplay=1', 'autoplay=0', $url);
+    public function handleVideo($post, $width, $height) {
+        $url = $post->source;
+        if (strpos($url, 'fbcdn') === false) {
+            // Interestingly, this appears to work for both Vimeo and YouTube.
+            $url = str_replace('autoplay=1', 'autoplay=0', $url);
+            return '<div class="video-wrapper"><iframe width="' . $width . '" height="' . $height . '" src="' . $url . '?autoplay=0" frameborder="0" allowfullscreen></iframe></div>';
+        } else {
+            // Not quite sure how to handle fb yet
+            /*list($id_a, $id_b) = explode("_", $post->id);
+            $fb_video_url = '/uwfsae/videos/vb.' . $id_a . '/' . $id_b . '/?type=3';
 
-        // Interestingly, this appears to work for both Vimeo and YouTube.
-        return '<iframe width="' . $width . '" height="' . $height . '" src="' . $url . '?autoplay=0" frameborder="0" allowfullscreen></iframe>';
+            $out = '<div id="fb-root"></div><script>(function(d, s, id) {  var js, fjs = d.getElementsByTagName(s)[0];  if (d.getElementById(id)) return;  js = d.createElement(s); js.id = id;  js.src = "//connect.facebook.net/en_US/sdk.js#xfbml=1&version=v2.3";  fjs.parentNode.insertBefore(js, fjs);}(document, \'script\', \'facebook-jssdk\'));</script>';
+
+            $out .= '<div class="fb-video" data-allowfullscreen="1" data-href="' . $fb_video_url .'"></div>';
+            return $out;*/
+
+            return '<p>View full video on <a href="' . $post->link . '">Facebook</a>!</p>';
+        }
     }
 
     public function handleMediaAttachment($post) {
         $out = '';
         if (property_exists($post, 'source')) {
-            $out .= '<div class="video-wrapper">' . $this->handleVideo($post->source, 540, 360) . '</div>';
+            $out .= $this->handleVideo($post, 540, 360);
         } else {
             $out .= '<img src="' . $post->full_picture . '" />';
         }
@@ -81,17 +94,17 @@ class Extension extends BaseExtension
             $out .= '  </div>';
             $out .= '  <div class="article-content">';
             $out .= '    <p>' . $message . '</p>';
+            if (property_exists($post, 'source') || property_exists($post, 'full_picture')) {
+                $out .= '    <div class="media-attachment">';
+                $out .= $this->handleMediaAttachment($post);
+                $out .= '    </div>';
+            }
             $out .= '    <p class="original-post">';
             $out .= '      <a href="' .$link .'">';
             $out .= '        <span class="socicon-facebook"></span>';
             $out .= '        Original post';
             $out .= '      </a>';
             $out .= '    </p>';
-            if (property_exists($post, 'source') || property_exists($post, 'full_picture')) {
-                $out .= '    <div class="media-attachment">';
-                $out .= $this->handleMediaAttachment($post);
-                $out .= '    </div>';
-            }
             $out .= '  </div>';
             $out .= '</div>';
 
