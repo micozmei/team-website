@@ -24,6 +24,7 @@ pages:
         body:
             type: html
             height: 300px
+            allowtwig: true
         template:
             type: templateselect
             filter: '*.twig'
@@ -46,14 +47,38 @@ pages:
     recordsperpage: 100
     default_status: publish
 
-# Used for any small free-form content and "snippits" used in misc. places
-# throughout the codebase.
-#
-# Snippits are intended to be used by the template files, and will not be
-# directly displayed.
+# Used for the sidebar content to the right of each page. Certain sidebar
+# items are hard-coded in.
 sidebar:
     name: Sidebar Items
     singular_name: Sidebar Item
+    fields:
+        title:
+            type: text
+            class: large
+            group: content
+        slug:
+            type: slug
+            uses: title
+        body:
+            type: html
+            height: 300px
+            allowtwig: true
+        video:
+            type: video
+            group: media
+        image:
+            type: image
+            attrib: title
+            extensions: [ gif, jpg, png ]
+    default_status: publish
+    viewless: true
+    sort: id
+
+# Used for content in the footer.
+footer:
+    name: Footer Items 
+    singular_name: Footer Item
     fields:
         title:
             type: text
@@ -96,6 +121,7 @@ teams:
         description:
             type: html
             height: 300px
+            allowtwig: true
         team_type:
             type: select
             label: Team type
@@ -168,10 +194,12 @@ carinfo:
             label: "Car Specs"
             type: html
             height: 300px
+            allowtwig: true
         results:
             label: "Competition Results"
             type: html
             height: 300px
+            allowtwig: true
         image:
             label: 'Car image'
             prefix: |

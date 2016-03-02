@@ -27,6 +27,8 @@
         <link rel="stylesheet"
               href="{{ paths.theme }}css/header.css" />
         <link rel="stylesheet"
+              href="{{ paths.theme }}css/footer.css" />
+        <link rel="stylesheet"
               href="{{ paths.theme }}css/news.css" />
         <link rel="stylesheet"
               href="{{ paths.theme }}css/primary-image.css" />
@@ -78,7 +80,7 @@
 
         <div id="footer">
             {% block footer %}
-
+                {% include '_footer.twig' %}
             {% endblock %}
         </div>
     </div>

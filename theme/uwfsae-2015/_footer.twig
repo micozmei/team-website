@@ -1,0 +1,11 @@
+<div class="container">
+    <div class="row">
+        {% setcontent items = 'footer-items' %}
+        {% for item in items %}
+            <div class="col-xs-12 col-sm-6 col-md-4">
+                <h3>{{ item.title }}</h3>
+                {{ item.body }}
+            </div>
+        {% endfor %}
+    </div>
+</div>
