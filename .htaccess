@@ -32,6 +32,8 @@ Options -Indexes
   RewriteCond %{REQUEST_URI} !=/favicon.ico
   RewriteRule ^ ./index.php [L]
 
+  # Redirect for the wiki
+  RedirectMatch 302 /wiki/(.*)$ http://uwashingtonfsae.com/wiki/$1
 </IfModule>
 
 
