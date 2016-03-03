@@ -33,7 +33,7 @@ Options -Indexes
   RewriteRule ^ ./index.php [L]
 
   # Redirect for the wiki
-  RedirectMatch 302 /wiki/(.*)$ http://uwashingtonfsae.com/wiki/$1
+  RedirectMatch 302 (.*)uwformula.com/wiki/(.*)$ http://uwashingtonfsae.com/wiki/$2
 </IfModule>
 
 
