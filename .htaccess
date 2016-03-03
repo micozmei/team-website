@@ -28,7 +28,7 @@ Options -Indexes
   # RewriteBase /
 
   # Redirect for the wiki
-  RewriteRule ^wiki/$ http://uwashingtonfsae.com/wiki/$1 [R=302,L,NC]
+  RedirectMatch 302 ^/wiki/(.*)$ http://uwashingtonfsae.com/wiki/$1
 
   # Bolt rewrite rules
   RewriteCond %{REQUEST_FILENAME} !-f
