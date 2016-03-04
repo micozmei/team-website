@@ -100,3 +100,9 @@
 .social-media a:focus .youtube {
     background-color: #e02a20;
 }
+
+.social-media a:hover .instagram,
+.social-media a:active .instagram,
+.social-media a:focus .instagram {
+    background-color: #517fa4;
+}
