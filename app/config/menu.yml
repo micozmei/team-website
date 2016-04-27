@@ -14,6 +14,8 @@ main:
             path: about-us/administrative-teams
           - label: Roster
             path: about-us/roster
+          - label: Community Outreach
+            path: about-us/community-outreach
     - label: cCar
       path: ccar
       submenu: 
