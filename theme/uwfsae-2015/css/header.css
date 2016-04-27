@@ -117,12 +117,14 @@
     margin-bottom: 0;
 }
 
+.nav-mobile-header .nav-expander:active .icon-bar,
 .nav-mobile-header .nav-expander:hover .icon-bar {
     /* Transition: white -> husky gold */
     background-color: #b7a57a;
 }
 
 /* Top bar -> top triangle line */
+.nav-mobile-header .nav-expander:active .top,
 .nav-mobile-header .nav-expander:hover .top {
     transform: translate(-.8em, .4em) rotate(-30deg) scaleX(0.5);
 }
@@ -131,6 +133,7 @@
 /* .nav-mobile-header .nav-expander:hover .middle { } */
 
 /* Bottom bar -> bottom triangle line */
+.nav-mobile-header .nav-expander:active .bottom,
 .nav-mobile-header .nav-expander:hover .bottom {
     transform: translate(-.8em, -.4em) rotate(30deg) scaleX(0.5);
 }
@@ -239,7 +242,7 @@
 }
 
 .nav-custom .submenu-active .submenu {
-    max-height: 10em;
+    max-height: 12em;
 }
 
 /* Sub-menu links */
