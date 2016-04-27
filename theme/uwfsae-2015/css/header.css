@@ -361,7 +361,7 @@
          * unnatural. If you need to change the max-height, also be sure
          * to tinker with the transition time. 
          */
-        max-height: 10em;
+        max-height: 14em;
     }
 
     /* Link in submenu */
