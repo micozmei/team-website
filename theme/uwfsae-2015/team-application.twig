@@ -1,0 +1,187 @@
+{% extends "_skeleton.twig" %}
+
+{%
+set tech_teams = [
+    'Aerodynamics',
+    'Chassis',
+    'Composites',
+    'Drivetrain',
+    'Electronics',
+    'Engine',
+    'eTrain',
+    'Manufacturing',
+    'Suspension',
+]
+%}
+{%
+set admin_teams = [
+    'Business Team',
+    'Public Relations',
+    'Race Team',
+    'Resource Management',
+    'Sponsorship and Fundraising',
+    'Technology Management',
+]
+%}
+
+{% block content %}
+
+{% set data = team_application_handler() %}
+
+{% if data.ok %}
+
+<h3>Thank you for applying to UWashington Formula Motorsports 2016-2017!</h3>
+
+<p>We will review your application and email you with a decision sometime during the summer.</p>
+
+{% else %}
+
+<form action="/apply-stage" method="POST" enctype="multipart/form-data" class="form-horizontal" data-toggle="validator" role="form">
+
+    <!-- First name -->
+  <div class="form-group">
+    <label for="first_name" class="col-sm-2 control-label">First name</label>
+    <div class="col-sm-4">
+      <input type="text" class="form-control" id="first_name" name="first_name" required>
+    </div>
+  </div>
+
+    <!-- Last name -->
+  <div class="form-group">
+    <label for="last_name" class="col-sm-2 control-label">Last name</label>
+    <div class="col-sm-10">
+      <input type="text" class="form-control" id="last_name" name="last_name" required>
+    </div>
+  </div>
+  <div class="form-group">
+    <label for="major" class="col-sm-2 control-label">Major</label>
+    <div class="col-sm-10">
+      <input type="text" class="form-control" id="major" name="major" required>
+    </div>
+  </div>
+  <div class="form-group">
+    <label for="accepted_into_dept" class="col-sm-4 control-label">Have you been accepted into your major?</label>
+    <div class="col-sm-8">
+      <select name="accepted_into_dept" required>
+        <option value="">---</option>
+        <option value="Yes">Yes</option>
+        <option value="No">No</option>
+      </select>
+    </div>
+  </div>
+  <div class="form-group">
+    <label for="email" class="col-sm-2 control-label">Email</label>
+    <div class="col-sm-10">
+      <input type="email" class="form-control" id="email" name="email" required>
+    </div>
+  </div>
+
+  <!-- Graduation year -->
+  <div class="form-group">
+    <label for="graduation_year" class="col-sm-2 control-label">Graduation year</label>
+    <div class="col-sm-10">
+      <select name="graduation_year" required>
+        <option value="">---</option>
+{% for year in [2017, 2018, 2019, 2020] %}
+        <option value="{{ year }}">{{year}}</option>
+{% endfor %}
+      </select>
+    </div>
+  </div>
+
+    <!-- First choice tech team -->
+    <h3>Tech Teams</h3>
+    <div class="form-group">
+        <label for="1st_tech_team" class="col-sm-3 control-label">1<sup>st</sup> choice tech team</label>
+        <div clas="col-sm-9">
+            <select name="1st_tech_team" required>
+                <option value="">--------</option>
+                {% for team in tech_teams %}
+                <option value="{{ team }}">{{ team }}</option>
+                {% endfor %}
+            </select>
+        </div>
+    </div>
+
+    <!-- Second choice tech team -->
+    <div class="form-group">
+        <label for="2nd_tech_team" class="col-sm-3 control-label">2<sup>nd</sup> choice tech team</label>
+        <div clas="col-sm-9">
+            <select name="2nd_tech_team" required>
+                <option value="">--------</option>
+                {% for team in tech_teams %}
+                <option value="{{ team }}">{{ team }}</option>
+                {% endfor %}
+            </select>
+        </div>
+    </div>
+
+    <!-- Tech team justification -->
+    <div class="form-group">
+        <label for="tech_team_paragraph" class="control-label">Why do you want to be on this tech team?</label>
+        <textarea name="tech_team_paragraph" rows=6 style="width: 100%" required></textarea>
+    </div>
+
+    <!-- First choice admin team -->
+    <h3>Admin Teams</h3>
+    <div class="form-group">
+        <label for="1st_admin_team" class="col-sm-3 control-label">1<sup>st</sup> choice admin team</label>
+        <div class="col-sm-9">
+            <select name="1st_admin_team" required>
+                <option value="">--------</option>
+                {% for team in admin_teams %}
+                <option value="{{ team }}">{{ team }}</option>
+                {% endfor %}
+            </select>
+        </div>
+    </div>
+
+    <!-- Second choice admin team -->
+    <div class="form-group">
+        <label for="2nd_admin_team" class="col-sm-3 control-label">2<sup>nd</sup> choice admin team</label>
+        <div class="col-sm-9">
+            <select name="2nd_admin_team" required>
+                <option value="">--------</option>
+                {% for team in admin_teams %}
+                <option value="{{ team }}">{{ team }}</option>
+                {% endfor %}
+            </select>
+        </div>
+    </div>
+
+    <!-- Admin team justification -->
+    <div class="form-group">
+        <label for="admin_team_paragraph" class="control-label">Why do you want to be on this admin team?</label>
+        <textarea name="admin_team_paragraph" rows=6 style="width: 100%" required></textarea>
+    </div>
+
+    <h3>Supplements</h3>
+
+    <!-- Resume upload -->
+    <div class="form-group">
+        <label for="resume_file" class="col-sm-2 control-label">Resume</label>
+        <div class="col-sm-10">
+            <input type="file" name="resume_file" accept="application/pdf" required />
+        </div>
+    </div>
+
+    <!-- Transcript -->
+    <div class="form-group">
+        <label for="transcript_file" class="col-sm-2 control-label">Transript</label>
+        <div class="col-sm-10">
+            <input type="file" name="transcript_file" accept="application/pdf" required />
+        </div>
+    </div>
+
+    <!-- Submit button -->
+    <div class="form-group">
+        <div class="col-sm-offset-2 col-sm-10">
+            <button type="submit" class="btn btn-default">Submit</button>
+        </div>
+    </div>
+
+</form>
+
+{% endif %}
+
+{% endblock %}

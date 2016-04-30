@@ -1,0 +1,33 @@
+{
+    "name": "uwfsae/team-application",
+    "description": "New member application form",
+    "type": "bolt-extension",
+    "keywords": [ "bolt", "widget", "timer", "countdown" ],
+    "require": {
+        "bolt/bolt": ">=2.0.0,<3.0.0",
+        "google/apiclient": "1.*",
+        "asimlqt/php-google-spreadsheet-client": "2.3.7"
+    },
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Steve Anton",
+            "email": "steve@stevefanton.com"
+        }
+    ],
+    "minimum-stability": "dev",
+    "prefer-stable": true,
+    "autoload": {
+        "files": [
+            "init.php"
+        ],
+        "psr-4": {
+            "Bolt\\Extension\\Uwfsae\\TeamApplication\\": "",
+            "Bolt\\Extension\\Uwfsae\\TeamApplication\\Tests\\": "tests"
+        }
+    },
+    "extra": {
+        "bolt-assets": "assets"
+    }
+}
+
