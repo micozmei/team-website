@@ -38,25 +38,27 @@ set admin_teams = [
 
 <form action="/apply-stage" method="POST" enctype="multipart/form-data" class="form-horizontal" data-toggle="validator" role="form">
 
+  <h3>About You</h3>
+
     <!-- First name -->
   <div class="form-group">
     <label for="first_name" class="col-sm-2 control-label">First name</label>
     <div class="col-sm-4">
-      <input type="text" class="form-control" id="first_name" name="first_name" required>
+      <input type="text" class="form-control" id="first_name" name="first_name" required maxlength=50>
     </div>
   </div>
 
     <!-- Last name -->
   <div class="form-group">
     <label for="last_name" class="col-sm-2 control-label">Last name</label>
-    <div class="col-sm-10">
-      <input type="text" class="form-control" id="last_name" name="last_name" required>
+    <div class="col-sm-4">
+      <input type="text" class="form-control" id="last_name" name="last_name" required maxlength=50>
     </div>
   </div>
   <div class="form-group">
     <label for="major" class="col-sm-2 control-label">Major</label>
-    <div class="col-sm-10">
-      <input type="text" class="form-control" id="major" name="major" required>
+    <div class="col-sm-4">
+      <input type="text" class="form-control" id="major" name="major" required maxlength=50>
     </div>
   </div>
   <div class="form-group">
@@ -71,7 +73,7 @@ set admin_teams = [
   </div>
   <div class="form-group">
     <label for="email" class="col-sm-2 control-label">Email</label>
-    <div class="col-sm-10">
+    <div class="col-sm-6">
       <input type="email" class="form-control" id="email" name="email" required>
     </div>
   </div>
@@ -90,7 +92,7 @@ set admin_teams = [
   </div>
 
     <!-- First choice tech team -->
-    <h3>Tech Teams</h3>
+    <h3>Tech Team Preference</h3>
     <div class="form-group">
         <label for="1st_tech_team" class="col-sm-3 control-label">1<sup>st</sup> choice tech team</label>
         <div clas="col-sm-9">
@@ -119,11 +121,11 @@ set admin_teams = [
     <!-- Tech team justification -->
     <div class="form-group">
         <label for="tech_team_paragraph" class="control-label">Why do you want to be on this tech team?</label>
-        <textarea name="tech_team_paragraph" rows=6 style="width: 100%" required></textarea>
+        <textarea name="tech_team_paragraph" rows=6 style="width: 100%" required maxlength=2500></textarea>
     </div>
 
     <!-- First choice admin team -->
-    <h3>Admin Teams</h3>
+    <h3>Admin Team Preference</h3>
     <div class="form-group">
         <label for="1st_admin_team" class="col-sm-3 control-label">1<sup>st</sup> choice admin team</label>
         <div class="col-sm-9">
@@ -152,10 +154,10 @@ set admin_teams = [
     <!-- Admin team justification -->
     <div class="form-group">
         <label for="admin_team_paragraph" class="control-label">Why do you want to be on this admin team?</label>
-        <textarea name="admin_team_paragraph" rows=6 style="width: 100%" required></textarea>
+        <textarea name="admin_team_paragraph" rows=6 style="width: 100%" required maxlength=2500></textarea>
     </div>
 
-    <h3>Supplements</h3>
+    <h3>Application Supplements</h3>
 
     <!-- Resume upload -->
     <div class="form-group">
