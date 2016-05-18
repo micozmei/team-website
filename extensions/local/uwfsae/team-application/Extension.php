@@ -40,6 +40,7 @@ class Extension extends BaseExtension
         $folder = $this->createSupplementFolder($uploadPrefix);
         $resume = $this->uploadSupplement($folder->id, $_FILES['resume_file']['tmp_name'], $uploadPrefix . ' Resume');
         $transcript = $this->uploadSupplement($folder->id, $_FILES['transcript_file']['tmp_name'], $uploadPrefix . ' Transcript');
+        $cover_letter = $this->uploadSupplement($folder->id, $_FILES['cover_letter_file']['tmp_name'], $uploadPrefix . ' Cover Letter');
 
         // add entry to spreadsheet
         // T27/T27_Admin Teams/T27_Technology_Management/Application Template
@@ -51,6 +52,7 @@ class Extension extends BaseExtension
             'major' => $request->get('major'),
             'acceptedintodept' => $request->get('accepted_into_dept'),
             'email' => $request->get('email'),
+            'phonenumber' => $request->get('phone_number'),
             'gradyear' => $request->get('graduation_year'),
             'sttechteam' => $request->get('1st_tech_team'),
             'ndtechteam' => $request->get('2nd_tech_team'),

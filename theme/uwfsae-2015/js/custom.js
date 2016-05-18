@@ -59,4 +59,12 @@ $(document).ready(function() {
     $(window).on('resize', disableSubmenus);
 
     attachCountdownListeners();
+
+    // for application page
+    $('button.btn-submit-loading').on('click', function() {
+        var form = $(this).parent().closest('form');
+        if (form[0].checkValidity()) {
+            $(this).button('loading');
+        }
+    });
 });
