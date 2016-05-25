@@ -4,12 +4,10 @@
 
 1.  Have PHP installed
 2.  Have SQLite installed
-3.  Setup the local db (TODO: Update instructions)
-    1.  Navigate into `/app/database`
-    2.  Delete `bolt.db`, if it already exists
-    3.  Run `sqlite3 bolt.db < boltdb-backup.bak` to create the database
-    4.  To create a new backup, run `sqlite3 bolt.db .dump > boltdb-backup.back`
-    5.  Navigate back up to the root directory
+3.  Ask Michael for the `config_local.yml` to connect your development machine 
+    to the database
+    1.  After receiving the `config_local.yml` file, copy it into the `/app/config` folder
+    2.  Be sure to keep this file secret -- don't check it into version control, etc.
 2.  Run `php -S localhost:8000 -t . index.php` from the command line
 3.  Visit `localhost:8000` to see the website
 4.  Visit `localhost:8000/bolt` to access the admin panel
