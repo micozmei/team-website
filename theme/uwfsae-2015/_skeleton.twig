@@ -89,6 +89,12 @@
     <script src="{{ paths.theme }}js/jquery-1.12.0.min.js"></script>
     <script src="{{ paths.theme }}js/bootstrap.min.js"></script>
     <script src="{{ paths.theme }}js/jasny-bootstrap.min.js"></script>
+    <script src="{{ paths.theme }}js/js-webshim/polyfill.js"></script>
+    <script>
+        webshim.activeLang('en');
+        webshims.polyfill('forms');
+        webshims.cfg.no$Switch = true;
+    </script>
     <script src="{{ paths.theme }}js/custom.js"></script>
 {% endblock %}
 {% include '_analytics.twig' %}
