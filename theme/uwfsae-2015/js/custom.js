@@ -63,6 +63,7 @@ $(document).ready(function() {
     // for application page
     $('button.btn-submit-loading').on('click', function() {
         var form = $(this).parent().closest('form');
+        console.log(form.callProp('checkValidity'));
         if (form[0].checkValidity()) {
             $(this).button('loading');
         }
