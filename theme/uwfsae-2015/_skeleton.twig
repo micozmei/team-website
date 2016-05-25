@@ -91,9 +91,7 @@
     <script src="{{ paths.theme }}js/jasny-bootstrap.min.js"></script>
     <script src="{{ paths.theme }}js/js-webshim/polyfiller.js"></script>
     <script>
-        webshim.activeLang('en');
-        webshims.polyfill('forms');
-        webshims.cfg.no$Switch = true;
+        webshims.polyfill('forms es5');
     </script>
     <script src="{{ paths.theme }}js/custom.js"></script>
 {% endblock %}
