@@ -37,6 +37,16 @@ set admin_teams = [
 
 {% else %}
 
+{% macro select(name, options, placeholder) %}
+<select name="{{ name }}" required>
+    <option value="" selected disabled hidden style="display: none;">{{ placeholder }}</option>
+{% for value in options %}
+    <option value="{{ value|e }}">{{ value }}</option>
+{% endfor %}
+</select>
+{% endmacro %}
+{% from _self import select as select %}
+
 <form action="" method="POST" enctype="multipart/form-data" class="form-horizontal" data-toggle="validator" role="form">
 
     <h3>About You</h3>
@@ -65,11 +75,7 @@ set admin_teams = [
     <div class="form-group">
         <label for="accepted_into_dept" class="col-sm-4 control-label">Have you been accepted into your major?</label>
         <div class="col-sm-8">
-            <select name="accepted_into_dept" required>
-                <option value="">---</option>
-                <option value="Yes">Yes</option>
-                <option value="No">No</option>
-            </select>
+            {{ select('accepted_into_dept', ['Yes', 'No'], '---') }}
         </div>
     </div>
     <div class="form-group">
@@ -89,12 +95,7 @@ set admin_teams = [
     <div class="form-group">
         <label for="graduation_year" class="col-sm-2 control-label">Graduation year</label>
         <div class="col-sm-10">
-            <select name="graduation_year" required>
-                <option value="">---</option>
-{% for year in [2017, 2018, 2019, 2020] %}
-                <option value="{{ year }}">{{year}}</option>
-{% endfor %}
-            </select>
+            {{ select('graduation_year', [2017, 2018, 2019, 2020], '----') }}
         </div>
     </div>
 
@@ -103,25 +104,16 @@ set admin_teams = [
     <div class="form-group">
         <label for="1st_tech_team" class="col-sm-3 control-label">1<sup>st</sup> choice tech team</label>
         <div class="col-sm-9">
-            <select name="1st_tech_team" required>
-                <option value="">--------</option>
-{% for team in tech_teams %}
-                <option value="{{ team }}">{{ team }}</option>
-{% endfor %}
-            </select>
+            {{ select('1st_tech_team', tech_teams, '--- choose a team ---') }}
         </div>
     </div>
 
     <!-- Second choice tech team -->
+
     <div class="form-group">
         <label for="2nd_tech_team" class="col-sm-3 control-label">2<sup>nd</sup> choice tech team</label>
         <div class="col-sm-9">
-            <select name="2nd_tech_team" required>
-                <option value="">--------</option>
-{% for team in tech_teams %}
-                <option value="{{ team }}">{{ team }}</option>
-{% endfor %}
-            </select>
+            {{ select('2nd_tech_team', tech_teams, '--- choose a team ---') }}
         </div>
     </div>
 
@@ -138,12 +130,7 @@ set admin_teams = [
     <div class="form-group">
         <label for="1st_admin_team" class="col-sm-3 control-label">1<sup>st</sup> choice admin team</label>
         <div class="col-sm-9">
-            <select name="1st_admin_team" required>
-                <option value="">--------</option>
-                {% for team in admin_teams %}
-                <option value="{{ team }}">{{ team }}</option>
-                {% endfor %}
-            </select>
+            {{ select('1st_admin_team', admin_teams, '--- choose a team ---') }}
         </div>
     </div>
 
@@ -151,12 +138,7 @@ set admin_teams = [
     <div class="form-group">
         <label for="2nd_admin_team" class="col-sm-3 control-label">2<sup>nd</sup> choice admin team</label>
         <div class="col-sm-9">
-            <select name="2nd_admin_team" required>
-                <option value="">--------</option>
-                {% for team in admin_teams %}
-                <option value="{{ team }}">{{ team }}</option>
-                {% endfor %}
-            </select>
+            {{ select('2nd_admin_team', admin_teams, '--- choose a team ---') }}
         </div>
     </div>
 
