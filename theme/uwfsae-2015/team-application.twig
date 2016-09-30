@@ -27,7 +27,15 @@ set admin_teams = [
 
 {% set data = team_application_handler() %}
 
-{% if data.ok %}
+{% if data.expired %}
+
+<h3>Application Closed</h3>
+
+<p>
+    We're sorry, but the application for the 2016-2017 school year is now closed. Stay tuned for when it opens up again next year!
+</p>
+
+{% elseif data.ok %}
 
 <h3>Thank you for applying to UWashington Formula Motorsports 2016-2017!</h3>
 
@@ -157,14 +165,6 @@ set admin_teams = [
         <label for="resume_file" class="col-sm-2 control-label">Resume</label>
         <div class="col-sm-10">
             <input type="file" name="resume_file" accept="application/pdf" required />
-        </div>
-    </div>
-
-    <!-- Transcript -->
-    <div class="form-group">
-        <label for="transcript_file" class="col-sm-2 control-label">Transcript</label>
-        <div class="col-sm-10">
-            <input type="file" name="transcript_file" accept="application/pdf" required />
         </div>
     </div>
 
