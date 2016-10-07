@@ -28,7 +28,11 @@ Options -Indexes
   # RewriteBase /
 
   # Redirect for the wiki
-  RedirectMatch 302 ^/wiki(.*)$ http://uwashingtonfsae.com/wiki$1
+  RedirectMatch 302 ^/wiki(.*)$ http://wiki.uwformula.com/$1
+
+  # Redirect to the old, deprecated wiki (just in case).
+  # We should remove the old wiki later once we confirm there are no issues.
+  RedirectMatch 302 ^/old_wiki(.*)$ http://uwashingtonfsae.com/wiki$1
 
   # Bolt rewrite rules
   RewriteCond %{REQUEST_FILENAME} !-f
