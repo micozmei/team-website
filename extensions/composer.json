@@ -21,8 +21,12 @@
     "autoload": {
         "psr-4": {
             "Bolt\\Composer\\": "",
-            "Bolt\\Extension\\Uwfsae\\GrabFacebookFeed\\": "C:\\Users\\Michael\\Dropbox\\Projects\\Organizations\\UW_FSAE\\team-website\\extensions\\local\\uwfsae\\grab-facebook-feed/",
-            "Bolt\\Extension\\UWfsae\\GrabFacebookFeed\\Tests\\": "C:\\Users\\Michael\\Dropbox\\Projects\\Organizations\\UW_FSAE\\team-website\\extensions\\local\\uwfsae\\grab-facebook-feed/tests"
+            "Bolt\\Extension\\Uwfsae\\GrabFacebookFeed\\": "local/uwfsae/grab-facebook-feed/",
+            "Bolt\\Extension\\UWfsae\\GrabFacebookFeed\\Tests\\": "local/uwfsae/grab-facebook-feed/tests",
+            "Bolt\\Extension\\Uwfsae\\Countdown\\": "local/uwfsae/countdown/",
+            "Bolt\\Extension\\UWfsae\\Countdown\\Tests\\": "local/uwfsae/countdown/tests",
+            "Bolt\\Extension\\Uwfsae\\TeamApplication\\": "local/uwfsae/team-application/",
+            "Bolt\\Extension\\Uwfsae\\TeamApplication\\Tests\\": "local/uwfsae/team-application/tests"
         }
     },
     "scripts": {

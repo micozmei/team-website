@@ -9,6 +9,10 @@ use Bolt\BaseExtension;
 
 class Extension extends BaseExtension
 {
+    const TZ = 'America/Los_Angeles';
+    const APP_VIEW_DEADLINE = '2016-09-30 15:00:00';
+    const APP_SUBMIT_DEADLINE = '2016-09-30 18:00:00';
+
     private $client;
     private $driveService;
 
@@ -24,10 +28,25 @@ class Extension extends BaseExtension
         return true;
     }
 
+    private static function getDate($datestr) {
+        return new \DateTime($datestr, new \DateTimeZone(self::TZ));
+    }
+
     public function twigTeamApplicationSubmit() {
         $request = $this->app['request_stack']->getCurrentRequest();
+        $is_post = ($request && $request->isMethod('POST'));
 
-        if ($request && $request->isMethod('POST')) {
+        $now = self::getDate('now');
+        $deadline = self::getDate($is_post
+            ? self::APP_SUBMIT_DEADLINE
+            : self::APP_VIEW_DEADLINE
+        );
+
+        if ($now > $deadline) {
+            return array('expired' => true);
+        }
+
+        if ($is_post) {
             return $this->handleSubmit($request);
         } else {
             return array();
@@ -38,15 +57,19 @@ class Extension extends BaseExtension
         // handle uploads
         $uploadPrefix = sprintf('%s %s', $request->get('first_name'), $request->get('last_name'));
         $folder = $this->createSupplementFolder($uploadPrefix);
-        $resume = $this->uploadSupplement($folder->id, $_FILES['resume_file']['tmp_name'], $uploadPrefix . ' Resume');
-        $transcript = $this->uploadSupplement($folder->id, $_FILES['transcript_file']['tmp_name'], $uploadPrefix . ' Transcript');
+        $this->uploadSupplement($folder->id, $_FILES['resume_file']['tmp_name'], $uploadPrefix . ' Resume');
+        if ($_FILES['transcript_file']) {
+            $this->uploadSupplement($folder->id, $_FILES['transcript_file']['tmp_name'], $uploadPrefix . ' Transcript');
+        }
         $cover_letter = $this->uploadSupplement($folder->id, $_FILES['cover_letter_file']['tmp_name'], $uploadPrefix . ' Cover Letter');
 
+        $datestr = self::getDate('now')->format('n/j/Y G:i:s');
+
         // add entry to spreadsheet
-        // T27/T27_Admin Teams/T27_Technology_Management/Application Template
+        // T28 Applications/Applications
         $listfeed = $this->getSpreadsheetService()->getListFeed('1hqXCcqdfKxuHk4VM3HxKRDEQyg19nTMCjwlzOwrX13w');
         $listfeed->insert(array(
-            'applicationtime' => date(DATE_RFC2822),
+            'applicationtime' => $datestr,
             'firstname' => $request->get('first_name'),
             'lastname' => $request->get('last_name'),
             'major' => $request->get('major'),
@@ -70,7 +93,8 @@ class Extension extends BaseExtension
         $folder = new \Google_Service_Drive_DriveFile();
         $folder->setTitle($folderName);
         $parent = new \Google_Service_Drive_ParentReference();
-        $parent->setId('0B30QxxP--98YOUpqbDlLdi05WnM'); // T27/T27_Admin_Teams/T27_Technology_Management/Application Supplements
+        // T28 Applications/Supplements
+        $parent->setId('0B30QxxP--98YOUpqbDlLdi05WnM');
         $folder->setParents(array($parent));
         $folder->setMimeType('application/vnd.google-apps.folder');
         $folder = $this->getDriveService()->files->insert($folder);

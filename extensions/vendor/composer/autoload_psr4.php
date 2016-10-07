@@ -6,7 +6,11 @@ $vendorDir = dirname(dirname(__FILE__));
 $baseDir = dirname($vendorDir);
 
 return array(
+    'Bolt\\Extension\\Uwfsae\\TeamApplication\\Tests\\' => array($baseDir . '/local/uwfsae/team-application/tests'),
+    'Bolt\\Extension\\Uwfsae\\TeamApplication\\' => array($baseDir . '/local/uwfsae/team-application'),
     'Bolt\\Extension\\Uwfsae\\GrabFacebookFeed\\' => array($baseDir . '/local/uwfsae/grab-facebook-feed'),
+    'Bolt\\Extension\\Uwfsae\\Countdown\\' => array($baseDir . '/local/uwfsae/countdown'),
     'Bolt\\Extension\\UWfsae\\GrabFacebookFeed\\Tests\\' => array($baseDir . '/local/uwfsae/grab-facebook-feed/tests'),
+    'Bolt\\Extension\\UWfsae\\Countdown\\Tests\\' => array($baseDir . '/local/uwfsae/countdown/tests'),
     'Bolt\\Composer\\' => array($baseDir . '/'),
 );
