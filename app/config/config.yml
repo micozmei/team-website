@@ -358,7 +358,7 @@ liveeditor: true
 #
 # Note: If you change any of these, all current users will automatically be
 #       logged off.
-cookies_use_remoteaddr: true
+cookies_use_remoteaddr: false
 cookies_use_browseragent: false
 cookies_use_httphost: true
 
