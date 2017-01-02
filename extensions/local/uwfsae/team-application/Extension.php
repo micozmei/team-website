@@ -10,8 +10,8 @@ use Bolt\BaseExtension;
 class Extension extends BaseExtension
 {
     const TZ = 'America/Los_Angeles';
-    const APP_VIEW_DEADLINE = '2016-09-30 15:00:00';
-    const APP_SUBMIT_DEADLINE = '2016-09-30 18:00:00';
+    const APP_VIEW_DEADLINE = '2017-03-31 15:00:00';
+    const APP_SUBMIT_DEADLINE = '2017-03-31 18:00:00';
 
     private $client;
     private $driveService;
@@ -66,8 +66,8 @@ class Extension extends BaseExtension
         $datestr = self::getDate('now')->format('n/j/Y G:i:s');
 
         // add entry to spreadsheet
-        // T28 Applications/Applications
-        $listfeed = $this->getSpreadsheetService()->getListFeed('1hqXCcqdfKxuHk4VM3HxKRDEQyg19nTMCjwlzOwrX13w');
+        // T28 Applications/Winter Applications
+        $listfeed = $this->getSpreadsheetService()->getListFeed('1UY__XGq-YiXDtOVEtmcOANVUJWca1LLFMODH3fvlbOs');
         $listfeed->insert(array(
             'applicationtime' => $datestr,
             'firstname' => $request->get('first_name'),
