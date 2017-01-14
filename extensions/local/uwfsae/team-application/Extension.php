@@ -10,8 +10,8 @@ use Bolt\BaseExtension;
 class Extension extends BaseExtension
 {
     const TZ = 'America/Los_Angeles';
-    const APP_VIEW_DEADLINE = '2017-03-31 15:00:00';
-    const APP_SUBMIT_DEADLINE = '2017-03-31 18:00:00';
+    const APP_VIEW_DEADLINE = '2017-01-16 23:59:00';
+    const APP_SUBMIT_DEADLINE = '2017-01-17 3:00:00';
 
     private $client;
     private $driveService;
