@@ -1,0 +1,1065 @@
+<!DOCTYPE html>
+<html lang="{{ htmllang() }}">
+<head>
+    {% block head %}
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+        <title>
+            {% if record.title is defined %}{{ record.title|striptags }} | {% endif %}
+                {{ app.config.get('general/sitename') }}
+            {% if record.title is not defined and app.config.get('general/payoff') %} | {{ app.config.get('general/payoff') }}{% endif %}
+        </title>
+        <meta name="author" content="name" />
+        <meta name="description" content="{{ app.config.get('general/description') }}" />
+        <meta name="keywords" content="{{ app.config.get('general/keywords') }}" />
+
+        <link rel="stylesheet" 
+              href="{{ paths.theme }}css/bootstrap.min.css" />
+        <link rel="stylesheet" 
+              href="{{ paths.theme }}css/jasny-bootstrap.min.css" />
+        <link rel="stylesheet" 
+              href="{{ paths.theme }}assets/socicon/styles.css" />
+
+        <link rel="stylesheet"
+              href="{{ paths.theme }}css/layout.css" />
+        <link rel="stylesheet"
+              href="{{ paths.theme }}css/header.css" />
+        <link rel="stylesheet"
+              href="{{ paths.theme }}css/footer.css" />
+        <!--<link rel="stylesheet"
+              href="{{ paths.theme }}css/news.css" />
+        <link rel="stylesheet"
+              href="{{ paths.theme }}css/primary-image.css" />
+        <link rel="stylesheet"
+              href="{{ paths.theme }}css/roster.css" />
+        <link rel="stylesheet"
+              href="{{ paths.theme }}css/car-info.css" />
+        <link rel="stylesheet"
+              href="{{ paths.theme }}css/sponsors.css" />
+        <link rel="stylesheet"
+              href="{{ paths.theme }}css/teams.css" />
+        <link rel="stylesheet"
+              href="{{ paths.theme }}css/sidebar.css" />
+        <link rel="stylesheet"
+              href="{{ paths.theme }}css/typography.css" />
+        <link rel="stylesheet"
+              href="{{ paths.theme }}css/index.css" /> -->
+
+        <!--[if lte IE 8]>
+            <script src="{{ paths.theme }}js/respond.min.js"></script>
+        <![endif]-->
+    {% endblock %}
+        <link href="https://fonts.googleapis.com/css?family=Roboto:500" rel="stylesheet">
+    <style>
+
+body {
+    font-family: 'Roboto', sans-serif;
+    color: rgb(96, 96, 96);
+    font-size: 2.4rem;
+}
+
+<!-- Courtesy of http://andmag.se/2012/10/responsive-images-how-to-prevent-reflow/ -->
+.embed-container {
+    position: relative;
+    height: 0;
+    overflow: hidden;
+    background-color: black;
+}
+
+.ratio-16-9 {
+    padding-bottom: 56.25%; /* 9/16*100 */
+}
+
+.ratio-4-3 {
+    padding-bottom: 75%; /* 3/4*100 */
+}
+
+.ratio-1-1 {
+    padding-bottom: 100%; /* … */
+}
+
+.embed-container img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+}
+
+.margin-64 {
+    margin-top: 64px;
+    margin-bottom: 64px;
+}
+
+.margin-16 {
+    margin-top: 16px;
+    margin-bottom: 16px;
+}
+
+.purple-text {
+    color: rgb(51, 0, 111);
+}
+
+.hero-text {
+    position: absolute;
+    width: 100%;
+    color: white;
+    text-align: center;
+}
+
+.hero-subtitle {
+    top: 15%;
+    font-size: 5rem;
+    text-shadow:
+        1px 1px 2px rgba(150, 150, 150, 0.6),
+        -1px 1px 2px rgba(150, 150, 150, 0.6),
+        -1px -1px 2px rgba(150, 150, 150, 0.6),
+        1px -1px 2px rgba(150, 150, 150, 0.6);
+}
+
+.hero-title {
+    top: 40%;
+    font-size: 15rem;;
+    text-shadow:
+        2px 2px 4px rgba(80, 80, 80, 0.6),
+        -2px 2px 2px rgba(150, 150, 80, 0.6),
+        -2px -2px 4px rgba(80, 80, 80, 0.6),
+        2px -2px 4px rgba(80, 80, 80, 0.6);
+}
+
+.hero-caret {
+    top: 90%;
+    font-size: 12rem;
+    text-shadow:
+        1px 1px 2px rgba(150, 150, 150, 0.6),
+        -1px 1px 2px rgba(150, 150, 150, 0.6),
+        -1px -1px 2px rgba(150, 150, 150, 0.6),
+        1px -1px 2px rgba(150, 150, 150, 0.6);
+    cursor: pointer;
+}
+
+.section-header {
+    color: rgb(51, 0, 111);
+    font-weight: 900;
+    font-size: 4rem;
+    text-shadow: 
+        -0.02em 0.02em 0 #D9D9D9,
+        -0.04em 0.04em 0 #D9D9D9,
+        -0.06em 0.06em 0 #D9D9D9;
+}
+
+.main-header {
+    color: rgb(51, 0, 111);
+    text-transform: uppercase;
+    font-weight: 900;
+    font-size: 12rem;
+    margin-top: 64px;
+    margin-bottom: 64px;
+    text-shadow: 
+        -0.01em 0.01em 0 #D9D9D9,
+        -0.02em 0.02em 0 #D9D9D9,
+        -0.03em 0.03em 0 #D9D9D9,
+        -0.04em 0.04em 0 #D9D9D9,
+        -0.05em 0.05em 0 #D9D9D9,
+        -0.06em 0.06em 0 #D9D9D9;
+}
+
+.section-2col {
+    margin-top 64px;
+    margin-bottom 64px;
+    display: flex;
+    flex-wrap: nowrap;
+    justify-content: center;
+    align-items: stretch;
+}
+
+.section-2col > * {
+    flex: 50%;
+    margin-left: 64px;
+    margin-right: 64px;
+}
+
+.helpus-container {
+    padding: 64px;
+    margin: 64px;
+}
+
+
+.subheader {
+    color: rgb(51, 0, 111);
+    font-size: 4rem;
+    margin-top: 48px;
+    margin-bottom: 48px;
+}
+
+.box-border {
+    border-width: 1px;
+    border-style: ridge;
+    border-color: rgb(150, 150, 150);
+}
+
+.supporters-container {
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: center;
+}
+
+.supporters-container > div {
+    padding-left: 32px;
+    padding-right: 32px;
+    border-right: 2px solid rgb(150, 150, 150);
+}
+
+.supporters-container > div:last-child {
+    border-right: none;
+}
+
+.bold-large {
+    font-weight: bold;
+    font-size: 150%;
+}
+
+.gray {
+    color: rgb(150, 150, 150);
+}
+
+.block-center {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.custom-progress {
+    width: 400px;
+    height: 40px;
+    overflow: hidden;
+    background-color: rgb(219, 219, 219);
+    border-radius: 20px;
+    box-shadow:
+        -2px 2px 2px rgba(0,0,0,.5),
+        2px 2px 2px rgba(0,0,0,.5);
+    display: block;
+}
+
+.custom-progress-bar {
+    float: left;
+    height: 100%;
+    background-color: rgb(51, 0, 111);
+}
+
+.purple-button-container {
+    margin-top: 48px;
+    margin-bottom: 48px;
+}
+
+.purple-button {
+    color: white;
+    font-weight: 1000;
+    font-size: 2em;
+    padding: 0.5em;
+    background-color: rgb(51, 0, 111);
+    border-radius: 2em;
+}
+
+.whatis-container {
+    height: 640px;
+    width: 100%;
+    padding: 3.33vw;  /* 64px/1920px */
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: stretch;
+    background-size: 100% 100%;
+    background-repeat: no-repeat;
+}
+
+.whatis-container > div {
+    flex: 50%;
+    padding: 64px;
+}
+
+.support-section {
+    margin: 64px;
+}
+
+.car-interface {
+    display: flex;
+    flex-wrap: nowrap;
+    align-items: stretch;
+}
+
+.car-interface > * {
+    padding: 16px;
+}
+
+.team-list {
+    padding: 0;
+}
+
+.team-list > li {
+    margin: 8px 0 8px 0;
+    padding: 12px;
+    border: 2px solid rgb(155, 155, 155);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    cursor: pointer;
+    transition:
+        background-color 0.5s ease,
+        border-color 0.5s ease;
+    background-color: inherit;
+}
+
+.team-list > li:hover {
+    border-color: green;
+    background-color: rgb(233, 233, 233);
+}
+
+.team-list-item-selected {
+    background-color: rgb(233, 233, 233) !important;
+    border-color: red !important; 
+}
+
+.team-list [role="name"] {
+    color: rgb(51, 0, 111);
+    font-size: 3rem;
+    padding-right: 64px;
+}
+
+.team-list [role="funded"] {
+    font-size: 2.5rem;
+    white-space: nowrap;
+}
+
+.panel-container {
+    flex: 1;
+    width: 100%;
+}
+
+.team-panel {
+    display: none;
+}
+
+.team-panel img {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    width: 800px;
+}
+
+.team-description {
+    bottom: 0;
+    border: 2px solid rgb(155, 155, 155);
+    padding-left: 64px;
+    padding-right: 64px;
+}
+
+.team-description > * {
+    margin-top: 16px;
+    margin-bottom: 16px;
+}
+
+.team-description > h1 {
+    color: rgb(51, 0, 111);
+}
+
+.team-description > .custom-progress {
+    position: relative;
+}
+
+.team-description [role="funded"] {
+    position: absolute;
+    top: 0;
+    left: 0;
+    line-height: 40px;
+    color: white;
+    padding-left: 16px;
+}
+
+.team-description [role="goal"] {
+    position: absolute;
+    top: 0;
+    right: 0;
+    line-height: 40px;
+    color: black;
+    padding-right: 16px;
+}
+
+.thankyou-container {
+    margin: 64px;
+    padding: 64px;
+    display: flex;
+    flex-wrap: nowrap;
+    align-items: stretch;
+}
+
+.thankyou-container > div {
+    flex: 50%;
+}
+
+.thankyou-panel {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.form-container input {
+    height: 50px;
+    width: 400px;
+    border: 1px solid rgb(155, 155, 155);
+    border-radius: 25px;
+    padding: 15px;
+    display: block;
+    margin-top: 12px;
+    margin-bottom: 12px;
+}
+
+#team-supporting {
+    color: rgb(51, 0, 111);
+}
+
+.donation-tiers-container {
+    margin: 64px;
+    padding: 32px 32px 96px 32px;
+}
+
+.slider-container {
+    position: relative;
+    display: flex;
+    margin-top: 128px;
+}
+
+.slider {
+    opacity: 0;
+    position: absolute;
+    width: 0;
+    height: 100px;
+    border-right: 6px solid rgb(155, 155, 155);
+    top: -25px;
+}
+
+.slider [role="amount"] {
+    position: absolute;
+    top: -10rem;
+    left: -8rem;
+    font-weight: 700;
+    font-size: 8rem;
+    color: red;
+    text-shadow: 1px solid rgb(155, 155, 155);
+}
+
+.slider-item {
+    flex: 1;
+    position: relative;
+    padding-top: 5rem;
+}
+
+.slider-item [role="dollar"] {
+    position: absolute;
+    font-size: 5rem;
+    top: -1.5rem;
+    right: -5rem;
+    color: rgb(77, 77, 77);
+}
+
+.slider-item [role="line-spacer"] {
+    height: 20px;
+    border-left: 6px solid rgb(77, 77, 77);
+}
+
+.slider-item [role="line"] {
+    /* so that it doesn't overlap with markers */
+    position: absolute;
+    top: calc(5rem + 20px);
+    left: 6px;
+    width: 100%;
+}
+
+.slider-item [role="box"] {
+    margin-left: 24px;
+    margin-right: 24px;
+    padding-left: 24px;
+    padding-right: 24px;
+    border: 1px solid rgb(155, 155, 155);
+}
+
+.slider-item [role="title"] {
+    font-weight: 700;
+}
+
+#purple-level [role="line"] {
+    border-top: 6px solid rgb(51, 0, 111);
+}
+#purple-level [role="title"] {
+    color: rgb(51, 0, 111);
+}
+
+#carbon-level [role="line"] {
+    border-top: 6px solid rgb(20, 20, 20);
+}
+#carbon-level [role="title"] {
+    color: rgb(20, 20, 20);
+}
+
+#silver-level [role="line"] {
+    border-top: 6px solid rgb(178, 178, 178);
+}
+#silver-level [role="title"] {
+    color: rgb(178, 178, 178);
+}
+
+#gold-level [role="line"] {
+    border-top: 6px solid rgb(255, 226, 0);
+}
+#gold-level [role="title"] {
+    color: rgb(255, 226, 0);
+}
+
+#diamond-level [role="line"] {
+    border-top: 6px solid rgb(226, 226, 226);
+}
+#diamond-level [role="title"] {
+    color: rgb(226, 226, 226);
+}
+
+.thankyou-footer {
+    position: relative;
+}
+
+.thankyou-hero {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: white;
+    font-size: 12rem;
+    font-weight: 700;
+    text-shadow:
+        2px 2px 4px rgba(80, 80, 80, 0.6),
+        -2px 2px 2px rgba(150, 150, 80, 0.6),
+        -2px -2px 4px rgba(80, 80, 80, 0.6),
+        2px -2px 4px rgba(80, 80, 80, 0.6);
+}
+
+    </style>
+</head>
+<body>
+    <div id="wrapper">
+        <div class="embed-container ratio-16-9">
+            <img src="{{ image('pages/donate/hero_image_cropped.jpg') }}" />
+            <div class="hero-text hero-subtitle">
+                UWashington <br />
+                Formula Motorsports
+            </div>
+            <div class="hero-text hero-title">
+                Road to Germany
+            </div>
+            <span class="glyphicon glyphicon-chevron-down hero-text hero-caret" aria-hidden="true"></span>
+        </div>
+
+        <div id="header" style="font-size: 14px">
+            {% block nav %}
+                {{ menu('main', '_nav.twig') }}
+            {% endblock %}
+        </div>
+
+
+        <h1 id="2017-fundraiser" class="text-center main-header">
+            2017 Fundraiser
+        </h1>
+        <div class="section-2col">
+            <div>
+                <img class="block-center" src="{{ image('pages/donate/rodney_car.jpg') }}" style="width: 80%;" />
+            </div>
+            <div>
+                <p>
+                    2017 marks UWashington Formula Motorsports’ 28th year of designing, building and racing some of the world’s fastest cars. However, this year is special because it marks the final year that UWFM will build a combustion car before transitioning to an electric-only team.
+                </p>
+                <h2 class="subheader">
+                    We are making history...
+                </h2>
+                <p>
+                    This summer, UWFM is determined to win Formula Student Lincoln in both the electric and combustion series.  <br />
+                    After Lincoln,  UWFM aims to make history by being the <em>first ever</em> All-American team to win the combustion series at Formula Student Germany. 
+                </p>
+                <h2 class="subheader">... but racing isn't cheap,</h2>
+                <p>
+                    Building and racing Formula SAE cars is expensive. A single set of batteries for our electric car can cost over $6000 and shipping our cars overseas can cost twice that much! <br />
+                    Since we are a student-organized collegiate club, UWFM relies on <em>sponsorship and donations to cover 100% of our costs.</em>
+                </p>
+                <h2 class="subheader">and that's where you come in</h2>
+                <p>
+                    Help us make history by donating to help cover our annuals costs. By supporting our program, you’re doing more than supporting the next generation of engineering and business professionals. You’re supporting the UW, your community, your country, even yourself.
+                </p>
+                <p style="font-size: 75%">
+                    (Because our organization is a registered 501(c)(3), any donation made to UWFM is tax deductible.)
+                </p>
+            </div>
+        </div>
+        <div class="helpus-container box-border text-center">
+            <h1 class="text-center section-header" style="font-size: 8rem">Help us get racing!</h1>
+            <p class="text-center">Donate as little or as much as you want, every penny helps!</p>
+            <div class="supporters-container" class="block-center">
+                <div>
+                    <span class="bold-large">117</span>
+                    <br />
+                    <span class="gray">Supporters</span>
+                </div>
+                <div>
+                    <span class="bold-large">$18,234</span>
+                    <br />
+                    <span class="gray">of $25,000</span>
+                </div>
+                <div>
+                    <span class="bold-large">&#x221e;</span> <!-- infinity -->
+                    <br />
+                    <span class="gray">Gratitute</span>
+                </div>
+            </div>
+            <div class="custom-progress margin-16 block-center">
+                <div class="custom-progress-bar" style="width: 50%">
+                </div>
+            </div>
+            <div class="text-center purple-button-container">
+                <button id="donate-link" class="purple-button">Donate Now</button>
+            </div>
+        </div>
+        <div class="whatis-container margin-64" style="background-image: url({{ image('pages/donate/team_photo_cropped.jpg') }})">
+            <div class="text-right">
+                <iframe style="height: 100%; width: 80%" src="http://www.youtube.com/embed/1ZrvBEIa_8Y?autohide=1&amp;showinfo=0&amp;rel=0&amp;autoplay=0" frameborder="0" allowfullscreen=""></iframe>
+            </div>
+            <div>
+                <h1 class="section-header" style="margin-top: 0">What is Formula SAE?</h1>
+                <p>
+                    Formula SAE is an engineering design competition for
+                    undergraduate and graduate students. The design directive is
+                    for teams is to develop and construct a single-seat race car for
+                    the non-professional weekend autocross racer with the best
+                    overall package of design, construction, performance and cost.
+                </p>
+                <p>
+                    The competition provides participants with the opportunity to
+                    enhance their engineering design and project management
+                    skills by applying learned classroom theories in a competitive
+                    setting. 
+                </p>
+                <p>
+                    <a href="/" target="_blank">Learn More</a>
+                </p>
+            </div>
+        </div>
+        <div class="support-section">
+            <h1 class="section-header">
+                What part of our team <br/>
+                would you like to support?
+            </h1>
+            <div class="car-interface">
+                <div>
+                    <p class="margin-64">
+                        Select the system you would like to help fund.
+                    </p>
+                    <ul class="team-list">
+                        <li id="chassis">
+                            <span role="name">
+                                Chassis
+                            </span>
+                            <span role="funded">
+                                20% Funded
+                            </span>
+                        </li>
+                        <li id="aero">
+                            <span role="name">
+                                Aerodynamics
+                            </span>
+                            <span role="funded">
+                                20% Funded
+                            </span>
+                        </li>
+                        <li id="electronics">
+                            <span role="name">
+                                Electronics
+                            </span>
+                            <span role="funded">
+                                20% Funded
+                            </span>
+                        </li>
+                        <li id="powertrain">
+                            <span role="name">
+                                Powertrain
+                            </span>
+                            <span role="funded">
+                                20% Funded
+                            </span>
+                        </li>
+                        <li id="suspension">
+                            <span role="name">
+                                Suspension
+                            </span>
+                            <span role="funded">
+                                20% Funded
+                            </span>
+                        </li>
+                        <li id="manufacturing">
+                            <span role="name">
+                                Manufacturing
+                            </span>
+                            <span role="funded">
+                                20% Funded
+                            </span>
+                        </li>
+                        <li id="competition">
+                            <span role="name">
+                                Competition
+                            </span>
+                            <span role="funded">
+                                20% Funded
+                            </span>
+                        </li>
+                    </ul>
+                </div>
+                <div class="panel-container">
+                    <div id="default-panel" class="team-panel" style="display: block">
+                        <img src="{{ image('pages/donate/teams/car.jpg') }}" />
+                    </div>
+                    <div id="chassis-panel" class="team-panel">
+                        <img src="{{ image('pages/donate/teams/chassis.png') }}" />
+                        <div class="team-description">
+                            <h1>What is a Chassis?</h1>
+                            <p>
+                                As the main structural component of the car, the chassis must be incredibly strong to withstand the forces a car undergoes while racing. What’s more, the chassis must also be light to keep the car nimble and fast. Luckily, the Chassis Team has mastered the use of carbon fiber, a material that’s a strong as it is light.
+                            </p>
+                            <div class="custom-progress">
+                                <div class="custom-progress-bar" style="width: 65%">
+                                </div>
+                                <span role="funded">
+                                    65% Funded
+                                </span>
+                                <span role="goal">
+                                    $875 to Go
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="aero-panel" class="team-panel">
+                        <img src="{{ image('pages/donate/teams/aero.png') }}" />
+                        <div class="team-description">
+                            <h1>What are Aerodynamics?</h1>
+                            <p>
+                                The black magic of racecar engineering; turning air into grip. To do just that, the Aerodynamics Team designs and manufactures a front wing, rear wing, and undertray. Together, these components use the weight of the air passing over them, or downforce, to press all four tires into the track. This force gives the driver more grip, allowing the driver to corner at higher speeds without losing traction. 
+                            </p>
+                            <div class="custom-progress">
+                                <div class="custom-progress-bar" style="width: 65%">
+                                </div>
+                                <span role="funded">
+                                    65% Funded
+                                </span>
+                                <span role="goal">
+                                    $875 to Go
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="electronics-panel" class="team-panel">
+                        <img src="{{ image('pages/donate/teams/electronics.png') }}" />
+                        <div class="team-description">
+                            <h1>What are Electronics?</h1>
+                            <p>
+                                The hard to see, yet incredibly powerful, electronics systems on our cars produce invaluable data and are imperative to the car’s function. The Electronics team produces a wide variety of components, from the steering wheel, to the dashboard, to the power distribution unit. 
+                            </p>
+                            <div class="custom-progress">
+                                <div class="custom-progress-bar" style="width: 65%">
+                                </div>
+                                <span role="funded">
+                                    65% Funded
+                                </span>
+                                <span role="goal">
+                                    $875 to Go
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="manufacturing-panel" class="team-panel">
+                        <img src="{{ image('pages/donate/teams/manufacturing.png') }}" />
+                        <div class="team-description">
+                            <h1>What is Manufacturing?</h1>
+                            <p>
+                                When it comes to constructing our cars swiftly, the manufacturing teams shine brightest. Whether it is a complex aluminum bracket or curvaceous carbon fiber enclosure, these teams manage to produce high quality parts at an alarmingly fast rate. 
+                            </p>
+                            <div class="custom-progress">
+                                <div class="custom-progress-bar" style="width: 65%">
+                                </div>
+                                <span role="funded">
+                                    65% Funded
+                                </span>
+                                <span role="goal">
+                                    $875 to Go
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="powertrain-panel" class="team-panel">
+                        <img src="{{ image('pages/donate/teams/powertrain.png') }}" />
+                        <div class="team-description">
+                            <h1>What is a Powertrain?</h1>
+                            <p>
+                                Quite simply, powertrain is the heart and muscle of the cars that makes them faster than some six-figure supercars. These systems consist of the engine and differential for our combustion car and the electronic drivetrain for our electric car. Together, these systems generate and deliver the power to the ground, with the help o
+                            </p>
+                            <div class="custom-progress">
+                                <div class="custom-progress-bar" style="width: 65%">
+                                </div>
+                                <span role="funded">
+                                    65% Funded
+                                </span>
+                                <span role="goal">
+                                    $875 to Go
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="suspension-panel" class="team-panel">
+                        <img src="{{ image('pages/donate/teams/suspension.JPG') }}" />
+                        <div class="team-description">
+                            <h1>What is Suspension?</h1>
+                            <p>
+                                Pulling a large amounts of g-force is a point of pride for the Suspension team. Whether it be 2.6 G’s under braking or 2.2 G’s in a fast, sweeping corner, the suspension team aims to maximize performance out of the tires whilst keeping components lightweight and strong.
+                            </p>
+                            <div class="custom-progress">
+                                <div class="custom-progress-bar" style="width: 65%">
+                                </div>
+                                <span role="funded">
+                                    65% Funded
+                                </span>
+                                <span role="goal">
+                                    $875 to Go
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="competition-panel" class="team-panel">
+                        <img src="{{ image('pages/donate/rodney_car.jpg') }}" />
+                        <div class="team-description">
+                            <h1>What is Competition?</h1>
+                            <p>
+                                For UWFM, building two racecars is just the tip of a logistical and financial iceberg. After paying for shipping costs, our team must coordinate with several local companies just to get our cars and equipment through customs. What’s more, shipping is just one of several competition related costs. In fact, just registering UWFM for our U.S. competition costs nearly $5000!
+                            </p>
+                            <div class="custom-progress">
+                                <div class="custom-progress-bar" style="width: 65%">
+                                </div>
+                                <span role="funded">
+                                    65% Funded
+                                </span>
+                                <span role="goal">
+                                    $875 to Go
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="donate-section" class="thankyou-container box-border">
+            <div>
+                <img style="width: 100%" src="{{ image('pages/donate/team_photo.jpg') }}" />
+            </div>
+            <div style="margin-left: 64px" class="thankyou-panel">
+                <h1 class="text-center section-header">Thank You For Your Support!</h1>
+                <div id="team-supporting" style="margin-top: 32px; opacity: 0;">
+                    You are supporting:
+                    <span id="team-supporting-name">Chassis</span>
+                </div>
+                <div class="form-container">
+                    <form>
+                        <input type="text" name="fullname" placeholder="Full Name" />
+                        <input type="text" name="amount" placeholder="Donation Amount" />
+                        <input type="text" name="email" placeholder="Email Address" />
+                        <button class="purple-button" style="width: 100%; margin-top: 64px;">Donate</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div class="donation-tiers-container box-border">
+            <h1 class="section-header text-center">DONATION TIERS</h1>
+            <div class="slider-container">
+                <div class="slider">
+                    <span role="amount">$0</span>
+                </div>
+                <div id="purple-level" class="slider-item">
+                    <div role="dollar">
+                        $200
+                    </div>
+                    <div role="line-spacer"></div>
+                    <div role="line"></div>
+                    <div role="line-spacer"></div>
+                    <div role="box">
+                        <h2 role="title">
+                            Purple Level
+                        </h2>
+                        <p>
+                            Every donation counts! To thank you, we will list your name alongside our other individual sponsors on our website.
+                        </p>
+                    </div>
+                </div>
+                <div id="carbon-level" class="slider-item">
+                    <div role="dollar">
+                        $400
+                    </div>
+                    <div role="line-spacer"></div>
+                    <div role="line"></div>
+                    <div role="line-spacer"></div>
+                    <div role="box">
+                        <h2 role="title">
+                            Carbon Level
+                        </h2>
+                        <p>
+                            Congratulations on your naming rights! UWFM Purple sponsors will receive both a team sticker as well as their name placed on of our cars to publicly recognize their support.
+                        </p>
+                    </div>
+                </div>
+                <div id="silver-level" class="slider-item">
+                    <div role="dollar">
+                        $600
+                    </div>
+                    <div role="line-spacer"></div>
+                    <div role="line"></div>
+                    <div role="line-spacer"></div>
+                    <div role="box">
+                        <h2 role="title">
+                            Silver Level
+                        </h2>
+                        <p>
+                            You’re amazing! To thank you for your generous donation, our Silver level sponsors will receive a special edition team t-shirt.
+                        </p>
+                    </div>
+                </div>
+                <div id="gold-level" class="slider-item">
+                    <div role="dollar">
+                        $1000
+                    </div>
+                    <div role="line-spacer"></div>
+                    <div role="line"></div>
+                    <div role="line-spacer"></div>
+                    <div role="box">
+                        <h2 role="title">
+                            Gold Level
+                        </h2>
+                        <p>
+                            To show you how much we appreciate your generosity, Gold level sponsors will receive a framed photo of our team and cars as well as VIP seating at our Unveiling event. (May 12th, 2017 @ UW)
+                        </p>
+                    </div>
+                </div>
+                <div id="diamond-level" class="slider-item">
+                    <div role="line-spacer"></div>
+                    <div role="line"></div>
+                    <div role="line-spacer"></div>
+                    <div role="box">
+                        <h2 role="title">
+                            Diamond Level
+                        </h2>
+                        <p>
+                            You are a cut above the rest. You are what keep our wheels turning and our motors running. As such, we would like to thank you by awarding you one lottery ticket to attend the Washington Racing Experience where one lucky donor will get  to drive a UWFM racecar!
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="thankyou-footer">
+            <img style="width: 100%" src="{{ image('pages/donate/thankyou_image.jpg') }}" />
+            <div class="thankyou-hero">
+                Thank you!
+            </div>
+        </div>
+
+        <div id="footer" style="font-size: 14px">
+            {% block footer %}
+                {% include '_footer.twig' %}
+            {% endblock %}
+        </div>
+    </div>
+</body>
+{% block scripts %}
+    <script src="{{ paths.theme }}js/jquery-1.12.0.min.js"></script>
+    <script src="{{ paths.theme }}js/bootstrap.min.js"></script>
+    <script src="{{ paths.theme }}js/jasny-bootstrap.min.js"></script>
+    <script src="{{ paths.theme }}js/js-webshim/polyfiller.js"></script>
+    <script>
+        /* Temporary fix for webshim issue #560
+	 * https://github.com/aFarkas/webshim/issues/560 */
+        jQuery.swap = function( elem, options, callback, args ) {
+            var ret, name, old = {};
+            // Remember the old values, and insert the new ones
+            for ( name in options ) {
+                    old[ name ] = elem.style[ name ];
+                    elem.style[ name ] = options[ name ];
+            }
+        
+            ret = callback.apply( elem, args || [] );
+        
+            // Revert the old values
+            for ( name in options ) {
+                    elem.style[ name ] = old[ name ];
+            }
+            return ret;
+        };
+        webshims.polyfill('forms es5');
+    </script>
+    <script src="{{ paths.theme }}js/custom.js"></script>
+    <script>
+$('.hero-caret').click(function() {
+    $('html, body').animate({ scrollTop: $('#2017-fundraiser').offset().top }, 1000);
+});
+
+$('#donate-link').click(function() {
+    $('html, body').animate({ scrollTop: $('#donate-section').offset().top }, 1000);
+});
+
+var selectedTeamId = null;
+var selectedTeamName = null;
+
+$('.team-list > li').click(function() {
+    var selectId = $(this).attr('id');
+    var selectName = $(this).find('[role="name"]').text().trim();
+    $('#' + selectedTeamId).removeClass('team-list-item-selected');
+    if (selectId != selectedTeamId) {
+        selectedTeamId = selectId;
+        selectedTeamName = selectName;
+        $(this).addClass('team-list-item-selected');
+        $('#team-supporting-name').text(selectedTeamName);
+    } else {
+        selectedTeamId = null;
+        selectedTeamName = null;
+    }
+    $('#team-supporting').css('opacity', (selectedTeamName ? 1 : 0));
+});
+
+
+$('.team-list > li').hover(function() {
+    var hoverId = $(this).attr('id');
+    $('.team-panel').css('display', 'none');
+    $('#' + hoverId + '-panel').css('display', 'block');
+}, function() { });
+
+$('input[name="amount"]').blur(function() {
+    var amount = parseInt($(this).val());
+    if (isNaN(amount)) {
+        $('.slider').css('opacity', 0);
+        return;
+    }
+    $('.slider [role="amount"]').text('$' + amount);
+    var left = $('#purple-level').position().left;
+    var right = $('#diamond-level').position().left;
+    var width = right - left;
+    var calc = amount / 1000 * width;
+    if (calc > width) {
+        calc = width;
+    }
+    console.log(calc);
+    $('.slider').css('left', calc);
+    $('.slider').css('opacity', 1);
+});
+
+    </script>
+{% endblock %}
+{% include '_analytics.twig' %}
+</html>
+
