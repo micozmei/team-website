@@ -57,10 +57,10 @@
 body {
     font-family: 'Roboto', sans-serif;
     color: rgb(96, 96, 96);
-    font-size: 2.4rem;
+    font-size: 2rem;
 }
 
-<!-- Courtesy of http://andmag.se/2012/10/responsive-images-how-to-prevent-reflow/ -->
+/* Courtesy of http://andmag.se/2012/10/responsive-images-how-to-prevent-reflow/ */
 .embed-container {
     position: relative;
     height: 0;
@@ -109,8 +109,8 @@ body {
 }
 
 .hero-subtitle {
-    top: 15%;
-    font-size: 5rem;
+    top: 5%;
+    font-size: 3vw;
     text-shadow:
         1px 1px 2px rgba(150, 150, 150, 0.6),
         -1px 1px 2px rgba(150, 150, 150, 0.6),
@@ -119,8 +119,8 @@ body {
 }
 
 .hero-title {
-    top: 40%;
-    font-size: 15rem;;
+    bottom: 50%;
+    font-size: 8vw;
     text-shadow:
         2px 2px 4px rgba(80, 80, 80, 0.6),
         -2px 2px 2px rgba(150, 150, 80, 0.6),
@@ -129,7 +129,8 @@ body {
 }
 
 .hero-caret {
-    top: 90%;
+    top: auto;
+    bottom: 0;
     font-size: 12rem;
     text-shadow:
         1px 1px 2px rgba(150, 150, 150, 0.6),
@@ -153,9 +154,9 @@ body {
     color: rgb(51, 0, 111);
     text-transform: uppercase;
     font-weight: 900;
-    font-size: 12rem;
-    margin-top: 64px;
-    margin-bottom: 64px;
+    font-size: 6vw;
+    margin-top: 3vw;
+    margin-bottom: 3vw;
     text-shadow: 
         -0.01em 0.01em 0 #D9D9D9,
         -0.02em 0.02em 0 #D9D9D9,
@@ -175,7 +176,7 @@ body {
 }
 
 .section-2col > * {
-    flex: 50%;
+    flex: 1;
     margin-left: 64px;
     margin-right: 64px;
 }
@@ -188,9 +189,9 @@ body {
 
 .subheader {
     color: rgb(51, 0, 111);
-    font-size: 4rem;
-    margin-top: 48px;
-    margin-bottom: 48px;
+    font-size: 3rem;
+    margin-top: 2rem;
+    margin-bottom: 2rem;
 }
 
 .box-border {
@@ -333,6 +334,7 @@ body {
 }
 
 .panel-container {
+    margin-top: -32px;
     flex: 1;
     width: 100%;
 }
@@ -345,7 +347,7 @@ body {
     display: block;
     margin-left: auto;
     margin-right: auto;
-    width: 800px;
+    width: 1280px;
 }
 
 .team-description {
@@ -388,14 +390,8 @@ body {
 
 .thankyou-container {
     margin: 64px;
-    padding: 64px;
-    display: flex;
-    flex-wrap: nowrap;
-    align-items: stretch;
-}
-
-.thankyou-container > div {
-    flex: 50%;
+    padding-top: 64px;
+    padding-bottom: 64px;
 }
 
 .thankyou-panel {
@@ -547,7 +543,7 @@ body {
 <body>
     <div id="wrapper">
         <div class="embed-container ratio-16-9">
-            <img src="{{ image('pages/donate/hero_image_cropped.jpg') }}" />
+            <img src="{{ image('pages/donate/hero_image.jpg') }}" />
             <div class="hero-text hero-subtitle">
                 UWashington <br />
                 Formula Motorsports
@@ -570,7 +566,11 @@ body {
         </h1>
         <div class="section-2col">
             <div>
-                <img class="block-center" src="{{ image('pages/donate/rodney_car.jpg') }}" style="width: 80%;" />
+                <div class="block-center" style="max-width: 640px">
+                    <div class="embed-container ratio-1-1">
+                        <img src="{{ image('pages/donate/rodney_car_cropped.jpg') }}" />
+                    </div>
+                </div>
             </div>
             <div>
                 <p>
@@ -650,12 +650,12 @@ body {
             </div>
         </div>
         <div class="support-section">
-            <h1 class="section-header">
-                What part of our team <br/>
-                would you like to support?
-            </h1>
             <div class="car-interface">
                 <div>
+                    <h1 class="section-header">
+                        What part of our team <br/>
+                        would you like to support?
+                    </h1>
                     <p class="margin-64">
                         Select the system you would like to help fund.
                     </p>
@@ -818,7 +818,7 @@ body {
                         </div>
                     </div>
                     <div id="suspension-panel" class="team-panel">
-                        <img src="{{ image('pages/donate/teams/suspension.JPG') }}" />
+                        <img src="{{ image('pages/donate/teams/suspension.png') }}" />
                         <div class="team-description">
                             <h1>What is Suspension?</h1>
                             <p>
@@ -858,11 +858,11 @@ body {
                 </div>
             </div>
         </div>
-        <div id="donate-section" class="thankyou-container box-border">
+        <div id="donate-section" class="section-2col thankyou-container box-border">
             <div>
                 <img style="width: 100%" src="{{ image('pages/donate/team_photo.jpg') }}" />
             </div>
-            <div style="margin-left: 64px" class="thankyou-panel">
+            <div class="thankyou-panel">
                 <h1 class="text-center section-header">Thank You For Your Support!</h1>
                 <div id="team-supporting" style="margin-top: 32px; opacity: 0;">
                     You are supporting:
