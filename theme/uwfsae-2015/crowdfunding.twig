@@ -1,3 +1,5 @@
+{% set data = crowdfunding_handler() %}
+{{ data.hello }}
 <!DOCTYPE html>
 <html lang="{{ htmllang() }}">
 <head>
@@ -869,11 +871,12 @@ body {
                     <span id="team-supporting-name">Chassis</span>
                 </div>
                 <div class="form-container">
-                    <form>
+                    <form id="checkout_form" method="POST">
                         <input type="text" name="fullname" placeholder="Full Name" />
                         <input type="text" name="amount" placeholder="Donation Amount" />
                         <input type="text" name="email" placeholder="Email Address" />
-                        <button class="purple-button" style="width: 100%; margin-top: 64px;">Donate</button>
+                        <input type="hidden" name="stripe_token" />
+                        <button type="submit" class="purple-button" id="donate-button" style="width: 100%; margin-top: 64px;">Donate</button>
                     </form>
                 </div>
             </div>
@@ -1003,6 +1006,7 @@ body {
         };
         webshims.polyfill('forms es5');
     </script>
+    <script src="//checkout.stripe.com/checkout.js"></script>
     <script src="{{ paths.theme }}js/custom.js"></script>
     <script>
 $('.hero-caret').click(function() {
@@ -1056,6 +1060,46 @@ $('input[name="amount"]').blur(function() {
     console.log(calc);
     $('.slider').css('left', calc);
     $('.slider').css('opacity', 1);
+});
+
+// Stripe handling
+var handler = StripeCheckout.configure({
+    key: 'pk_test_6pRNASCoBOKtIshFeQd4XMUh',
+    image: "{{ image('pages/donate/uw_logo.jpg') }}",
+    locale: 'auto',
+    token: function(token) {
+        $('input[name=stripe_token]').val(token.id);
+        console.log('stripe token added');
+        //$('#checkout_form').submit();
+    }
+});
+
+$('#checkout_form').submit(function (e) {
+    if (e.preventDefault) {
+        e.preventDefault();
+    } else {
+        e.returnValue = false;
+    }
+
+    var amount = parseFloat($('input[name=amount]').val().replace('$', ''));
+    if (!(amount > 0)) {
+        // errro
+        return false;
+    }
+
+    // Open Checkout with further options:
+    handler.open({
+        name: 'SAE International',
+        description: 'Donation to UW Formula Motorsports',
+        zipCode: true,
+        amount: parseInt(amount * 100),
+        email: $('input[name=email]').val(),
+    });
+});
+
+// Close Checkout on page navigation:
+$(window).on('popstate', function() {
+    handler.close();
 });
 
     </script>
