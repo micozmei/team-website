@@ -79,6 +79,14 @@ body {
     width: 100%;
 }
 
+.embed-container iframe {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+
 .margin-64 {
     margin-top: 64px;
     margin-bottom: 64px;
@@ -255,16 +263,21 @@ body {
     border-radius: 2em;
 }
 
-.whatis-container {
-    height: 640px;
+.whatis-background {
     width: 100%;
     padding: 3.33vw;  /* 64px/1920px */
+    background-size: 100% 100%;
+    background-repeat: no-repeat;
+}
+
+.whatis-container {
+    height: 640px;
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
-    align-items: stretch;
-    background-size: 100% 100%;
-    background-repeat: no-repeat;
+    align-items: center;
+    background-color: white;
+    border: 1px solid rgb(150, 150, 150);
 }
 
 .whatis-container > div {
@@ -594,7 +607,7 @@ body {
             <div>
                 <div class="block-center" style="max-width: 640px">
                     <div class="embed-container ratio-1-1">
-                        <img src="{{ image('pages/donate/rodney_car_cropped.jpg') }}" />
+                        <img src="{{ image('pages/donate/rodney_car.jpg') }}" />
                     </div>
                 </div>
             </div>
@@ -651,28 +664,32 @@ body {
                 <button id="donate-link" class="purple-button">Donate Now</button>
             </div>
         </div>
-        <div class="whatis-container margin-64" style="background-image: url({{ image('pages/donate/team_photo_cropped.jpg') }})">
-            <div class="text-right">
-                <iframe style="height: 100%; width: 80%" src="//www.youtube.com/embed/1ZrvBEIa_8Y?autohide=1&amp;showinfo=0&amp;rel=0&amp;autoplay=0" frameborder="0" allowfullscreen=""></iframe>
-            </div>
-            <div>
-                <h1 class="section-header" style="margin-top: 0">What is Formula SAE?</h1>
-                <p>
-                    Formula SAE is an engineering design competition for
-                    undergraduate and graduate students. The design directive is
-                    for teams is to develop and construct a single-seat race car for
-                    the non-professional weekend autocross racer with the best
-                    overall package of design, construction, performance and cost.
-                </p>
-                <p>
-                    The competition provides participants with the opportunity to
-                    enhance their engineering design and project management
-                    skills by applying learned classroom theories in a competitive
-                    setting. 
-                </p>
-                <p>
-                    <a href="/" target="_blank">Learn More</a>
-                </p>
+        <div class="whatis-background margin-64" style="background-image: url({{ image('pages/donate/team_photo_blurred.jpg') }})">
+            <div class="whatis-container">
+                <div>
+                    <div class="embed-container ratio-16-9">
+                        <iframe src="//www.youtube.com/embed/1ZrvBEIa_8Y?autohide=1&amp;showinfo=0&amp;rel=0&amp;autoplay=0" frameborder="0" allowfullscreen=""></iframe>
+                    </div>
+                </div>
+                <div>
+                    <h1 class="section-header" style="margin-top: 0">What is Formula SAE?</h1>
+                    <p>
+                        Formula SAE is an engineering design competition for
+                        undergraduate and graduate students. The design directive is
+                        for teams is to develop and construct a single-seat race car for
+                        the non-professional weekend autocross racer with the best
+                        overall package of design, construction, performance and cost.
+                    </p>
+                    <p>
+                        The competition provides participants with the opportunity to
+                        enhance their engineering design and project management
+                        skills by applying learned classroom theories in a competitive
+                        setting.
+                    </p>
+                    <p>
+                        <a href="/" target="_blank">Learn More</a>
+                    </p>
+                </div>
             </div>
         </div>
         <div class="support-section">
@@ -776,7 +793,7 @@ body {
                         </div>
                     </div>
                     <div id="competition-panel" class="team-panel">
-                        <img src="{{ image('pages/donate/rodney_car.jpg') }}" />
+                        <img src="{{ image('pages/donate/teams/competition.jpg') }}" />
                         <div class="team-description">
                             <h1>What is Competition?</h1>
                             <p>
