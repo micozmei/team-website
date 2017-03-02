@@ -132,7 +132,7 @@ SQL;
         }
         //$res->closeCursor();
         return array(
-            'stripe-api-key' => $this->getStripePublishableKey(),
+            'stripe_publishable_key' => $this->getStripePublishableKey(),
             'supporters' => $supporters,
             'raised' => $total_raised,
             'goal' => self::OVERALL_GOAL,
@@ -185,8 +185,55 @@ SQL;
         );*/
     }
 
-    private function handleSubmit() {
+    private function handleSubmit($request) {
         \Stripe\Stripe::setApiKey($this->getStripeSecretKey());
+
+        $fullname = $request->get('fullname');
+        $amount = $request->get('amount');
+        $email = $request->get('email');
+        $stripe_token = $request->get('stripe_token');
+        $registry = $request->get('registry');
+
+        $pdh = $this->genPDO();
+
+        $charge = \Stripe\Charge::create(array(
+            'amount' => $amount,
+            'currency' => 'usd',
+            'description' => 'Donation to UW Formula Motorsports',
+            'source' => $stripe_token,
+        ));
+
+        if (!$charge->paid) {
+            return array(
+                'error' => 'Couldn\'t charge card. Please try again.',
+            );
+        }
+
+        $insertSql = <<<SQL
+INSERT INTO crowdfunding_donations (
+    full_name,
+    amount,
+    email,
+    registry
+) VALUES (
+    :full_name,
+    :amount,
+    :email,
+    :registry
+);
+SQL;
+
+        $stmt = $pdh->prepare($insertSql);
+        $stmt->execute(array(
+            'full_name' => $fullname,
+            'amount' => $amount,
+            'email' => $email,
+            'registry' => ($registry ? $registry : null),
+        ));
+
+        return array(
+            'ok' => 1,
+        );
     }
 }
 

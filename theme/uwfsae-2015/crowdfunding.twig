@@ -1,58 +1,49 @@
 {% set data = crowdfunding_handler() %}
-<!DOCTYPE html>
-<html lang="{{ htmllang() }}">
-<head>
-    {% block head %}
-        <meta charset="UTF-8" />
-        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-        <title>
-            {% if record.title is defined %}{{ record.title|striptags }} | {% endif %}
-                {{ app.config.get('general/sitename') }}
-            {% if record.title is not defined and app.config.get('general/payoff') %} | {{ app.config.get('general/payoff') }}{% endif %}
-        </title>
-        <meta name="author" content="name" />
-        <meta name="description" content="{{ app.config.get('general/description') }}" />
-        <meta name="keywords" content="{{ app.config.get('general/keywords') }}" />
+{% extends (data.error or data.ok)
+    ? '_skeleton.twig'
+    : '_skeleton_base.twig' %}
 
-        <link rel="stylesheet" 
-              href="{{ paths.theme }}css/bootstrap.min.css" />
-        <link rel="stylesheet" 
-              href="{{ paths.theme }}css/jasny-bootstrap.min.css" />
-        <link rel="stylesheet" 
-              href="{{ paths.theme }}assets/socicon/styles.css" />
+{% block content %}
 
-        <link rel="stylesheet"
-              href="{{ paths.theme }}css/layout.css" />
-        <link rel="stylesheet"
-              href="{{ paths.theme }}css/header.css" />
-        <link rel="stylesheet"
-              href="{{ paths.theme }}css/footer.css" />
-        <!--<link rel="stylesheet"
-              href="{{ paths.theme }}css/news.css" />
-        <link rel="stylesheet"
-              href="{{ paths.theme }}css/primary-image.css" />
-        <link rel="stylesheet"
-              href="{{ paths.theme }}css/roster.css" />
-        <link rel="stylesheet"
-              href="{{ paths.theme }}css/car-info.css" />
-        <link rel="stylesheet"
-              href="{{ paths.theme }}css/sponsors.css" />
-        <link rel="stylesheet"
-              href="{{ paths.theme }}css/teams.css" />
-        <link rel="stylesheet"
-              href="{{ paths.theme }}css/sidebar.css" />
-        <link rel="stylesheet"
-              href="{{ paths.theme }}css/typography.css" />
-        <link rel="stylesheet"
-              href="{{ paths.theme }}css/index.css" /> -->
+{% if data.ok %}
 
-        <!--[if lte IE 8]>
-            <script src="{{ paths.theme }}js/respond.min.js"></script>
-        <![endif]-->
-    {% endblock %}
-        <link href="//fonts.googleapis.com/css?family=Roboto:500" rel="stylesheet">
+<h3>Thank you!</h3>
+
+<p>
+  Thank you for your contribution to the team!
+</p>
+
+{% elseif data.error %}
+
+<h3>An error occured</h3>
+
+<p>
+  Don't worry, your card hasn't been charged. Please see the error description below:
+</p>
+
+<pre>{{ data.error }}</pre>
+
+{% else %}
+{% block stylesheets %}
+    <link rel="stylesheet" 
+          href="{{ paths.theme }}css/bootstrap.min.css" />
+    <link rel="stylesheet" 
+          href="{{ paths.theme }}css/jasny-bootstrap.min.css" />
+    <link rel="stylesheet" 
+          href="{{ paths.theme }}assets/socicon/styles.css" />
+
+    <link rel="stylesheet"
+          href="{{ paths.theme }}css/layout.css" />
+    <link rel="stylesheet"
+          href="{{ paths.theme }}css/header.css" />
+    <link rel="stylesheet"
+          href="{{ paths.theme }}css/footer.css" />
+
+    <!--[if lte IE 8]>
+        <script src="{{ paths.theme }}js/respond.min.js"></script>
+    <![endif]-->
+    <link href="//fonts.googleapis.com/css?family=Roboto:500" rel="stylesheet">
     <style>
 
 body {
@@ -401,6 +392,19 @@ body {
     align-items: center;
 }
 
+.invalid {
+    border-color: red !important;
+    border-width: 2px !important;
+    transition:
+        border-color 0.5s ease,
+        border-width 0.5s ease;
+}
+
+#payment_errors {
+    display: none;
+    color: red;
+}
+
 .form-container input {
     height: 50px;
     width: 400px;
@@ -541,8 +545,9 @@ body {
 }
 
     </style>
-</head>
-<body>
+{% endblock %}
+
+{% block body %}
     <div id="wrapper">
         <div class="embed-container ratio-16-9">
             <img src="{{ image('pages/donate/hero_image.jpg') }}" />
@@ -777,10 +782,14 @@ body {
                 <div class="form-container">
                     <form id="checkout_form" method="POST">
                         <input type="text" name="fullname" placeholder="Full Name" />
-                        <input type="text" name="amount" placeholder="Donation Amount" />
+                        <input type="text" name="amount_displayed" placeholder="Donation Amount" />
+                        <input type="hidden" name="amount" />
                         <input type="text" name="email" placeholder="Email Address" />
                         <input type="hidden" name="stripe_token" />
                         <input type="hidden" name="registry" />
+                        <div id="payment_errors">
+                            Please enter something for all fields in the form.
+                        </div>
                         <button type="submit" class="purple-button" id="donate-button" style="width: 100%; margin-top: 64px;">Donate</button>
                     </form>
                 </div>
@@ -884,7 +893,8 @@ body {
             {% endblock %}
         </div>
     </div>
-</body>
+{% endblock %}
+
 {% block scripts %}
     <script src="{{ paths.theme }}js/jquery-1.12.0.min.js"></script>
     <script src="{{ paths.theme }}js/bootstrap.min.js"></script>
@@ -970,15 +980,53 @@ $('input[name="amount"]').blur(function() {
 
 // Stripe handling
 var handler = StripeCheckout.configure({
-    key: 'pk_test_6pRNASCoBOKtIshFeQd4XMUh',
+    key: "{{ data.stripe_publishable_key }}",
     image: "{{ image('pages/donate/uw_logo.jpg') }}",
     locale: 'auto',
     token: function(token) {
         $('input[name=stripe_token]').val(token.id);
         console.log('stripe token added');
-        $('#checkout_form').submit();
+        $('#checkout_form').get().submit();
     }
 });
+
+var validateCheckoutForm = function() {
+    var invalidElements = [];
+
+    var elFullName = $('input[name=fullname]');
+    if (elFullName.val() == '') {
+        invalidElements.push(elFullName);
+    }
+
+    var elAmountDisplayed = $('input[name=amount_displayed]');
+    var amount_float = parseFloat(elAmountDisplayed.val().replace('$', ''));
+    if (!(amount_float > 0)) {
+        invalidElements.push(elAmountDisplayed);
+    }
+
+    var elEmail = $('input[name=email]');
+    if (elEmail.val() == '') {
+        invalidElements.push(elEmail);
+    }
+
+
+    // handle invalid elements
+    $('.invalid').removeClass('invalid');
+    $('#payment_errors').hide();
+    if (invalidElements.length > 0) {
+        for (var i = 0; i < invalidElements.length; i++) {
+            invalidElements[i].addClass('invalid');
+        }
+        $('#payment_errors').show();
+        return false;
+    }
+
+    // success
+    var amount = parseInt(amount_float * 100);
+    $('input[name=amount]').val(amount);
+
+    return true;
+}
 
 $('#checkout_form').submit(function (e) {
     if (e.preventDefault) {
@@ -987,9 +1035,7 @@ $('#checkout_form').submit(function (e) {
         e.returnValue = false;
     }
 
-    var amount = parseFloat($('input[name=amount]').val().replace('$', ''));
-    if (!(amount > 0)) {
-        // errro
+    if (!validateCheckoutForm()) {
         return false;
     }
 
@@ -998,7 +1044,7 @@ $('#checkout_form').submit(function (e) {
         name: 'SAE International',
         description: 'Donation to UW Formula Motorsports',
         zipCode: true,
-        amount: parseInt(amount * 100),
+        amount: $('input[name=amount]').val(),
         email: $('input[name=email]').val(),
     });
 });
@@ -1010,6 +1056,7 @@ $(window).on('popstate', function() {
 
     </script>
 {% endblock %}
-{% include '_analytics.twig' %}
-</html>
+
+{% endif %}
+{% endblock %}
 
