@@ -52,8 +52,8 @@ class Extension extends BaseExtension
     private function genPDO() {
         $cfg = $this->app['config'];
         $conn_params = array(
-            'host' => $cfg->get('general/database/host'),
-            'port' => $cfg->get('general/database/port'),
+            'host' => $cfg->get('general/database/host', 'localhost'),
+            'port' => $cfg->get('general/database/port', '5432'),
             'dbname' => $cfg->get('general/database/databasename'),
             'user' => $cfg->get('general/database/username'),
             'password' => $cfg->get('general/database/password'),
