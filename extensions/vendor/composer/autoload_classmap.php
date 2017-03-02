@@ -8,6 +8,7 @@ $baseDir = dirname($vendorDir);
 return array(
     'Bolt\\Composer\\ExtensionInstaller' => $baseDir . '/ExtensionInstaller.php',
     'Bolt\\Extension\\Uwfsae\\Countdown\\Extension' => $baseDir . '/local/uwfsae/countdown/Extension.php',
+    'Bolt\\Extension\\Uwfsae\\Crowdfunding\\Extension' => $baseDir . '/local/uwfsae/crowdfunding/Extension.php',
     'Bolt\\Extension\\Uwfsae\\GrabFacebookFeed\\Extension' => $baseDir . '/local/uwfsae/grab-facebook-feed/Extension.php',
     'Bolt\\Extension\\Uwfsae\\TeamApplication\\Extension' => $baseDir . '/local/uwfsae/team-application/Extension.php',
 );

@@ -26,7 +26,9 @@
             "Bolt\\Extension\\Uwfsae\\Countdown\\": "local/uwfsae/countdown/",
             "Bolt\\Extension\\UWfsae\\Countdown\\Tests\\": "local/uwfsae/countdown/tests",
             "Bolt\\Extension\\Uwfsae\\TeamApplication\\": "local/uwfsae/team-application/",
-            "Bolt\\Extension\\Uwfsae\\TeamApplication\\Tests\\": "local/uwfsae/team-application/tests"
+            "Bolt\\Extension\\Uwfsae\\TeamApplication\\Tests\\": "local/uwfsae/team-application/tests",
+            "Bolt\\Extension\\Uwfsae\\Crowdfunding\\": "local/uwfsae/crowdfunding/",
+            "Bolt\\Extension\\Uwfsae\\Crowdfunding\\Tests\\": "local/uwfsae/crowdfunding/tests"
         }
     },
     "scripts": {

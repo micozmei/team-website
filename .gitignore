@@ -14,6 +14,10 @@ files/*
 # passwords/app tokens, and such. See config_local.yml.dist for more details.
 app/config/config_local.yml
 
+# Deliberately excluding crowdfunding config since it contains the Stripe
+# private key.
+app/config/extensions/crowdfunding.uwfsae.yml
+
 # Composer
 composer.phar
 

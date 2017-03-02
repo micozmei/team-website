@@ -9,6 +9,8 @@ return array(
     'Bolt\\Extension\\Uwfsae\\TeamApplication\\Tests\\' => array($baseDir . '/local/uwfsae/team-application/tests'),
     'Bolt\\Extension\\Uwfsae\\TeamApplication\\' => array($baseDir . '/local/uwfsae/team-application'),
     'Bolt\\Extension\\Uwfsae\\GrabFacebookFeed\\' => array($baseDir . '/local/uwfsae/grab-facebook-feed'),
+    'Bolt\\Extension\\Uwfsae\\Crowdfunding\\Tests\\' => array($baseDir . '/local/uwfsae/crowdfunding/tests'),
+    'Bolt\\Extension\\Uwfsae\\Crowdfunding\\' => array($baseDir . '/local/uwfsae/crowdfunding'),
     'Bolt\\Extension\\Uwfsae\\Countdown\\' => array($baseDir . '/local/uwfsae/countdown'),
     'Bolt\\Extension\\UWfsae\\GrabFacebookFeed\\Tests\\' => array($baseDir . '/local/uwfsae/grab-facebook-feed/tests'),
     'Bolt\\Extension\\UWfsae\\Countdown\\Tests\\' => array($baseDir . '/local/uwfsae/countdown/tests'),

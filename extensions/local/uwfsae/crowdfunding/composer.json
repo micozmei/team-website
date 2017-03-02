@@ -1,0 +1,31 @@
+{
+    "name": "uwfsae/crowdfunding",
+    "description": "Donation page payment processing",
+    "type": "bolt-extension",
+    "keywords": [ "bolt", "widget", "timer", "countdown" ],
+    "require": {
+        "bolt/bolt": ">=2.0.0,<3.0.0"
+    },
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Steve Anton",
+            "email": "steve@stevefanton.com"
+        }
+    ],
+    "minimum-stability": "dev",
+    "prefer-stable": true,
+    "autoload": {
+        "files": [
+            "init.php"
+        ],
+        "psr-4": {
+            "Bolt\\Extension\\Uwfsae\\Crowdfunding\\": "",
+            "Bolt\\Extension\\Uwfsae\\Crowdfunding\\Tests\\": "tests"
+        }
+    },
+    "extra": {
+        "bolt-assets": "assets"
+    }
+}
+

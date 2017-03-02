@@ -1,5 +1,4 @@
 {% set data = crowdfunding_handler() %}
-{{ data.hello }}
 <!DOCTYPE html>
 <html lang="{{ htmllang() }}">
 <head>
@@ -53,7 +52,7 @@
             <script src="{{ paths.theme }}js/respond.min.js"></script>
         <![endif]-->
     {% endblock %}
-        <link href="https://fonts.googleapis.com/css?family=Roboto:500" rel="stylesheet">
+        <link href="//fonts.googleapis.com/css?family=Roboto:500" rel="stylesheet">
     <style>
 
 body {
@@ -435,6 +434,7 @@ body {
     height: 100px;
     border-right: 6px solid rgb(155, 155, 155);
     top: -25px;
+    transition: left 0.5s ease;
 }
 
 .slider [role="amount"] {
@@ -604,14 +604,14 @@ body {
             <p class="text-center">Donate as little or as much as you want, every penny helps!</p>
             <div class="supporters-container" class="block-center">
                 <div>
-                    <span class="bold-large">117</span>
+                    <span class="bold-large">{{ data.supporters }}</span>
                     <br />
                     <span class="gray">Supporters</span>
                 </div>
                 <div>
-                    <span class="bold-large">$18,234</span>
+                    <span class="bold-large">${{ data.raised|number_format }}</span>
                     <br />
-                    <span class="gray">of $25,000</span>
+                    <span class="gray">of ${{ data.goal|number_format }}</span>
                 </div>
                 <div>
                     <span class="bold-large">&#x221e;</span> <!-- infinity -->
@@ -620,7 +620,7 @@ body {
                 </div>
             </div>
             <div class="custom-progress margin-16 block-center">
-                <div class="custom-progress-bar" style="width: 50%">
+                <div class="custom-progress-bar" style="width: {{ data.percentage*100 }}%">
                 </div>
             </div>
             <div class="text-center purple-button-container">
@@ -662,64 +662,31 @@ body {
                         Select the system you would like to help fund.
                     </p>
                     <ul class="team-list">
-                        <li id="chassis">
+{% for name, v in data.registry %}
+                        <li id="{{ name|lower }}">
                             <span role="name">
-                                Chassis
+                                {{ name }}
                             </span>
                             <span role="funded">
-                                20% Funded
+                                {{ (v.percentage*100)|round(0, 'floor') }}% Funded
                             </span>
                         </li>
-                        <li id="aero">
-                            <span role="name">
-                                Aerodynamics
-                            </span>
-                            <span role="funded">
-                                20% Funded
-                            </span>
-                        </li>
-                        <li id="electronics">
-                            <span role="name">
-                                Electronics
-                            </span>
-                            <span role="funded">
-                                20% Funded
-                            </span>
-                        </li>
-                        <li id="powertrain">
-                            <span role="name">
-                                Powertrain
-                            </span>
-                            <span role="funded">
-                                20% Funded
-                            </span>
-                        </li>
-                        <li id="suspension">
-                            <span role="name">
-                                Suspension
-                            </span>
-                            <span role="funded">
-                                20% Funded
-                            </span>
-                        </li>
-                        <li id="manufacturing">
-                            <span role="name">
-                                Manufacturing
-                            </span>
-                            <span role="funded">
-                                20% Funded
-                            </span>
-                        </li>
-                        <li id="competition">
-                            <span role="name">
-                                Competition
-                            </span>
-                            <span role="funded">
-                                20% Funded
-                            </span>
-                        </li>
+{% endfor %}
                     </ul>
                 </div>
+{% macro registry_progress(name, v) %}
+<div class="custom-progress">
+    <div class="custom-progress-bar" style="width: {{ v.percentage*100 }}%">
+    </div>
+    <span role="funded">
+        {{ (v.percentage*100)|round(0, 'floor') }}% Funded
+    </span>
+    <span role="goal">
+        ${{ (v.goal - v.raised) }} to Go
+    </span>
+</div>
+{% endmacro %}
+{% from _self import registry_progress as registry_progress %}
                 <div class="panel-container">
                     <div id="default-panel" class="team-panel" style="display: block">
                         <img src="{{ image('pages/donate/teams/car.jpg') }}" />
@@ -731,35 +698,17 @@ body {
                             <p>
                                 As the main structural component of the car, the chassis must be incredibly strong to withstand the forces a car undergoes while racing. What’s more, the chassis must also be light to keep the car nimble and fast. Luckily, the Chassis Team has mastered the use of carbon fiber, a material that’s a strong as it is light.
                             </p>
-                            <div class="custom-progress">
-                                <div class="custom-progress-bar" style="width: 65%">
-                                </div>
-                                <span role="funded">
-                                    65% Funded
-                                </span>
-                                <span role="goal">
-                                    $875 to Go
-                                </span>
-                            </div>
+                            {{ registry_progress('Chassis', data.registry.Chassis) }}
                         </div>
                     </div>
-                    <div id="aero-panel" class="team-panel">
+                    <div id="aerodynamics-panel" class="team-panel">
                         <img src="{{ image('pages/donate/teams/aero.png') }}" />
                         <div class="team-description">
                             <h1>What are Aerodynamics?</h1>
                             <p>
                                 The black magic of racecar engineering; turning air into grip. To do just that, the Aerodynamics Team designs and manufactures a front wing, rear wing, and undertray. Together, these components use the weight of the air passing over them, or downforce, to press all four tires into the track. This force gives the driver more grip, allowing the driver to corner at higher speeds without losing traction. 
                             </p>
-                            <div class="custom-progress">
-                                <div class="custom-progress-bar" style="width: 65%">
-                                </div>
-                                <span role="funded">
-                                    65% Funded
-                                </span>
-                                <span role="goal">
-                                    $875 to Go
-                                </span>
-                            </div>
+                            {{ registry_progress('Aerodynamics', data.registry.Aerodynamics) }}
                         </div>
                     </div>
                     <div id="electronics-panel" class="team-panel">
@@ -769,16 +718,7 @@ body {
                             <p>
                                 The hard to see, yet incredibly powerful, electronics systems on our cars produce invaluable data and are imperative to the car’s function. The Electronics team produces a wide variety of components, from the steering wheel, to the dashboard, to the power distribution unit. 
                             </p>
-                            <div class="custom-progress">
-                                <div class="custom-progress-bar" style="width: 65%">
-                                </div>
-                                <span role="funded">
-                                    65% Funded
-                                </span>
-                                <span role="goal">
-                                    $875 to Go
-                                </span>
-                            </div>
+                            {{ registry_progress('Electronics', data.registry.Electronics) }}
                         </div>
                     </div>
                     <div id="manufacturing-panel" class="team-panel">
@@ -788,16 +728,7 @@ body {
                             <p>
                                 When it comes to constructing our cars swiftly, the manufacturing teams shine brightest. Whether it is a complex aluminum bracket or curvaceous carbon fiber enclosure, these teams manage to produce high quality parts at an alarmingly fast rate. 
                             </p>
-                            <div class="custom-progress">
-                                <div class="custom-progress-bar" style="width: 65%">
-                                </div>
-                                <span role="funded">
-                                    65% Funded
-                                </span>
-                                <span role="goal">
-                                    $875 to Go
-                                </span>
-                            </div>
+                            {{ registry_progress('Manufacturing', data.registry.Manufacturing) }}
                         </div>
                     </div>
                     <div id="powertrain-panel" class="team-panel">
@@ -807,16 +738,7 @@ body {
                             <p>
                                 Quite simply, powertrain is the heart and muscle of the cars that makes them faster than some six-figure supercars. These systems consist of the engine and differential for our combustion car and the electronic drivetrain for our electric car. Together, these systems generate and deliver the power to the ground, with the help o
                             </p>
-                            <div class="custom-progress">
-                                <div class="custom-progress-bar" style="width: 65%">
-                                </div>
-                                <span role="funded">
-                                    65% Funded
-                                </span>
-                                <span role="goal">
-                                    $875 to Go
-                                </span>
-                            </div>
+                            {{ registry_progress('Powertrain', data.registry.Powertrain) }}
                         </div>
                     </div>
                     <div id="suspension-panel" class="team-panel">
@@ -826,16 +748,7 @@ body {
                             <p>
                                 Pulling a large amounts of g-force is a point of pride for the Suspension team. Whether it be 2.6 G’s under braking or 2.2 G’s in a fast, sweeping corner, the suspension team aims to maximize performance out of the tires whilst keeping components lightweight and strong.
                             </p>
-                            <div class="custom-progress">
-                                <div class="custom-progress-bar" style="width: 65%">
-                                </div>
-                                <span role="funded">
-                                    65% Funded
-                                </span>
-                                <span role="goal">
-                                    $875 to Go
-                                </span>
-                            </div>
+                            {{ registry_progress('Suspension', data.registry.Suspension) }}
                         </div>
                     </div>
                     <div id="competition-panel" class="team-panel">
@@ -845,16 +758,7 @@ body {
                             <p>
                                 For UWFM, building two racecars is just the tip of a logistical and financial iceberg. After paying for shipping costs, our team must coordinate with several local companies just to get our cars and equipment through customs. What’s more, shipping is just one of several competition related costs. In fact, just registering UWFM for our U.S. competition costs nearly $5000!
                             </p>
-                            <div class="custom-progress">
-                                <div class="custom-progress-bar" style="width: 65%">
-                                </div>
-                                <span role="funded">
-                                    65% Funded
-                                </span>
-                                <span role="goal">
-                                    $875 to Go
-                                </span>
-                            </div>
+                            {{ registry_progress('Competition', data.registry.Competition) }}
                         </div>
                     </div>
                 </div>
@@ -876,6 +780,7 @@ body {
                         <input type="text" name="amount" placeholder="Donation Amount" />
                         <input type="text" name="email" placeholder="Email Address" />
                         <input type="hidden" name="stripe_token" />
+                        <input type="hidden" name="registry" />
                         <button type="submit" class="purple-button" id="donate-button" style="width: 100%; margin-top: 64px;">Donate</button>
                     </form>
                 </div>
@@ -1029,6 +934,7 @@ $('.team-list > li').click(function() {
         selectedTeamName = selectName;
         $(this).addClass('team-list-item-selected');
         $('#team-supporting-name').text(selectedTeamName);
+        $('input[name=registry]').val(selectedTeamName);
     } else {
         selectedTeamId = null;
         selectedTeamName = null;
@@ -1070,7 +976,7 @@ var handler = StripeCheckout.configure({
     token: function(token) {
         $('input[name=stripe_token]').val(token.id);
         console.log('stripe token added');
-        //$('#checkout_form').submit();
+        $('#checkout_form').submit();
     }
 });
 
