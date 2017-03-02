@@ -73,8 +73,7 @@ CREATE TABLE IF NOT EXISTS crowdfunding_donations (
     email VARCHAR(200) NOT NULL,
     registry VARCHAR(50),
     address VARCHAR(1000),
-    tshirt_size VARCHAR(10),
-    special_request VARCHAR(2000)
+    tshirt VARCHAR(1000)
 );
 SQL;
         $res = $dbh->query($create_table);
@@ -193,17 +192,35 @@ SQL;
         $email = $request->get('email');
         $stripe_token = $request->get('stripe_token');
         $registry = $request->get('registry');
+        $address = null;
+        $tshirt = null;
+        if ($amount >= 40000) {
+            $address = $request->get('address1')."\n".
+                $request->get('address2')."\n".
+                $request->get('city').", ".$request->get('state')." ".$request->get('zipcode');
+            $tshirt = $request->get('tshirt');
+        }
 
         $pdh = $this->genPDO();
 
-        $charge = \Stripe\Charge::create(array(
-            'amount' => $amount,
-            'currency' => 'usd',
-            'description' => 'Donation to UW Formula Motorsports',
-            'source' => $stripe_token,
-        ));
+        try {
+            $charge = \Stripe\Charge::create(array(
+                'amount' => $amount,
+                'currency' => 'usd',
+                'description' => 'Donation to UW Formula Motorsports',
+                'source' => $stripe_token,
+            ));
 
-        if (!$charge->paid) {
+            if (!$charge->paid) {
+                throw new Exception('paid is false');
+            }
+        } catch (\Stripe\Error\Base $e) {
+            error_log('[Crowdfunding] Stripe error: '.$e->getMessage());
+            return array(
+                'error' => 'Couldn\'t charge card. Please try again.',
+            );
+        } catch (Exception $e) {
+            error_log('[Crowdfunding] General error: '.$e->getMessage());
             return array(
                 'error' => 'Couldn\'t charge card. Please try again.',
             );
@@ -214,12 +231,16 @@ INSERT INTO crowdfunding_donations (
     full_name,
     amount,
     email,
-    registry
+    registry,
+    address,
+    tshirt
 ) VALUES (
     :full_name,
     :amount,
     :email,
-    :registry
+    :registry,
+    :address,
+    :tshirt
 );
 SQL;
 
@@ -229,6 +250,8 @@ SQL;
             'amount' => $amount,
             'email' => $email,
             'registry' => ($registry ? $registry : null),
+            'address' => $address,
+            'tshirt' => $tshirt,
         ));
 
         return array(

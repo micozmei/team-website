@@ -416,6 +416,25 @@ body {
     margin-bottom: 12px;
 }
 
+.form-container select {
+    height: 50px;
+    width: 400px;
+    border: 1px solid rgb(155, 155, 155);
+    border-radius: 25px;
+    padding: 10px;
+    display: block;
+    margin-top: 12px;
+    margin-bottom: 12px;
+}
+
+.address-expand-link:hover {
+    cursor: pointer;
+}
+
+.address-container {
+    display: none;
+}
+
 #team-supporting {
     color: rgb(51, 0, 111);
 }
@@ -787,15 +806,28 @@ body {
                         <input type="text" name="email" placeholder="Email Address" />
                         <input type="hidden" name="stripe_token" />
                         <input type="hidden" name="registry" />
-                        <div id="payment_errors">
-                            Please enter something for all fields in the form.
+                        <a class="address-expand-link">
+                            <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+                            Mailing address &amp; T-shirt size ($400+)
+                        </a>
+                        <div class="address-container">
+                            <input type="text" name="address1" placeholder="Address Line 1" />
+                            <input type="text" name="address2" placeholder="Address Line 2 (optional)" />
+                            <input type="text" name="city" placeholder="City" style="width: auto; display: inline" />
+                            <select name="state" style="width: 10rem; display: inline">
+{% for abbr in [ 'AL', 'AK', 'AZ', 'AR', 'CA', 'CO', 'CT', 'DE', 'DC', 'FL', 'GA', 'HI', 'ID', 'IL', 'IN', 'IA', 'KS', 'KY', 'LA', 'ME', 'MD', 'MA', 'MI', 'MN', 'MS', 'MO', 'MT', 'NE', 'NV', 'NH', 'NJ', 'NM', 'NY', 'NC', 'ND', 'OH', 'OK', 'OR', 'PA', 'RI', 'SC', 'SD', 'TN', 'TX', 'UT', 'VT', 'VA', 'WA', 'WV', 'WI', 'WY' ] %}
+                                <option {{ (abbr == 'WA' ? 'selected' : '') }}>{{ abbr }}</option>
+{% endfor %}
+                            </select>
+                            <input type="text" name="zipcode" placeholder="Zip" />
+                            <input type="text" name="tshirt" placeholder="T-Shirt size & special requests" />
                         </div>
                         <button type="submit" class="purple-button" id="donate-button" style="width: 100%; margin-top: 64px;">Donate</button>
                     </form>
                 </div>
             </div>
         </div>
-        <div class="donation-tiers-container box-border">
+        <div class="donation-tier-container box-border">
             <h1 class="section-header text-center">DONATION TIERS</h1>
             <div class="slider-container">
                 <div class="slider">
@@ -932,6 +964,29 @@ $('#donate-link').click(function() {
     $('html, body').animate({ scrollTop: $('#donate-section').offset().top }, 1000);
 });
 
+function showAddressContainer() {
+    $('.address-container').show('fast');
+    var gly = $('.address-expand-link .glyphicon');
+    gly.removeClass('glyphicon-chevron-right');
+    gly.addClass('glyphicon-chevron-down');
+}
+
+function hideAddressContainer() {
+    $('.address-container').hide('fast');
+    var gly = $('.address-expand-link .glyphicon');
+    gly.removeClass('glyphicon-chevron-down');
+    gly.addClass('glyphicon-chevron-right');
+}
+
+$('.address-expand-link').click(function() {
+    var e = $('.address-container');
+    if (e.is(':visible')) {
+        hideAddressContainer();
+    } else {
+        showAddressContainer();
+    }
+});
+
 var selectedTeamId = null;
 var selectedTeamName = null;
 
@@ -986,17 +1041,12 @@ var handler = StripeCheckout.configure({
     token: function(token) {
         $('input[name=stripe_token]').val(token.id);
         console.log('stripe token added');
-        $('#checkout_form').get().submit();
+        $('#checkout_form')[0].submit();
     }
 });
 
 var validateCheckoutForm = function() {
     var invalidElements = [];
-
-    var elFullName = $('input[name=fullname]');
-    if (elFullName.val() == '') {
-        invalidElements.push(elFullName);
-    }
 
     var elAmountDisplayed = $('input[name=amount_displayed]');
     var amount_float = parseFloat(elAmountDisplayed.val().replace('$', ''));
@@ -1004,9 +1054,25 @@ var validateCheckoutForm = function() {
         invalidElements.push(elAmountDisplayed);
     }
 
-    var elEmail = $('input[name=email]');
-    if (elEmail.val() == '') {
-        invalidElements.push(elEmail);
+    var requiredInputs = [
+        'fullname',
+        'email',
+    ];
+
+    if (amount_float >= 400) {
+        requiredInputs.push(
+            'address1',
+            'city',
+            'zipcode',
+            'tshirt'
+        );
+    }
+
+    for (var i = 0; i < requiredInputs.length; i++) {
+        var e = $('input[name=' + requiredInputs[i] + ']');
+        if (e.val() == '') {
+            invalidElements.push(e);
+        }
     }
 
 
@@ -1015,9 +1081,15 @@ var validateCheckoutForm = function() {
     $('#payment_errors').hide();
     if (invalidElements.length > 0) {
         for (var i = 0; i < invalidElements.length; i++) {
-            invalidElements[i].addClass('invalid');
+            var e = invalidElements[i];
+            e.addClass('invalid');
+            if (i === 0) {
+                e.focus();
+            }
+            if (e.parent('.address-container').length > 0) {
+                showAddressContainer();
+            }
         }
-        $('#payment_errors').show();
         return false;
     }
 
@@ -1044,7 +1116,7 @@ $('#checkout_form').submit(function (e) {
         name: 'SAE International',
         description: 'Donation to UW Formula Motorsports',
         zipCode: true,
-        amount: $('input[name=amount]').val(),
+        amount: parseInt($('input[name=amount]').val()),
         email: $('input[name=email]').val(),
     });
 });
