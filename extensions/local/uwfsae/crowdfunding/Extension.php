@@ -89,7 +89,7 @@ SQL;
         $dbh = $this->genPDO();
 
         $supporters_query = <<<SQL
-SELECT COUNT(*) AS supporters, SUM(amount) AS raised
+SELECT COUNT(*) AS supporters, SUM(amount)/100 AS raised
 FROM crowdfunding_donations
 SQL;
         $res = $dbh->query($supporters_query);
@@ -104,7 +104,7 @@ SQL;
         $registry = array();
 
         $registry_query = <<<SQL
-SELECT registry, SUM(amount) AS raised
+SELECT registry, SUM(amount)/100 AS raised
 FROM crowdfunding_donations
 WHERE registry IS NOT NULL
 GROUP BY registry;
