@@ -41,8 +41,12 @@ class Extension extends BaseExtension
         }
     }
 
-    private function getStripeApiKey() {
-        return $this->config['stripe-api-key'];
+    private function getStripeSecretKey() {
+        return $this->config['stripe-secret-key'];
+    }
+
+    private function getStripePublishableKey() {
+        return $this->config['stripe-publishable-key'];
     }
 
     private function genPDO() {
@@ -128,7 +132,7 @@ SQL;
         }
         //$res->closeCursor();
         return array(
-            'stripe-api-key' => $this->getStripeApiKey(),
+            'stripe-api-key' => $this->getStripePublishableKey(),
             'supporters' => $supporters,
             'raised' => $total_raised,
             'goal' => self::OVERALL_GOAL,
@@ -136,7 +140,7 @@ SQL;
             'registry' => $registry,
         );
         /*return array(
-            'stripe-api-key' => $this->getStripeApiKey(),
+            'stripe-api-key' => $this->getStripePublishableKey(),
             'supporters' => 116,
             'raised' => 18324,
             'goal' => 25000,
@@ -182,7 +186,7 @@ SQL;
     }
 
     private function handleSubmit() {
-        \Stripe\Stripe::setApiKey($this->getStripeApiKey());
+        \Stripe\Stripe::setApiKey($this->getStripeSecretKey());
     }
 }
 

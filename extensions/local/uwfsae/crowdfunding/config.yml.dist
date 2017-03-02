@@ -1,2 +1,5 @@
-# Stripe API key
-stripe-api-key: pk_test_6pRNASCoBOKtIshFeQd4XMUh
+# Stripe Secret API Key
+stripe-secret-key: sk_test_BQokikJOvBiI2HlWgH4olfQ2
+
+# Stripe Publishable API Key
+stripe-publishable-key: pk_test_6pRNASCoBOKtIshFeQd4XMUh
