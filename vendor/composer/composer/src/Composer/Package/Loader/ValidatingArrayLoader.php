@@ -14,7 +14,7 @@ namespace Composer\Package\Loader;
 
 use Composer\Package;
 use Composer\Package\BasePackage;
-use Composer\Package\LinkConstraint\VersionConstraint;
+use Composer\Semver\Constraint\Constraint;
 use Composer\Package\Version\VersionParser;
 use Composer\Repository\PlatformRepository;
 
@@ -23,8 +23,9 @@ use Composer\Repository\PlatformRepository;
  */
 class ValidatingArrayLoader implements LoaderInterface
 {
-    const CHECK_ALL = 1;
+    const CHECK_ALL = 3;
     const CHECK_UNBOUND_CONSTRAINTS = 1;
+    const CHECK_STRICT_CONSTRAINTS = 2;
 
     private $loader;
     private $versionParser;
@@ -121,7 +122,7 @@ class ValidatingArrayLoader implements LoaderInterface
         }
 
         if ($this->validateArray('support') && !empty($this->config['support'])) {
-            foreach (array('issues', 'forum', 'wiki', 'source', 'email', 'irc', 'docs') as $key) {
+            foreach (array('issues', 'forum', 'wiki', 'source', 'email', 'irc', 'docs', 'rss') as $key) {
                 if (isset($this->config['support'][$key]) && !is_string($this->config['support'][$key])) {
                     $this->errors[] = 'support.'.$key.' : invalid value, must be a string';
                     unset($this->config['support'][$key]);
@@ -149,7 +150,8 @@ class ValidatingArrayLoader implements LoaderInterface
             }
         }
 
-        $unboundConstraint = new VersionConstraint('=', $this->versionParser->normalize('dev-master'));
+        $unboundConstraint = new Constraint('=', $this->versionParser->normalize('dev-master'));
+        $stableConstraint = new Constraint('=', '1.0.0');
 
         foreach (array_keys(BasePackage::$supportedLinkTypes) as $linkType) {
             if ($this->validateArray($linkType) && isset($this->config[$linkType])) {
@@ -177,6 +179,14 @@ class ValidatingArrayLoader implements LoaderInterface
                             && !preg_match(PlatformRepository::PLATFORM_PACKAGE_REGEX, $package)
                         ) {
                             $this->warnings[] = $linkType.'.'.$package.' : unbound version constraints ('.$constraint.') should be avoided';
+                        } elseif (
+                            // check requires for exact constraints
+                            ($this->flags & self::CHECK_STRICT_CONSTRAINTS)
+                            && 'require' === $linkType
+                            && substr($linkConstraint, 0, 1) === '='
+                            && $stableConstraint->versionCompare($stableConstraint, $linkConstraint, '<=')
+                        ) {
+                            $this->warnings[] = $linkType.'.'.$package.' : exact version constraints ('.$constraint.') should be avoided if the package follows semantic versioning';
                         }
                     }
                 }
@@ -200,7 +210,7 @@ class ValidatingArrayLoader implements LoaderInterface
         }
 
         if ($this->validateArray('autoload') && !empty($this->config['autoload'])) {
-            $types = array('psr-0', 'psr-4', 'classmap', 'files');
+            $types = array('psr-0', 'psr-4', 'classmap', 'files', 'exclude-from-classmap');
             foreach ($this->config['autoload'] as $type => $typeConfig) {
                 if (!in_array($type, $types)) {
                     $this->errors[] = 'autoload : invalid value ('.$type.'), must be one of '.implode(', ', $types);
@@ -209,7 +219,7 @@ class ValidatingArrayLoader implements LoaderInterface
                 if ($type === 'psr-4') {
                     foreach ($typeConfig as $namespace => $dirs) {
                         if ($namespace !== '' && '\\' !== substr($namespace, -1)) {
-                            $this->errors[] = 'autoload.psr-4 : invalid value ('.$namespace.'), namespaces must end with a namespace separator, should be '.$namespace.'\\';
+                            $this->errors[] = 'autoload.psr-4 : invalid value ('.$namespace.'), namespaces must end with a namespace separator, should be '.$namespace.'\\\\';
                         }
                     }
                 }

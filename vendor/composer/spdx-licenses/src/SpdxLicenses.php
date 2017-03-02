@@ -151,6 +151,7 @@ class SpdxLicenses
      * @param array|string $license
      *
      * @throws \InvalidArgumentException
+     *
      * @return bool
      */
     public function validate($license)
@@ -184,16 +185,16 @@ class SpdxLicenses
     private function loadLicenses()
     {
         if (null === $this->licenses) {
-            $jsonFile = file_get_contents(self::getResourcesDir() . '/' . self::LICENSES_FILE);
-            $this->licenses = json_decode($jsonFile, true);
+            $json = file_get_contents(self::getResourcesDir() . '/' . self::LICENSES_FILE);
+            $this->licenses = json_decode($json, true);
         }
     }
 
     private function loadExceptions()
     {
         if (null === $this->exceptions) {
-            $jsonFile = file_get_contents(self::getResourcesDir() . '/' . self::EXCEPTIONS_FILE);
-            $this->exceptions = json_decode($jsonFile, true);
+            $json = file_get_contents(self::getResourcesDir() . '/' . self::EXCEPTIONS_FILE);
+            $this->exceptions = json_decode($json, true);
         }
     }
 
@@ -204,8 +205,7 @@ class SpdxLicenses
     {
         if (null === $this->licensesExpression) {
             $licenses = array_map('preg_quote', array_keys($this->licenses));
-            sort($licenses);
-            $licenses = array_reverse($licenses);
+            rsort($licenses);
             $licenses = implode('|', $licenses);
             $this->licensesExpression = $licenses;
         }
@@ -220,8 +220,7 @@ class SpdxLicenses
     {
         if (null === $this->exceptionsExpression) {
             $exceptions = array_map('preg_quote', array_keys($this->exceptions));
-            sort($exceptions);
-            $exceptions = array_reverse($exceptions);
+            rsort($exceptions);
             $exceptions = implode('|', $exceptions);
             $this->exceptionsExpression = $exceptions;
         }
@@ -233,10 +232,15 @@ class SpdxLicenses
      * @param string $license
      *
      * @throws \RuntimeException
+     *
      * @return bool
      */
     private function isValidLicenseString($license)
     {
+        if (isset($this->licenses[$license])) {
+            return true;
+        }
+
         $licenses = $this->getLicensesExpression();
         $exceptions = $this->getExceptionsExpression();
 
@@ -244,7 +248,7 @@ class SpdxLicenses
 {
 (?(DEFINE)
     # idstring: 1*( ALPHA / DIGIT / - / . )
-    (?<idstring>[\pL\pN\-\.]{1,})
+    (?<idstring>[\pL\pN.-]{1,})
 
     # license-id: taken from list
     (?<licenseid>${licenses})
@@ -258,7 +262,7 @@ class SpdxLicenses
     # simple-expresssion: license-id / license-id+ / license-ref
     (?<simple_expression>(?&licenseid)\+? | (?&licenseid) | (?&licenseref))
 
-    # compound expression: 1*(
+    # compound-expression: 1*(
     #   simple-expression /
     #   simple-expression WITH license-exception-id /
     #   compound-expression AND compound-expression /

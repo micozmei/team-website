@@ -222,7 +222,7 @@ for more information.
 ### VCS
 
 VCS stands for version control system. This includes versioning systems like
-git, svn or hg. Composer has a repository type for installing packages from
+git, svn, fossil or hg. Composer has a repository type for installing packages from
 these systems.
 
 #### Loading a package from a VCS repository
@@ -264,7 +264,7 @@ package, you should do so in the default (often master) branch and not in a
 feature branch, since the package name is taken from the default branch.
 
 Also note that the override will not work if you change the `name` property
-in your forked repository's composer.json file as this needs to match the
+in your forked repository's `composer.json` file as this needs to match the
 original for the override to work.
 
 If other dependencies rely on the package you forked, it is possible to
@@ -300,6 +300,7 @@ The following are supported:
 * **Git:** [git-scm.com](https://git-scm.com)
 * **Subversion:** [subversion.apache.org](https://subversion.apache.org)
 * **Mercurial:** [mercurial.selenic.com](http://mercurial.selenic.com)
+* **Fossil**: [fossil-scm.org](https://www.fossil-scm.org/)
 
 To get packages from these systems you need to have their respective clients
 installed. That can be inconvenient. And for this reason there is special
@@ -311,8 +312,8 @@ VCS repository provides `dist`s for them that fetch the packages as zips.
 * **BitBucket:** [bitbucket.org](https://bitbucket.org) (Git and Mercurial)
 
 The VCS driver to be used is detected automatically based on the URL. However,
-should you need to specify one for whatever reason, you can use `git`, `svn` or
-`hg` as the repository type instead of `vcs`.
+should you need to specify one for whatever reason, you can use `fossil`, `git`,
+`svn` or `hg` as the repository type instead of `vcs`.
 
 If you set the `no-api` key to `true` on a github repository it will clone the
 repository as it would with any other git repository instead of using the
@@ -550,7 +551,7 @@ repository.
 ### Toran Proxy
 
 [Toran Proxy](https://toranproxy.com/) is a web app much like Packagist but
-providing private package hosting as well as mirroring/proxying of GitHub and 
+providing private package hosting as well as mirroring/proxying of GitHub and
 packagist.org. Check its homepage and the [Satis/Toran Proxy article](articles/handling-private-packages-with-satis.md)
 for more information.
 
@@ -606,6 +607,76 @@ imported. When an archive with a newer version is added in the artifact folder
 and you run `update`, that version will be imported as well and Composer will
 update to the latest version.
 
+### Path
+
+In addition to the artifact repository, you can use the path one, which allows
+you to depend on a local directory, either absolute or relative. This can be
+especially useful when dealing with monolithic repositories.
+
+For instance, if you have the following directory structure in your repository:
+```
+- apps
+\_ my-app
+  \_ composer.json
+- packages
+\_ my-package
+  \_ composer.json
+```
+
+Then, to add the package `my/package` as a dependency, in your `apps/my-app/composer.json`
+file, you can use the following configuration:
+
+```json
+{
+    "repositories": [
+        {
+            "type": "path",
+            "url": "../../packages/my-package"
+        }
+    ],
+    "require": {
+        "my/package": "*"
+    }
+}
+```
+
+If the package is a local VCS repository, the version may be inferred by
+the branch or tag that is currently checked out. Otherwise, the version should
+be explicitly defined in the package's `composer.json` file. If the version
+cannot be resolved by these means, it is assumed to be `dev-master`.
+
+The local package will be symlinked if possible, in which case the output in
+the console will read `Symlinked from ../../packages/my-package`. If symlinking
+is _not_ possible the package will be copied. In that case, the console will
+output `Mirrored from ../../packages/my-package`.
+
+Instead of default fallback strategy you can force to use symlink with `"symlink": true`
+or mirroring with `"symlink": false` option.
+Forcing mirroring can be useful when deploying or generating package from a monolithic repository.
+
+```json
+{
+    "repositories": [
+        {
+            "type": "path",
+            "url": "../../packages/my-package",
+            "options": {
+                "symlink": false
+            }
+        }
+    ]
+}
+```
+
+Leading tildes are expanded to the current user's home folder, and environment
+variables are parsed in both Windows and Linux/Mac notations. For example
+`~/git/mypackage` will automatically load the mypackage clone from
+`/home/<username>/git/mypackage`, equivalent to `$HOME/git/mypackage` or
+`%USERPROFILE%/git/mypackage`.
+
+> **Note:** Repository paths can also contain wildcards like ``*`` and ``?``.
+> For details, see the [PHP glob function](http://php.net/glob).
+
 ## Disabling Packagist
 
 You can disable the default Packagist repository by adding this to your
@@ -615,7 +686,7 @@ You can disable the default Packagist repository by adding this to your
 {
     "repositories": [
         {
-            "packagist": false
+            "packagist.org": false
         }
     ]
 }

@@ -1,0 +1,20 @@
+{
+    "name": "lstrojny/phpunit-function-mocker",
+    "description": "Allows mocking otherwise untestable PHP functions through the use of namespaces",
+    "license": "MIT",
+    "require": {
+        "php": ">=5.3.0"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "*"
+    },
+    "authors": [
+        {
+            "name": "Lars Strojny",
+            "email": "lstrojny@php.net"
+        }
+    ],
+    "autoload": {
+        "psr-0": {"PHPUnit_Extension_FunctionMocker": "src"}
+    }
+}

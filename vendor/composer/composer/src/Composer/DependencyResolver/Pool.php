@@ -15,9 +15,9 @@ namespace Composer\DependencyResolver;
 use Composer\Package\BasePackage;
 use Composer\Package\AliasPackage;
 use Composer\Package\Version\VersionParser;
-use Composer\Package\LinkConstraint\LinkConstraintInterface;
-use Composer\Package\LinkConstraint\VersionConstraint;
-use Composer\Package\LinkConstraint\EmptyConstraint;
+use Composer\Semver\Constraint\ConstraintInterface;
+use Composer\Semver\Constraint\Constraint;
+use Composer\Semver\Constraint\EmptyConstraint;
 use Composer\Repository\RepositoryInterface;
 use Composer\Repository\CompositeRepository;
 use Composer\Repository\ComposerRepository;
@@ -150,11 +150,11 @@ class Pool implements \Countable
     }
 
     /**
-    * Retrieves the package object for a given package id.
-    *
-    * @param int $id
-    * @return PackageInterface
-    */
+     * Retrieves the package object for a given package id.
+     *
+     * @param  int              $id
+     * @return PackageInterface
+     */
     public function packageById($id)
     {
         return $this->packages[$id - 1];
@@ -171,32 +171,37 @@ class Pool implements \Countable
     /**
      * Searches all packages providing the given package name and match the constraint
      *
-     * @param  string                  $name          The package name to be searched for
-     * @param  LinkConstraintInterface $constraint    A constraint that all returned
-     *                                                packages must match or null to return all
-     * @param  bool                    $mustMatchName Whether the name of returned packages
-     *                                                must match the given name
-     * @return PackageInterface[]      A set of packages
+     * @param  string              $name          The package name to be searched for
+     * @param  ConstraintInterface $constraint    A constraint that all returned
+     *                                            packages must match or null to return all
+     * @param  bool                $mustMatchName Whether the name of returned packages
+     *                                            must match the given name
+     * @param  bool                $bypassFilters If enabled, filterRequires and stability matching is ignored
+     * @return PackageInterface[]  A set of packages
      */
-    public function whatProvides($name, LinkConstraintInterface $constraint = null, $mustMatchName = false)
+    public function whatProvides($name, ConstraintInterface $constraint = null, $mustMatchName = false, $bypassFilters = false)
     {
+        if ($bypassFilters) {
+            return $this->computeWhatProvides($name, $constraint, $mustMatchName, true);
+        }
+
         $key = ((int) $mustMatchName).$constraint;
         if (isset($this->providerCache[$name][$key])) {
             return $this->providerCache[$name][$key];
         }
 
-        return $this->providerCache[$name][$key] = $this->computeWhatProvides($name, $constraint, $mustMatchName);
+        return $this->providerCache[$name][$key] = $this->computeWhatProvides($name, $constraint, $mustMatchName, $bypassFilters);
     }
 
     /**
      * @see whatProvides
      */
-    private function computeWhatProvides($name, $constraint, $mustMatchName = false)
+    private function computeWhatProvides($name, $constraint, $mustMatchName = false, $bypassFilters = false)
     {
         $candidates = array();
 
         foreach ($this->providerRepos as $repo) {
-            foreach ($repo->whatProvides($this, $name) as $candidate) {
+            foreach ($repo->whatProvides($this, $name, $bypassFilters) as $candidate) {
                 $candidates[] = $candidate;
                 if ($candidate->id < 1) {
                     $candidate->setId($this->id++);
@@ -228,13 +233,13 @@ class Pool implements \Countable
                 $aliasOfCandidate = $candidate->getAliasOf();
             }
 
-            if ($this->whitelist !== null && (
+            if ($this->whitelist !== null && !$bypassFilters && (
                 (!($candidate instanceof AliasPackage) && !isset($this->whitelist[$candidate->id])) ||
                 ($candidate instanceof AliasPackage && !isset($this->whitelist[$aliasOfCandidate->id]))
             )) {
                 continue;
             }
-            switch ($this->match($candidate, $name, $constraint)) {
+            switch ($this->match($candidate, $name, $constraint, $bypassFilters)) {
                 case self::MATCH_NONE:
                     break;
 
@@ -278,11 +283,6 @@ class Pool implements \Countable
         return $this->packageById($packageId);
     }
 
-    public function literalToString($literal)
-    {
-        return ($literal > 0 ? '+' : '-') . $this->literalToPackage($literal);
-    }
-
     public function literalToPrettyString($literal, $installedMap)
     {
         $package = $this->literalToPackage($literal);
@@ -317,26 +317,26 @@ class Pool implements \Countable
      * Checks if the package matches the given constraint directly or through
      * provided or replaced packages
      *
-     * @param  array|PackageInterface  $candidate
-     * @param  string                  $name       Name of the package to be matched
-     * @param  LinkConstraintInterface $constraint The constraint to verify
-     * @return int                     One of the MATCH* constants of this class or 0 if there is no match
+     * @param  array|PackageInterface $candidate
+     * @param  string                 $name       Name of the package to be matched
+     * @param  ConstraintInterface    $constraint The constraint to verify
+     * @return int                    One of the MATCH* constants of this class or 0 if there is no match
      */
-    private function match($candidate, $name, LinkConstraintInterface $constraint = null)
+    private function match($candidate, $name, ConstraintInterface $constraint = null, $bypassFilters)
     {
         $candidateName = $candidate->getName();
         $candidateVersion = $candidate->getVersion();
         $isDev = $candidate->getStability() === 'dev';
         $isAlias = $candidate instanceof AliasPackage;
 
-        if (!$isDev && !$isAlias && isset($this->filterRequires[$name])) {
+        if (!$bypassFilters && !$isDev && !$isAlias && isset($this->filterRequires[$name])) {
             $requireFilter = $this->filterRequires[$name];
         } else {
             $requireFilter = new EmptyConstraint;
         }
 
         if ($candidateName === $name) {
-            $pkgConstraint = new VersionConstraint('==', $candidateVersion);
+            $pkgConstraint = new Constraint('==', $candidateVersion);
 
             if ($constraint === null || $constraint->matches($pkgConstraint)) {
                 return $requireFilter->matches($pkgConstraint) ? self::MATCH : self::MATCH_FILTERED;

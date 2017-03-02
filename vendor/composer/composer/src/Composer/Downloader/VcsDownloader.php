@@ -13,7 +13,10 @@
 namespace Composer\Downloader;
 
 use Composer\Config;
+use Composer\Package\Dumper\ArrayDumper;
 use Composer\Package\PackageInterface;
+use Composer\Package\Version\VersionGuesser;
+use Composer\Package\Version\VersionParser;
 use Composer\Util\ProcessExecutor;
 use Composer\IO\IOInterface;
 use Composer\Util\Filesystem;
@@ -21,11 +24,15 @@ use Composer\Util\Filesystem;
 /**
  * @author Jordi Boggiano <j.boggiano@seld.be>
  */
-abstract class VcsDownloader implements DownloaderInterface, ChangeReportInterface
+abstract class VcsDownloader implements DownloaderInterface, ChangeReportInterface, VcsCapableDownloaderInterface
 {
+    /** @var IOInterface */
     protected $io;
+    /** @var Config */
     protected $config;
+    /** @var ProcessExecutor */
     protected $process;
+    /** @var Filesystem */
     protected $filesystem;
 
     public function __construct(IOInterface $io, Config $config, ProcessExecutor $process = null, Filesystem $fs = null)
@@ -33,7 +40,7 @@ abstract class VcsDownloader implements DownloaderInterface, ChangeReportInterfa
         $this->io = $io;
         $this->config = $config;
         $this->process = $process ?: new ProcessExecutor($io);
-        $this->filesystem = $fs ?: new Filesystem;
+        $this->filesystem = $fs ?: new Filesystem($this->process);
     }
 
     /**
@@ -60,11 +67,21 @@ abstract class VcsDownloader implements DownloaderInterface, ChangeReportInterfa
         while ($url = array_shift($urls)) {
             try {
                 if (Filesystem::isLocalPath($url)) {
+                    # realpath() below will not understand
+                    # url that starts with "file://"
+                    $needle = 'file://';
+                    if (0 === strpos($url, $needle)) {
+                        $url = substr($url, strlen($needle));
+                    }
                     $url = realpath($url);
                 }
                 $this->doDownload($package, $path, $url);
                 break;
             } catch (\Exception $e) {
+                // rethrow phpunit exceptions to avoid hard to debug bug failures
+                if ($e instanceof \PHPUnit_Framework_Exception) {
+                    throw $e;
+                }
                 if ($this->io->isDebug()) {
                     $this->io->writeError('Failed: ['.get_class($e).'] '.$e->getMessage());
                 } elseif (count($urls)) {
@@ -107,31 +124,35 @@ abstract class VcsDownloader implements DownloaderInterface, ChangeReportInterfa
 
         $this->cleanChanges($initial, $path, true);
         $urls = $target->getSourceUrls();
+
+        $exception = null;
         while ($url = array_shift($urls)) {
             try {
                 if (Filesystem::isLocalPath($url)) {
                     $url = realpath($url);
                 }
                 $this->doUpdate($initial, $target, $path, $url);
+
+                $exception = null;
                 break;
-            } catch (\Exception $e) {
+            } catch (\Exception $exception) {
+                // rethrow phpunit exceptions to avoid hard to debug bug failures
+                if ($exception instanceof \PHPUnit_Framework_Exception) {
+                    throw $exception;
+                }
                 if ($this->io->isDebug()) {
-                    $this->io->writeError('Failed: ['.get_class($e).'] '.$e->getMessage());
+                    $this->io->writeError('Failed: ['.get_class($exception).'] '.$exception->getMessage());
                 } elseif (count($urls)) {
                     $this->io->writeError('    Failed, trying the next URL');
-                } else {
-                    // in case of failed update, try to reapply the changes before aborting
-                    $this->reapplyChanges($path);
-
-                    throw $e;
                 }
             }
         }
 
         $this->reapplyChanges($path);
 
-        // print the commit logs if in verbose mode
-        if ($this->io->isVerbose()) {
+        // print the commit logs if in verbose mode and VCS metadata is present
+        // because in case of missing metadata code would trigger another exception
+        if (!$exception && $this->io->isVerbose() && $this->hasMetadataRepository($path)) {
             $message = 'Pulling in changes:';
             $logs = $this->getCommitLogs($initial->getSourceReference(), $target->getSourceReference(), $path);
 
@@ -145,9 +166,16 @@ abstract class VcsDownloader implements DownloaderInterface, ChangeReportInterfa
                     return '      ' . $line;
                 }, explode("\n", $logs)));
 
+                // escape angle brackets for proper output in the console
+                $logs = str_replace('<', '\<', $logs);
+
                 $this->io->writeError('    '.$message);
                 $this->io->writeError($logs);
             }
+        }
+
+        if (!$urls && $exception) {
+            throw $exception;
         }
 
         $this->io->writeError('');
@@ -172,6 +200,21 @@ abstract class VcsDownloader implements DownloaderInterface, ChangeReportInterfa
     public function setOutputProgress($outputProgress)
     {
         return $this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getVcsReference(PackageInterface $package, $path)
+    {
+        $parser = new VersionParser;
+        $guesser = new VersionGuesser($this->config, $this->process, $parser);
+        $dumper = new ArrayDumper;
+
+        $packageConfig = $dumper->dump($package);
+        if ($packageVersion = $guesser->guessVersion($packageConfig, $path)) {
+            return $packageVersion['commit'];
+        }
     }
 
     /**
@@ -229,4 +272,13 @@ abstract class VcsDownloader implements DownloaderInterface, ChangeReportInterfa
      * @return string
      */
     abstract protected function getCommitLogs($fromReference, $toReference, $path);
+
+    /**
+     * Checks if VCS metadata repository has been initialized
+     * repository example: .git|.svn|.hg
+     *
+     * @param  string $path
+     * @return bool
+     */
+    abstract protected function hasMetadataRepository($path);
 }

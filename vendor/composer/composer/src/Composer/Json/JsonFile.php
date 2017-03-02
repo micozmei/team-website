@@ -16,6 +16,7 @@ use JsonSchema\Validator;
 use Seld\JsonLint\JsonParser;
 use Seld\JsonLint\ParsingException;
 use Composer\Util\RemoteFilesystem;
+use Composer\IO\IOInterface;
 use Composer\Downloader\TransportException;
 
 /**
@@ -35,15 +36,17 @@ class JsonFile
 
     private $path;
     private $rfs;
+    private $io;
 
     /**
      * Initializes json file reader/parser.
      *
      * @param  string                    $path path to a lockfile
      * @param  RemoteFilesystem          $rfs  required for loading http/https json files
+     * @param  IOInterface               $io
      * @throws \InvalidArgumentException
      */
-    public function __construct($path, RemoteFilesystem $rfs = null)
+    public function __construct($path, RemoteFilesystem $rfs = null, IOInterface $io = null)
     {
         $this->path = $path;
 
@@ -51,6 +54,7 @@ class JsonFile
             throw new \InvalidArgumentException('http urls require a RemoteFilesystem instance to be passed');
         }
         $this->rfs = $rfs;
+        $this->io = $io;
     }
 
     /**
@@ -83,6 +87,9 @@ class JsonFile
             if ($this->rfs) {
                 $json = $this->rfs->getContents($this->path, $this->path, false);
             } else {
+                if ($this->io && $this->io->isDebug()) {
+                    $this->io->writeError('Reading ' . $this->path);
+                }
                 $json = file_get_contents($this->path);
             }
         } catch (TransportException $e) {
@@ -97,9 +104,9 @@ class JsonFile
     /**
      * Writes json file.
      *
-     * @param  array                     $hash    writes hash into json file
-     * @param  int                       $options json_encode options (defaults to JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE)
-     * @throws \UnexpectedValueException
+     * @param  array                                $hash    writes hash into json file
+     * @param  int                                  $options json_encode options (defaults to JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE)
+     * @throws \UnexpectedValueException|\Exception
      */
     public function write(array $hash, $options = 448)
     {
@@ -137,8 +144,8 @@ class JsonFile
      * Validates the schema of the current json file according to composer-schema.json rules
      *
      * @param  int                     $schema a JsonFile::*_SCHEMA constant
-     * @return bool                    true on success
      * @throws JsonValidationException
+     * @return bool                    true on success
      */
     public function validateSchema($schema = self::STRICT_SCHEMA)
     {
@@ -218,7 +225,7 @@ class JsonFile
     /**
      * Throws an exception according to a given code with a customized message
      *
-     * @param int $code return code of json_last_error function
+     * @param  int               $code return code of json_last_error function
      * @throws \RuntimeException
      */
     private static function throwEncodeError($code)
@@ -269,10 +276,10 @@ class JsonFile
      *
      * @param  string                    $json
      * @param  string                    $file
-     * @return bool                      true on success
      * @throws \UnexpectedValueException
      * @throws JsonValidationException
      * @throws ParsingException
+     * @return bool                      true on success
      */
     protected static function validateSyntax($json, $file = null)
     {

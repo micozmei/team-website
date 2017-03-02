@@ -44,13 +44,19 @@ class ProcessExecutor
     public function execute($command, &$output = null, $cwd = null)
     {
         if ($this->io && $this->io->isDebug()) {
-            $safeCommand = preg_replace('{(://[^:/\s]+:)[^@\s/]+}i', '$1****', $command);
+            $safeCommand = preg_replace_callback('{(://)(?P<user>[^:/\s]+):(?P<password>[^@\s/]+)}i', function ($m) {
+                if (preg_match('{^[a-f0-9]{12,}$}', $m['user'])) {
+                    return '://***:***';
+                }
+
+                return '://'.$m['user'].':***';
+            }, $command);
             $this->io->writeError('Executing command ('.($cwd ?: 'CWD').'): '.$safeCommand);
         }
 
         // make sure that null translate to the proper directory in case the dir is a symlink
         // and we call a git command, because msysgit does not handle symlinks properly
-        if (null === $cwd && defined('PHP_WINDOWS_VERSION_BUILD') && false !== strpos($command, 'git') && getcwd()) {
+        if (null === $cwd && Platform::isWindows() && false !== strpos($command, 'git') && getcwd()) {
             $cwd = realpath(getcwd());
         }
 
@@ -93,7 +99,17 @@ class ProcessExecutor
             return;
         }
 
-        echo $buffer;
+        if (null === $this->io) {
+            echo $buffer;
+
+            return;
+        }
+
+        if (Process::ERR === $type) {
+            $this->io->writeError($buffer, false);
+        } else {
+            $this->io->write($buffer, false);
+        }
     }
 
     public static function getTimeout()
@@ -113,7 +129,6 @@ class ProcessExecutor
      *
      * @return string The escaped argument
      */
-
     public static function escape($argument)
     {
         return ProcessUtils::escapeArgument($argument);

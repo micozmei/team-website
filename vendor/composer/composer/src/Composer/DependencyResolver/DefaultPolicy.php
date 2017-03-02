@@ -15,7 +15,7 @@ namespace Composer\DependencyResolver;
 use Composer\Package\PackageInterface;
 use Composer\Package\AliasPackage;
 use Composer\Package\BasePackage;
-use Composer\Package\LinkConstraint\VersionConstraint;
+use Composer\Semver\Constraint\Constraint;
 
 /**
  * @author Nils Adermann <naderman@naderman.de>
@@ -38,8 +38,8 @@ class DefaultPolicy implements PolicyInterface
             return BasePackage::$stabilities[$stabA] < BasePackage::$stabilities[$stabB];
         }
 
-        $constraint = new VersionConstraint($operator, $b->getVersion());
-        $version = new VersionConstraint('==', $a->getVersion());
+        $constraint = new Constraint($operator, $b->getVersion());
+        $version = new Constraint('==', $a->getVersion());
 
         return $constraint->matchSpecific($version, true);
     }
@@ -60,14 +60,6 @@ class DefaultPolicy implements PolicyInterface
     public function getPriority(Pool $pool, PackageInterface $package)
     {
         return $pool->getPriority($package->getRepository());
-    }
-
-    /**
-     * @deprecated Method has been renamed to selectPreferredPackages, you should update usages
-     */
-    public function selectPreferedPackages(Pool $pool, array $installedMap, array $literals, $requiredPackage = null)
-    {
-        return $this->selectPreferredPackages($pool, $installedMap, $literals, $requiredPackage);
     }
 
     public function selectPreferredPackages(Pool $pool, array $installedMap, array $literals, $requiredPackage = null)
@@ -194,7 +186,7 @@ class DefaultPolicy implements PolicyInterface
         foreach ($source->getReplaces() as $link) {
             if ($link->getTarget() === $target->getName()
 //                && (null === $link->getConstraint() ||
-//                $link->getConstraint()->matches(new VersionConstraint('==', $target->getVersion())))) {
+//                $link->getConstraint()->matches(new Constraint('==', $target->getVersion())))) {
                 ) {
                 return true;
             }

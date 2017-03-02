@@ -41,10 +41,14 @@ function %%function_name%% {
 
     local RESULT STATUS;
 
-    RESULT="$(%%completion_command%%)";
+    RESULT="$(%%completion_command%% </dev/null)";
     STATUS=$?;
 
-    local cur;
+    local cur mail_check_backup;
+
+    mail_check_backup=$MAILCHECK;
+    MAILCHECK=-1;
+
     _get_comp_words_by_ref -n : cur;
 
     # Check if shell provided path completion is requested
@@ -62,9 +66,16 @@ function %%function_name%% {
     COMPREPLY=(`compgen -W "$RESULT" -- $cur`);
 
     __ltrim_colon_completions "$cur";
+
+    MAILCHECK=mail_check_backup;
 };
 
-complete -F %%function_name%% "%%program_name%%";
+if [ "$(type -t _get_comp_words_by_ref)" == "function" ]; then
+    complete -F %%function_name%% "%%program_name%%";
+else
+    >&2 echo "Completion was not registered for %%program_name%%:";
+    >&2 echo "The 'bash-completion' package is required but doesn't appear to be installed.";
+fi
 END
 
         // ZSH Hook
@@ -169,7 +180,7 @@ END
 
     /**
      * Make a string safe for use as a shell function name
-     * 
+     *
      * @param string $name
      * @return string
      */

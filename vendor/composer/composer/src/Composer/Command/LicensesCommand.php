@@ -25,7 +25,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 /**
  * @author Benoît Merlet <benoit.merlet@gmail.com>
  */
-class LicensesCommand extends Command
+class LicensesCommand extends BaseCommand
 {
     protected function configure()
     {
@@ -62,14 +62,15 @@ EOT
         }
 
         ksort($packages);
+        $io = $this->getIO();
 
         switch ($format = $input->getOption('format')) {
             case 'text':
-                $this->getIO()->write('Name: <comment>'.$root->getPrettyName().'</comment>');
-                $this->getIO()->write('Version: <comment>'.$root->getFullPrettyVersion().'</comment>');
-                $this->getIO()->write('Licenses: <comment>'.(implode(', ', $root->getLicense()) ?: 'none').'</comment>');
-                $this->getIO()->write('Dependencies:');
-                $this->getIO()->write('');
+                $io->write('Name: <comment>'.$root->getPrettyName().'</comment>');
+                $io->write('Version: <comment>'.$root->getFullPrettyVersion().'</comment>');
+                $io->write('Licenses: <comment>'.(implode(', ', $root->getLicense()) ?: 'none').'</comment>');
+                $io->write('Dependencies:');
+                $io->write('');
 
                 $table = new Table($output);
                 $table->setStyle('compact');
@@ -87,6 +88,7 @@ EOT
                 break;
 
             case 'json':
+                $dependencies = array();
                 foreach ($packages as $package) {
                     $dependencies[$package->getPrettyName()] = array(
                         'version' => $package->getFullPrettyVersion(),
@@ -94,7 +96,7 @@ EOT
                     );
                 }
 
-                $this->getIO()->write(JsonFile::encode(array(
+                $io->write(JsonFile::encode(array(
                     'name'         => $root->getPrettyName(),
                     'version'      => $root->getFullPrettyVersion(),
                     'license'      => $root->getLicense(),
@@ -110,8 +112,10 @@ EOT
     /**
      * Find package requires and child requires
      *
-     * @param RepositoryInterface $repo
-     * @param PackageInterface    $package
+     * @param  RepositoryInterface $repo
+     * @param  PackageInterface    $package
+     * @param  array               $bucket
+     * @return array
      */
     private function filterRequiredPackages(RepositoryInterface $repo, PackageInterface $package, $bucket = array())
     {

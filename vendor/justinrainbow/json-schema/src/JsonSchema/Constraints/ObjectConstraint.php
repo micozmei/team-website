@@ -42,15 +42,24 @@ class ObjectConstraint extends Constraint
 
     public function validatePatternProperties($element, $path, $patternProperties)
     {
+        $try = array('/','#','+','~','%');
         $matches = array();
         foreach ($patternProperties as $pregex => $schema) {
+            $delimiter = '/';
+            // Choose delimiter. Necessary for patterns like ^/ , otherwise you get error
+            foreach ($try as $delimiter) {
+                if (strpos($pregex, $delimiter) === false) { // safe to use
+                    break;
+                }
+            }
+
             // Validate the pattern before using it to test for matches
-            if (@preg_match('/'. $pregex . '/', '') === false) {
-                $this->addError($path, 'The pattern "' . $pregex . '" is invalid');
+            if (@preg_match($delimiter. $pregex . $delimiter, '') === false) {
+                $this->addError($path, 'The pattern "' . $pregex . '" is invalid', 'pregex', array('pregex' => $pregex,));
                 continue;
             }
             foreach ($element as $i => $value) {
-                if (preg_match('/' . $pregex . '/', $i)) {
+                if (preg_match($delimiter . $pregex . $delimiter, $i)) {
                     $matches[] = $i;
                     $this->checkUndefined($value, $schema ? : new \stdClass(), $path, $i);
                 }
@@ -70,14 +79,13 @@ class ObjectConstraint extends Constraint
      */
     public function validateElement($element, $matches, $objectDefinition = null, $path = null, $additionalProp = null)
     {
+        $this->validateMinMaxConstraint($element, $objectDefinition, $path);
         foreach ($element as $i => $value) {
-
-            $property = $this->getProperty($element, $i, new UndefinedConstraint());
             $definition = $this->getProperty($objectDefinition, $i);
 
             // no additional properties allowed
             if (!in_array($i, $matches) && $additionalProp === false && $this->inlineSchemaProperty !== $i && !$definition) {
-                $this->addError($path, "The property - " . $i . " - is not defined and the definition does not allow additional properties");
+                $this->addError($path, "The property " . $i . " is not defined and the definition does not allow additional properties", 'additionalProp');
             }
 
             // additional properties defined
@@ -92,12 +100,17 @@ class ObjectConstraint extends Constraint
             // property requires presence of another
             $require = $this->getProperty($definition, 'requires');
             if ($require && !$this->getProperty($element, $require)) {
-                $this->addError($path, "The presence of the property " . $i . " requires that " . $require . " also be present");
+                $this->addError($path, "The presence of the property " . $i . " requires that " . $require . " also be present", 'requires');
             }
 
             if (!$definition) {
                 // normal property verification
                 $this->checkUndefined($value, new \stdClass(), $path, $i);
+            }
+
+            $property = $this->getProperty($element, $i, new UndefinedConstraint());
+            if (is_object($property)) {
+                $this->validateMinMaxConstraint(!($property instanceof UndefinedConstraint) ? $property : $element, $definition, $path);
             }
         }
     }
@@ -136,5 +149,27 @@ class ObjectConstraint extends Constraint
         }
 
         return $fallback;
+    }
+
+    /**
+     * validating minimum and maximum property constraints (if present) against an element
+     *
+     * @param \stdClass $element          Element to validate
+     * @param \stdClass $objectDefinition ObjectConstraint definition
+     * @param string    $path             Path to test?
+     */
+    protected function validateMinMaxConstraint($element, $objectDefinition, $path) {
+        // Verify minimum number of properties
+        if (isset($objectDefinition->minProperties) && !is_object($objectDefinition->minProperties)) {
+            if (count(get_object_vars($element)) < $objectDefinition->minProperties) {
+                $this->addError($path, "Must contain a minimum of " . $objectDefinition->minProperties . " properties", 'minProperties', array('minProperties' => $objectDefinition->minProperties,));
+            }
+        }
+        // Verify maximum number of properties
+        if (isset($objectDefinition->maxProperties) && !is_object($objectDefinition->maxProperties)) {
+            if (count(get_object_vars($element)) > $objectDefinition->maxProperties) {
+                $this->addError($path, "Must contain no more than " . $objectDefinition->maxProperties . " properties", 'maxProperties', array('maxProperties' => $objectDefinition->maxProperties,));
+            }
+        }
     }
 }

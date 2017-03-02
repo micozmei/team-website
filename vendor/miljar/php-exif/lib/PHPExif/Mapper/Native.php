@@ -133,7 +133,7 @@ class Native implements MapperInterface
                 continue;
             }
 
-            if (!array_key_exists($field, $this->map)) {
+            if (!$this->isFieldKnown($field)) {
                 // silently ignore unknown fields
                 continue;
             }
@@ -165,7 +165,12 @@ class Native implements MapperInterface
                     break;
                 case self::FOCALLENGTH:
                     $parts = explode('/', $value);
-                    $value = (int) reset($parts) / (int) end($parts);
+                    // Avoid division by zero if focal length is invalid
+                    if (end($parts) == '0') {
+                        $value = 0;
+                    } else {
+                        $value = (int) reset($parts) / (int) end($parts);
+                    }
                     break;
                 case self::XRESOLUTION:
                 case self::YRESOLUTION:
@@ -212,6 +217,33 @@ class Native implements MapperInterface
     protected function isSection($field)
     {
         return (in_array($field, $this->sections));
+    }
+
+    /**
+     * Determines if the given field is known,
+     * in a case insensitive way for its first letter.
+     * Also update $field to keep it valid against the known fields.
+     *
+     * @param  string  &$field
+     * @return bool
+     */
+    protected function isFieldKnown(&$field)
+    {
+        $lcfField = lcfirst($field);
+        if (array_key_exists($lcfField, $this->map)) {
+            $field = $lcfField;
+
+            return true;
+        }
+
+        $ucfField = ucfirst($field);
+        if (array_key_exists($ucfField, $this->map)) {
+            $field = $ucfField;
+
+            return true;
+        }
+
+        return false;
     }
 
     /**

@@ -16,6 +16,7 @@ use Composer\IO\IOInterface;
 use Composer\Config;
 use Composer\EventDispatcher\EventDispatcher;
 use Composer\Package\PackageInterface;
+use Composer\Util\RemoteFilesystem;
 
 /**
  * Repositories manager.
@@ -32,19 +33,21 @@ class RepositoryManager
     private $io;
     private $config;
     private $eventDispatcher;
+    private $rfs;
 
-    public function __construct(IOInterface $io, Config $config, EventDispatcher $eventDispatcher = null)
+    public function __construct(IOInterface $io, Config $config, EventDispatcher $eventDispatcher = null, RemoteFilesystem $rfs = null)
     {
         $this->io = $io;
         $this->config = $config;
         $this->eventDispatcher = $eventDispatcher;
+        $this->rfs = $rfs;
     }
 
     /**
      * Searches for a package by it's name and version in managed repositories.
      *
-     * @param string                                                          $name       package name
-     * @param string|\Composer\Package\LinkConstraint\LinkConstraintInterface $constraint package version or version constraint to match against
+     * @param string                                                 $name       package name
+     * @param string|\Composer\Semver\Constraint\ConstraintInterface $constraint package version or version constraint to match against
      *
      * @return PackageInterface|null
      */
@@ -55,13 +58,15 @@ class RepositoryManager
                 return $package;
             }
         }
+
+        return null;
     }
 
     /**
      * Searches for all packages matching a name and optionally a version in managed repositories.
      *
-     * @param string                                                          $name       package name
-     * @param string|\Composer\Package\LinkConstraint\LinkConstraintInterface $constraint package version or version constraint to match against
+     * @param string                                                 $name       package name
+     * @param string|\Composer\Semver\Constraint\ConstraintInterface $constraint package version or version constraint to match against
      *
      * @return array
      */
@@ -87,20 +92,43 @@ class RepositoryManager
     }
 
     /**
+     * Adds a repository to the beginning of the chain
+     *
+     * This is useful when injecting additional repositories that should trump Packagist, e.g. from a plugin.
+     *
+     * @param RepositoryInterface $repository repository instance
+     */
+    public function prependRepository(RepositoryInterface $repository)
+    {
+        array_unshift($this->repositories, $repository);
+    }
+
+    /**
      * Returns a new repository for a specific installation type.
      *
      * @param  string                    $type   repository type
      * @param  array                     $config repository configuration
-     * @return RepositoryInterface
+     * @param  string                    $name   repository name
      * @throws \InvalidArgumentException if repository for provided type is not registered
+     * @return RepositoryInterface
      */
-    public function createRepository($type, $config)
+    public function createRepository($type, $config, $name = null)
     {
         if (!isset($this->repositoryClasses[$type])) {
             throw new \InvalidArgumentException('Repository type is not registered: '.$type);
         }
 
+        if (isset($config['packagist']) && false === $config['packagist']) {
+            $this->io->writeError('<warning>Repository "'.$name.'" ('.json_encode($config).') has a packagist key which should be in its own repository definition</warning>');
+        }
+
         $class = $this->repositoryClasses[$type];
+
+        $reflMethod = new \ReflectionMethod($class, '__construct');
+        $params = $reflMethod->getParameters();
+        if (isset($params[4]) && $params[4]->getClass() && $params[4]->getClass()->getName() === 'Composer\Util\RemoteFilesystem') {
+            return new $class($config, $this->io, $this->config, $this->eventDispatcher, $this->rfs);
+        }
 
         return new $class($config, $this->io, $this->config, $this->eventDispatcher);
     }
@@ -144,18 +172,5 @@ class RepositoryManager
     public function getLocalRepository()
     {
         return $this->localRepository;
-    }
-
-    /**
-     * Returns all local repositories for the project.
-     *
-     * @deprecated getLocalDevRepository is gone, so this is useless now, just use getLocalRepository instead
-     * @return array[WritableRepositoryInterface]
-     */
-    public function getLocalRepositories()
-    {
-        trigger_error('This method is deprecated, use getLocalRepository instead since the getLocalDevRepository is now gone', E_USER_DEPRECATED);
-
-        return array($this->localRepository);
     }
 }

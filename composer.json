@@ -16,7 +16,7 @@
         "bolt/thumbs" : "~2.0",
         "brandonwamboldt/utilphp" : "~1.0",
         "cocur/slugify" : "~1.0",
-        "composer/composer" : "dev-master",
+        "composer/composer" : "1.2.*",
         "doctrine/dbal" : "2.5.1",
         "erusev/parsedown-extra" : "~0.2",
         "ext-mbstring" : "*",
@@ -57,12 +57,13 @@
         "tdammers/htmlmaid" : "~0.7",
         "twig/twig" : "~1.16",
         "ua-parser/uap-php" : "~3.4",
-        "guzzle/guzzle": "~3.9"
+        "guzzle/guzzle": "~3.9",
+        "stripe/stripe-php": "^4.4"
     },
     "require-dev" : {
         "bolt/codingstyle" : "~1.0",
         "codeception/codeception" : "*",
-        "lstrojny/phpunit-function-mocker" : "dev-master@dev",
+        "lstrojny/phpunit-function-mocker" : "0.3.0",
         "m6web/symfony2-coding-standard" : "dev-master@dev",
         "phpmd/phpmd" : "~2.2.0",
         "phpunit/dbunit" : "~1.3",

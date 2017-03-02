@@ -1,0 +1,15 @@
+{
+    "name": "bolt/codingstyle",
+    "description": "Coding style for Bolt projects",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Gawain Lynch",
+            "email": "gawain.lynch@gmail.com"
+        }
+    ],
+    "minimum-stability": "dev",
+    "require": {
+        "m6web/symfony2-coding-standard" : "dev-master@dev"
+	}
+}

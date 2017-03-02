@@ -6,8 +6,7 @@ This chapter will explain all of the fields available in `composer.json`.
 
 We have a [JSON schema](http://json-schema.org) that documents the format and
 can also be used to validate your `composer.json`. In fact, it is used by the
-`validate` command. You can find it at:
-[`res/composer-schema.json`](https://github.com/composer/composer/blob/master/res/composer-schema.json).
+`validate` command. You can find it at: https://getcomposer.org/schema.json
 
 ## Root Package
 
@@ -197,10 +196,10 @@ The authors of the package. This is an array of objects.
 
 Each author object can have following properties:
 
-* **name:** The author's name. Usually his real name.
+* **name:** The author's name. Usually their real name.
 * **email:** The author's email address.
 * **homepage:** An URL to the author's website.
-* **role:** The authors' role in the project (e.g. developer or translator)
+* **role:** The author's role in the project (e.g. developer or translator)
 
 An example:
 
@@ -238,6 +237,7 @@ Support information includes the following:
 * **irc:** IRC channel for support, as irc://server/channel.
 * **source:** URL to browse or download the sources.
 * **docs:** URL to the documentation.
+* **rss:** URL to the RSS feed.
 
 An example:
 
@@ -316,16 +316,30 @@ Example:
 }
 ```
 
-> **Note:** While this is convenient at times, it should not be how you use
-> packages in the long term because it comes with a technical limitation. The
+> **Note:** This feature has severe technical limitations, as the 
 > composer.json metadata will still be read from the branch name you specify
-> before the hash. Because of that in some cases it will not be a practical
-> workaround, and you should always try to switch to tagged releases as soon
-> as you can.
+> before the hash. You should therefore only use this as a temporary solution
+> during development to remediate transient issues, until you can switch to
+> tagged releases. The Composer team does not actively support this feature
+> and will not accept bug reports related to it. 
 
 It is also possible to inline-alias a package constraint so that it matches
 a constraint that it otherwise would not. For more information [see the
 aliases article](articles/aliases.md).
+
+`require` and `require-dev` also support references to specific PHP versions
+and PHP extensions your project needs to run successfully.
+
+Example:
+
+```json
+{
+    "require" : {
+        "php" : "^5.5 || ^7.0",
+        "ext-mbstring": "*"
+    }
+}
+```
 
 #### require
 
@@ -347,7 +361,7 @@ will not be allowed to be installed together with your package.
 Note that when specifying ranges like `<1.0 >=1.1` in a `conflict` link,
 this will state a conflict with all versions that are less than 1.0 *and* equal
 or newer than 1.1 at the same time, which is probably not what you want. You
-probably want to go for `<1.0 | >=1.1` in this case.
+probably want to go for `<1.0 || >=1.1` in this case.
 
 #### replace
 
@@ -552,6 +566,26 @@ Example:
 }
 ```
 
+#### Exclude files from classmaps
+
+If you want to exclude some files or folders from the classmap you can use the 'exclude-from-classmap' property.
+This might be useful to exclude test classes in your live environment, for example, as those will be skipped
+from the classmap even when building an optimized autoloader.
+
+The classmap generator will ignore all files in the paths configured here. The paths are absolute from the package
+root directory (i.e. composer.json location), and support `*` to match anything but a slash, and `**` to
+match anything. `**` is implicitly added to the end of the paths.
+
+Example:
+
+```json
+{
+    "autoload": {
+        "exclude-from-classmap": ["/Tests/", "/test/", "/tests/"]
+    }
+}
+```
+
 ### autoload-dev <span>([root-only](04-schema.md#root-package))</span>
 
 This section allows to define autoload rules for development purposes.
@@ -668,7 +702,7 @@ The following repository types are supported:
   file is loaded using a PHP stream. You can set extra options on that stream
   using the `options` parameter.
 * **vcs:** The version control system repository can fetch packages from git,
-  svn and hg repositories.
+  svn, fossil and hg repositories.
 * **pear:** With this you can import any pear repository into your Composer
   project.
 * **package:** If you depend on a project that does not have any support for
@@ -730,7 +764,7 @@ override packages from it.
 
 ### config <span>([root-only](04-schema.md#root-package))</span>
 
-A set of configuration options. It is only used for projects. See 
+A set of configuration options. It is only used for projects. See
 [Config](06-config.md) for a description of each individual option.
 
 ### scripts <span>([root-only](04-schema.md#root-package))</span>
@@ -791,7 +825,7 @@ Optional.
 
 ### non-feature-branches
 
-A list of regex patterns of branch names that are non-numeric (e.g. "latest" or something), 
+A list of regex patterns of branch names that are non-numeric (e.g. "latest" or something),
 that will NOT be handled as feature branches. This is an array of strings.
 
 If you have non-numeric branch names, for example like "latest", "current", "latest-stable"

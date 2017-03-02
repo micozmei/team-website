@@ -161,7 +161,7 @@ abstract class BasePackage implements PackageInterface
     /**
      * checks if this package is a platform package
      *
-     * @return boolean
+     * @return bool
      */
     public function isPlatform()
     {
@@ -221,6 +221,11 @@ abstract class BasePackage implements PackageInterface
         }
 
         return $this->getPrettyVersion() . ' ' . $this->getSourceReference();
+    }
+
+    public function getStabilityPriority()
+    {
+        return self::$stabilities[$this->getStability()];
     }
 
     public function __clone()

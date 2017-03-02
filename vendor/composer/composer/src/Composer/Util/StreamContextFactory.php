@@ -12,6 +12,8 @@
 
 namespace Composer\Util;
 
+use Composer\Composer;
+
 /**
  * Allows the creation of a basic context supporting http proxy
  *
@@ -26,8 +28,8 @@ final class StreamContextFactory
      * @param  string            $url            URL the context is to be used for
      * @param  array             $defaultOptions Options to merge with the default
      * @param  array             $defaultParams  Parameters to specify on the context
-     * @return resource          Default context
      * @throws \RuntimeException if https proxy required and OpenSSL uninstalled
+     * @return resource          Default context
      */
     public static function getContext($url, array $defaultOptions = array(), array $defaultParams = array())
     {
@@ -37,10 +39,14 @@ final class StreamContextFactory
             'max_redirects' => 20,
         ));
 
-        // Handle system proxy
-        if (!empty($_SERVER['HTTP_PROXY']) || !empty($_SERVER['http_proxy'])) {
-            // Some systems seem to rely on a lowercased version instead...
+        // Handle HTTP_PROXY/http_proxy on CLI only for security reasons
+        if (PHP_SAPI === 'cli' && (!empty($_SERVER['HTTP_PROXY']) || !empty($_SERVER['http_proxy']))) {
             $proxy = parse_url(!empty($_SERVER['http_proxy']) ? $_SERVER['http_proxy'] : $_SERVER['HTTP_PROXY']);
+        }
+
+        // Prefer CGI_HTTP_PROXY if available
+        if (!empty($_SERVER['CGI_HTTP_PROXY'])) {
+            $proxy = parse_url($_SERVER['CGI_HTTP_PROXY']);
         }
 
         // Override with HTTPS proxy if present and URL is https
@@ -125,6 +131,22 @@ final class StreamContextFactory
 
         if (isset($options['http']['header'])) {
             $options['http']['header'] = self::fixHttpHeaderField($options['http']['header']);
+        }
+
+        if (defined('HHVM_VERSION')) {
+            $phpVersion = 'HHVM ' . HHVM_VERSION;
+        } else {
+            $phpVersion = 'PHP ' . PHP_MAJOR_VERSION . '.' . PHP_MINOR_VERSION . '.' . PHP_RELEASE_VERSION;
+        }
+
+        if (!isset($options['http']['header']) || false === strpos(strtolower(implode('', $options['http']['header'])), 'user-agent')) {
+            $options['http']['header'][] = sprintf(
+                'User-Agent: Composer/%s (%s; %s; %s)',
+                Composer::VERSION === '@package_version@' ? 'source' : Composer::VERSION,
+                php_uname('s'),
+                php_uname('r'),
+                $phpVersion
+            );
         }
 
         return stream_context_create($options, $defaultParams);
