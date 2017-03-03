@@ -9,12 +9,12 @@ class Extension extends BaseExtension
 {
     const OVERALL_GOAL = 25000;
     public static $REGISTRY_GOALS = array(
-        'Aerodynamics' => 875,
-        'Chassis' => 1500,
-        'Electronics' => 1800,
-        'Powertrain' => 1346,
-        'Suspension' => 800,
-        'Manufacturing' => 655,
+        'Chassis' => 3500,
+        'Aerodynamics' => 2500,
+        'Electronics' => 2000,
+        'Powertrain' => 3500,
+        'Suspension' => 2500,
+        'Manufacturing' => 1000,
         'Competition' => 10000,
     );
 
@@ -102,8 +102,17 @@ SQL;
         $total_raised = $row['raised'];
         $res->closeCursor();
 
+        // seed registry array
         $registry = array();
+        foreach (self::$REGISTRY_GOALS as $name => $goal) {
+            $registry[$name] = array(
+                'raised' => 0,
+                'goal' => $goal,
+                'percentage' => 0.0,
+            );
+        }
 
+        // calculate registry values from database
         $registry_query = <<<SQL
 SELECT registry, SUM(amount)/100 AS raised
 FROM crowdfunding_donations
@@ -120,15 +129,6 @@ SQL;
                 'goal' => $goal,
                 'percentage' => $raised / $goal,
             );
-        }
-        foreach (self::$REGISTRY_GOALS as $name => $goal) {
-            if (!array_key_exists($name, $registry)) {
-                $registry[$name] = array(
-                    'raised' => 0,
-                    'goal' => $goal,
-                    'percentage' => 0.0,
-                );
-            }
         }
         //$res->closeCursor();
         return array(
