@@ -67,7 +67,8 @@ class Extension extends BaseExtension
         $create_table = <<<SQL
 CREATE TABLE IF NOT EXISTS crowdfunding_donations (
     id SERIAL,
-    timestamp TIMESTAMP,
+    stripe_id VARCHAR(100) NOT NULL,
+    timestamp TIMESTAMP DEFAULT NOW(),
     full_name VARCHAR(100) NOT NULL,
     amount INTEGER NOT NULL,
     email VARCHAR(200) NOT NULL,
@@ -228,6 +229,7 @@ SQL;
 
         $insertSql = <<<SQL
 INSERT INTO crowdfunding_donations (
+    stripe_id,
     full_name,
     amount,
     email,
@@ -235,6 +237,7 @@ INSERT INTO crowdfunding_donations (
     address,
     tshirt
 ) VALUES (
+    :stripe_id,
     :full_name,
     :amount,
     :email,
@@ -246,6 +249,7 @@ SQL;
 
         $stmt = $pdh->prepare($insertSql);
         $stmt->execute(array(
+            'stripe_id' => $charge->id,
             'full_name' => $fullname,
             'amount' => $amount,
             'email' => $email,
