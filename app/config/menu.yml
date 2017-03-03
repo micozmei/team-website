@@ -40,8 +40,7 @@ main:
           - label: Become a Sponsor
             path: sponsorship
     - label: Donate
-      link: http://donate.uwformula.com
-      class: external donate
+      path: donate
     - label: Apply
       path: apply
     - label: Videos
