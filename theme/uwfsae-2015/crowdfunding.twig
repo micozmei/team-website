@@ -338,6 +338,16 @@ body {
     white-space: nowrap;
 }
 
+.team-list [role="donate"] {
+    display: none;
+    font-size: 1.3vw;
+    white-space: nowrap;
+    padding: 0.2vw 0.7vw;
+    border-radius: 1.3vw;
+    color: white;
+    background-color: rgb(51, 0, 150);
+}
+
 .panel-container {
     margin-top: -32px;
     flex: 1;
@@ -721,6 +731,9 @@ body {
                             <span role="funded">
                                 {{ (v.percentage*100)|round(0, 'floor') }}% Funded
                             </span>
+                            <span role="donate">
+                                Donate
+                            </span>
                         </li>
 {% endfor %}
                     </ul>
@@ -984,11 +997,15 @@ body {
     <script src="{{ paths.theme }}js/custom.js"></script>
     <script>
 $('.hero-caret').click(function() {
-    $('html, body').animate({ scrollTop: $('#2017-fundraiser').offset().top }, 1000);
+    $('html, body').animate({ scrollTop: $('#2017-fundraiser').offset().top }, 500);
 });
 
 $('#donate-link').click(function() {
-    $('html, body').animate({ scrollTop: $('#donate-section').offset().top }, 1000);
+    $('html, body').animate({ scrollTop: $('.support-section').offset().top }, 500);
+});
+
+$('.team-list [role=donate]').click(function() {
+    $('html, body').animate({ scrollTop: $('#donate-section').offset().top }, 500);
 });
 
 function showAddressContainer() {
@@ -1020,18 +1037,13 @@ var selectedTeamName = null;
 $('.team-list > li').click(function() {
     var selectId = $(this).attr('id');
     var selectName = $(this).find('[role="name"]').text().trim();
-    $('#' + selectedTeamId).removeClass('team-list-item-selected');
-    if (selectId != selectedTeamId) {
-        selectedTeamId = selectId;
-        selectedTeamName = selectName;
-        $(this).addClass('team-list-item-selected');
-        $('#team-supporting-name').text(selectedTeamName);
-        $('input[name=registry]').val(selectedTeamName);
-    } else {
-        selectedTeamId = null;
-        selectedTeamName = null;
-    }
-    $('#team-supporting').css('opacity', (selectedTeamName ? 1 : 0));
+    $('.team-list > li').removeClass('team-list-item-selected');
+    selectedTeamId = selectId;
+    selectedTeamName = selectName;
+    $(this).addClass('team-list-item-selected');
+    $('#team-supporting-name').text(selectedTeamName);
+    $('input[name=registry]').val(selectedTeamName);
+    $('#team-supporting').css('opacity', 1);
 });
 
 
@@ -1039,7 +1051,12 @@ $('.team-list > li').hover(function() {
     var hoverId = $(this).attr('id');
     $('.team-panel').css('display', 'none');
     $('#' + hoverId + '-panel').css('display', 'block');
-}, function() { });
+    $(this).children('[role=donate]').css('display', 'inline');
+    $(this).children('[role=funded]').css('display', 'none');
+}, function() {
+    $(this).children('[role=funded]').css('display', 'inline');
+    $(this).children('[role=donate]').css('display', 'none');
+});
 
 $('input[name="amount_displayed"]').blur(function() {
     var amount = parseInt($(this).val());
