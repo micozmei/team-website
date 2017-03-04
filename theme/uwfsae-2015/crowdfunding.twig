@@ -304,7 +304,7 @@ body {
 }
 
 .team-list > li {
-    margin: 8px 0 8px 0;
+    margin: 0.5vw 0 0.5vw 0;
     padding: 0.5vw;
     border: 2px solid rgb(155, 155, 155);
     display: flex;
@@ -458,6 +458,12 @@ body {
     margin-left: 3.33vw;
     margin-right: 3.33vw;
     padding: 32px 1.67vw 96px 1.67vw;
+}
+
+.level-included {
+    box-shadow:
+        0 0 0.2vw 0.1vw green,
+        inset 0 0 0.2vw 0.1vw green;
 }
 
 .slider-container {
@@ -1042,15 +1048,56 @@ $('input[name="amount_displayed"]').blur(function() {
         return;
     }
     $('.slider [role="amount"]').text('$' + amount);
-    var left = $('#purple-level').position().left;
-    var right = $('#diamond-level').position().left;
-    var width = right - left;
-    var calc = amount / 1000 * width;
-    if (calc > width) {
-        calc = width;
+
+    var sliderConfig = [
+        {
+            level: 'purple',
+            left: 0,
+            right: 200,
+        },
+        {
+            level: 'carbon',
+            left: 200,
+            right: 400,
+        },
+        {
+            level: 'silver',
+            left: 400,
+            right: 600,
+        },
+        {
+            level: 'gold',
+            left: 600,
+            right: 1000,
+        },
+        {
+            level: 'diamond',
+            left: 1000,
+            right: 2000,
+        },
+    ];
+
+    var sliderPosition = -1;
+    for (var i = 0; i < sliderConfig.length; i++) {
+        var cfg = sliderConfig[i];
+        var sel = '#' + cfg.level + '-level';
+        var boxSel = sel + ' [role=box]';
+        if (amount >= cfg.left) {
+            $(boxSel).addClass('level-included');
+        } else {
+            $(boxSel).removeClass('level-included');
+        }
+        if (sliderPosition === -1 && (amount < cfg.right || i == sliderConfig.length - 1)) {
+            var left = $(sel).position().left;
+            var right = left + $(sel).width();
+            var pct = (amount - cfg.left) / (cfg.right - cfg.left);
+            if (pct > 1) {
+                pct = 1;
+            }
+            sliderPosition = left + pct * (right - left);
+        }
     }
-    console.log(calc);
-    $('.slider').css('left', calc);
+    $('.slider').css('left', sliderPosition);
     $('.slider').css('opacity', 1);
 });
 
