@@ -88,13 +88,13 @@ body {
 }
 
 .margin-64 {
-    margin-top: 64px;
-    margin-bottom: 64px;
+    margin-top: 3.33vw;
+    margin-bottom: 3.33vw;
 }
 
 .margin-16 {
-    margin-top: 16px;
-    margin-bottom: 16px;
+    margin-top: 0.83vw;
+    margin-bottom: 0.83vw;
 }
 
 .purple-text {
@@ -167,8 +167,8 @@ body {
 }
 
 .section-2col {
-    margin-top 64px;
-    margin-bottom 64px;
+    margin-top 3.33vw;
+    margin-bottom 3.33vw;
     display: flex;
     flex-wrap: nowrap;
     justify-content: center;
@@ -185,7 +185,6 @@ body {
     padding: 3.33vw;
     margin: 3.33vw;
 }
-
 
 .subheader {
     color: rgb(51, 0, 111);
@@ -207,8 +206,8 @@ body {
 }
 
 .supporters-container > div {
-    padding-left: 32px;
-    padding-right: 32px;
+    padding-left: 1.67vw;
+    padding-right: 1.67vw;
     border-right: 2px solid rgb(150, 150, 150);
 }
 
@@ -232,11 +231,11 @@ body {
 }
 
 .custom-progress {
-    width: 400px;
-    height: 40px;
+    width: 30vw;
+    height: 2vw;
     overflow: hidden;
     background-color: rgb(219, 219, 219);
-    border-radius: 20px;
+    border-radius: 1vw;
     box-shadow:
         -2px 2px 2px rgba(0,0,0,.5),
         2px 2px 2px rgba(0,0,0,.5);
@@ -250,17 +249,16 @@ body {
 }
 
 .purple-button-container {
-    margin-top: 48px;
-    margin-bottom: 48px;
+    margin-top: 2.5vw;
+    margin-bottom: 2.5vw;
 }
 
 .purple-button {
     color: white;
-    font-weight: 1000;
-    font-size: 2em;
-    padding: 0.5em;
+    font-size: 2.5vw;
+    padding: 1.5vw;
     background-color: rgb(51, 0, 111);
-    border-radius: 2em;
+    border-radius: 2.5vw;
 }
 
 .whatis-background {
@@ -271,7 +269,6 @@ body {
 }
 
 .whatis-container {
-    height: 640px;
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
@@ -286,7 +283,7 @@ body {
 }
 
 .support-section {
-    margin: 64px;
+    margin: 3.33vw;
 }
 
 .car-interface {
@@ -296,7 +293,7 @@ body {
 }
 
 .car-interface > * {
-    padding: 16px;
+    padding: 0.83vw;
 }
 
 .team-list {
@@ -330,7 +327,7 @@ body {
 .team-list [role="name"] {
     color: rgb(51, 0, 111);
     font-size: 1.6vw;
-    padding-right: 64px;
+    padding-right: 3.33vw;
 }
 
 .team-list [role="funded"] {
@@ -349,7 +346,7 @@ body {
 }
 
 .panel-container {
-    margin-top: -32px;
+    margin-top: -1.67vw;
     flex: 1;
     width: 100%;
 }
@@ -368,13 +365,13 @@ body {
 .team-description {
     bottom: 0;
     border: 2px solid rgb(155, 155, 155);
-    padding-left: 64px;
-    padding-right: 64px;
+    padding-left: 3.33vw;
+    padding-right: 3.33vw;
 }
 
 .team-description > * {
-    margin-top: 16px;
-    margin-bottom: 16px;
+    margin-top: 0.83vw;
+    margin-bottom: 0.83vw;
 }
 
 .team-description > h1 {
@@ -385,22 +382,26 @@ body {
     position: relative;
 }
 
+.team-description h1 {
+    font-size: 2vw;
+}
+
 .team-description [role="funded"] {
     position: absolute;
     top: 0;
     left: 0;
-    line-height: 40px;
+    line-height: 2vw;
     color: white;
-    padding-left: 16px;
+    padding-left: 0.83vw;
 }
 
 .team-description [role="goal"] {
     position: absolute;
     top: 0;
     right: 0;
-    line-height: 40px;
+    line-height: 2vw;
     color: black;
-    padding-right: 16px;
+    padding-right: 0.83vw;
 }
 
 .thankyou-container {
@@ -429,25 +430,25 @@ body {
 }
 
 .form-container input {
-    height: 50px;
-    width: 400px;
+    height: 2.5vw;
+    width: 20vw;
     border: 1px solid rgb(155, 155, 155);
-    border-radius: 25px;
-    padding: 15px;
+    border-radius: 1.25vw; /* 1/2 height */
+    padding: 0.83vw;
     display: block;
-    margin-top: 12px;
-    margin-bottom: 12px;
+    margin-top: 0.5vw;
+    margin-bottom: 0.5vw;
 }
 
 .form-container select {
-    height: 50px;
-    width: 400px;
+    height: 2.5vw;
+    width: 20vw;
     border: 1px solid rgb(155, 155, 155);
-    border-radius: 25px;
-    padding: 10px;
+    border-radius: 1.25vw; /* 1/2 height */
+    padding: 0.5vw;
     display: block;
-    margin-top: 12px;
-    margin-bottom: 12px;
+    margin-top: 0.5vw;
+    margin-bottom: 0.5vw;
 }
 
 .address-expand-link:hover {
@@ -486,47 +487,48 @@ body {
     opacity: 0;
     position: absolute;
     width: 0;
-    height: 100px;
-    border-right: 6px solid rgb(155, 155, 155);
-    top: -25px;
+    height: 5.2vw;
+    border-right: 0.3vw solid rgb(155, 155, 155);
+    top: -1.3vw;
     transition: left 0.5s ease;
 }
 
 .slider [role="amount"] {
     position: absolute;
-    top: -10rem;
-    left: -8rem;
+    top: -5vw;
+    left: -4vw;
     font-weight: 700;
-    font-size: 8rem;
+    font-size: 4vw;
     color: red;
-    text-shadow: 1px solid rgb(155, 155, 155);
 }
 
 .slider-item {
     flex: 1;
     position: relative;
-    padding-top: 5rem;
+    padding-top: 2.6vw;
 }
 
 .slider-item [role="dollar"] {
     position: absolute;
-    font-size: 5rem;
-    top: -1.5rem;
-    right: -5rem;
+    font-size: 3vw;
+    top: -1vw;
+    right: -3vw;
     color: rgb(77, 77, 77);
 }
 
 .slider-item [role="line-spacer"] {
-    height: 20px;
-    border-left: 6px solid rgb(77, 77, 77);
+    height: 1vw;
+    border-left: 0.3vw solid rgb(77, 77, 77);
 }
 
 .slider-item [role="line"] {
     /* so that it doesn't overlap with markers */
     position: absolute;
-    top: calc(5rem + 20px);
-    left: 6px;
+    top: calc(3vw + 1vw); /* font-size of dollar + height of line spacer */
+    left: 0.3vw;
     width: 100%;
+    border-top-width: 0.3vw;
+    border-top-style: solid;
 }
 
 .slider-item [role="box"] {
@@ -537,41 +539,45 @@ body {
     border: 1px solid rgb(155, 155, 155);
 }
 
+.slider-item h2 {
+    font-size: 1.5vw;
+}
+
 .slider-item [role="title"] {
     font-weight: 700;
     font-size: 1.5vw;
 }
 
 #purple-level [role="line"] {
-    border-top: 6px solid rgb(51, 0, 111);
+    border-top-color: rgb(51, 0, 111);
 }
 #purple-level [role="title"] {
     color: rgb(51, 0, 111);
 }
 
 #carbon-level [role="line"] {
-    border-top: 6px solid rgb(20, 20, 20);
+    border-top-color: rgb(20, 20, 20);
 }
 #carbon-level [role="title"] {
     color: rgb(20, 20, 20);
 }
 
 #silver-level [role="line"] {
-    border-top: 6px solid rgb(178, 178, 178);
+    border-top-color: rgb(178, 178, 178);
 }
 #silver-level [role="title"] {
     color: rgb(178, 178, 178);
 }
 
 #gold-level [role="line"] {
-    border-top: 6px solid rgb(255, 226, 0);
+    border-top-color: rgb(255, 226, 0);
 }
 #gold-level [role="title"] {
     color: rgb(255, 226, 0);
 }
 
 #diamond-level [role="line"] {
-    border-top: 6px solid rgb(226, 226, 226);
+    border-top-color: rgb(226, 226, 226);
 }
 #diamond-level [role="title"] {
     color: rgb(226, 226, 226);
@@ -587,7 +593,7 @@ body {
     left: 50%;
     transform: translate(-50%, -50%);
     color: white;
-    font-size: 12rem;
+    font-size: 8vw;
     font-weight: 700;
     white-space: nowrap;
     text-shadow:
@@ -835,7 +841,7 @@ body {
             </div>
             <div class="thankyou-panel">
                 <h1 class="text-center section-header">Thank You For Your Support!</h1>
-                <div id="team-supporting" style="margin-top: 32px; opacity: 0;">
+                <div id="team-supporting" style="margin-top: 1.67vw; opacity: 0;">
                     You are supporting:
                     <span id="team-supporting-name">Chassis</span>
                 </div>
@@ -855,7 +861,7 @@ body {
                             <input type="text" name="address1" placeholder="Address Line 1" />
                             <input type="text" name="address2" placeholder="Address Line 2 (optional)" />
                             <input type="text" name="city" placeholder="City" style="width: auto; display: inline" />
-                            <select name="state" style="width: 10rem; display: inline">
+                            <select name="state" style="width: 6vw; min-width: 40px; display: inline">
 {% for abbr in [ 'AL', 'AK', 'AZ', 'AR', 'CA', 'CO', 'CT', 'DE', 'DC', 'FL', 'GA', 'HI', 'ID', 'IL', 'IN', 'IA', 'KS', 'KY', 'LA', 'ME', 'MD', 'MA', 'MI', 'MN', 'MS', 'MO', 'MT', 'NE', 'NV', 'NH', 'NJ', 'NM', 'NY', 'NC', 'ND', 'OH', 'OK', 'OR', 'PA', 'RI', 'SC', 'SD', 'TN', 'TX', 'UT', 'VT', 'VA', 'WA', 'WV', 'WI', 'WY' ] %}
                                 <option {{ (abbr == 'WA' ? 'selected' : '') }}>{{ abbr }}</option>
 {% endfor %}
@@ -863,7 +869,7 @@ body {
                             <input type="text" name="zipcode" placeholder="Zip" />
                             <input type="text" name="tshirt" placeholder="T-Shirt size & special requests" />
                         </div>
-                        <button type="submit" class="purple-button" id="donate-button" style="width: 100%; margin-top: 64px;">Donate</button>
+                        <button type="submit" class="purple-button" id="donate-button" style="width: 100%; margin-top: 3.33vw;">Donate</button>
                     </form>
                 </div>
             </div>
@@ -1059,8 +1065,8 @@ $('.team-list > li').hover(function() {
     $(this).children('[role=donate]').css('display', 'none');
 });
 
-$('input[name="amount_displayed"]').blur(function() {
-    var amount = parseInt($(this).val());
+function drawSlider(amount_str) {
+    var amount = parseInt(amount_str);
     if (isNaN(amount)) {
         $('.slider').css('opacity', 0);
         return;
@@ -1117,6 +1123,14 @@ $('input[name="amount_displayed"]').blur(function() {
     }
     $('.slider').css('left', sliderPosition);
     $('.slider').css('opacity', 1);
+}
+
+$('input[name="amount_displayed"]').blur(function() {
+    drawSlider($(this).val());
+});
+
+$(window).resize(function() {
+    drawSlider($('input[name=amount_displayed]').val());
 });
 
 // Stripe handling
