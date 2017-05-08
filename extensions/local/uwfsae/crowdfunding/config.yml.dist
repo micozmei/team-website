@@ -3,3 +3,6 @@ stripe-secret-key: sk_test_BQokikJOvBiI2HlWgH4olfQ2
 
 # Stripe Publishable API Key
 stripe-publishable-key: pk_test_6pRNASCoBOKtIshFeQd4XMUh
+
+# Password for accessing receipt page (empty will disallow access)
+receipts-password:

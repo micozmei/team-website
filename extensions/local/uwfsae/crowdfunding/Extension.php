@@ -20,6 +20,7 @@ class Extension extends BaseExtension
 
     public function initialize() {
         $this->addTwigFunction('crowdfunding_handler', 'twigCrowdfundingSubmit');
+	$this->addTwigFunction('crowdfunding_receipts', 'twigCrowdfundingReceipts');
     }
 
     public function getName() {
@@ -39,6 +40,23 @@ class Extension extends BaseExtension
         } else {
             return $this->generateData();
         }
+    }
+
+    public function twigCrowdfundingReceipts() {
+	$request = $this->app['request_stack']->getCurrentRequest();
+	$is_post = ($request && $request->isMethod('POST'));
+	$receipts_password = $this->config['receipts-password'];
+
+	if (!$is_post || !$receipts_password) {
+	    return array();
+	} else if ($request->get('password') != $receipts_password) {
+	    return array('invalid_password' => 1);
+	} else {
+	    return array(
+		'authenticated' => 1,
+		'receipts' => $this->genReceipts(),
+	    );
+	}
     }
 
     private function getStripeSecretKey() {
@@ -261,6 +279,19 @@ SQL;
         return array(
             'ok' => 1,
         );
+    }
+
+    private function genReceipts() {
+        $dbh = $this->genPDO();
+	$querySql = <<<SQL
+SELECT id, full_name, amount, email, registry, address, tshirt
+FROM crowdfunding_donations;
+SQL;
+        $res = $dbh->query($querySql);
+        if ($res === FALSE) {
+            print_r($dbh->errorInfo());
+        }
+	return $res;
     }
 }
 

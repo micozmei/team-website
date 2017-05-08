@@ -1,0 +1,63 @@
+{% set _skeleton = { hide_sidebar: true } %}
+{% extends "_skeleton.twig" %}
+
+{% set data = crowdfunding_receipts() %}
+
+{% block content %}
+{% if not data.authenticated %}
+
+<h3>Authentication Required</h3>
+
+{% if data.invalid_password %}
+<p style="color: red;">Password is incorrect.</p>
+{% endif %}
+
+<p>Please enter the password to access this page. You must contact the site owner to acquire the password.</p>
+
+<form action="" method="POST">
+    <span>Password:</span>
+    <input type="password" name="password" />
+    <input type="submit" value="Submit" />
+    <br />
+</form>
+
+{% else %}
+
+<style>
+.data-table tr:first-child {
+    background-color: #819FF7;
+}
+.data-table tr:nth-child(even) {
+    background-color: #ccc;
+}
+.data-table tr>th {
+    padding: 4px 8px 4px 8px;
+    font-weight: 700;
+}
+</style>
+
+<table class="data-table">
+    <tr>
+        <th>Id</th>
+        <th>Full Name</th>
+        <th>Amount</th>
+        <th>Email</th>
+        <th>Registry</th>
+        <th>Address</th>
+        <th>T-Shirt and Comments</th>
+    </tr>
+{% for receipt in data.receipts %}
+    <tr>
+        <th>{{ receipt.id }}</th>
+        <th>{{ receipt.full_name }}</th>
+        <th>${{ receipt.amount/100|number_format(2) }}</th>
+        <th>{{ receipt.email }}</th>
+        <th>{{ receipt.registry }}</th>
+        <th>{{ receipt.address|nl2br }}</th>
+        <th>{{ receipt.tshirt }}</th>
+    </tr>
+{% endfor %}
+</table>
+
+{% endif %}
+{% endblock %}
