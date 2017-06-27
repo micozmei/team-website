@@ -10,8 +10,8 @@ use Bolt\BaseExtension;
 class Extension extends BaseExtension
 {
     const TZ = 'America/Los_Angeles';
-    const APP_VIEW_DEADLINE = '2017-10-07 23:59:00';
-    const APP_SUBMIT_DEADLINE = '2017-10-06 3:00:00';
+    const APP_VIEW_DEADLINE = '2017-10-06 23:59:00';
+    const APP_SUBMIT_DEADLINE = '2017-10-07 3:00:00';
     const SPREADSHEET_ID = '1v-zFjQwI0UxWZPOcjL6pPhChVjnwPnD_qYq9xntUEPQ';
 
     private $client;
